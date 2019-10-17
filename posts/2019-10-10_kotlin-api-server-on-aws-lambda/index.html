@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en_US">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="Kotlin API Server on AWS Lambda">
+<meta itemprop="description" content="This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.
+The code is located on GitHub.
+Tech Stack Choices Kotlin Kotlin is developed by JetBrains. It can be treated as a &#34;better Java&#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.
+As a Lisp lover, I really favor the functional programming style Kotlin introduces.">
+
+
+<meta itemprop="datePublished" content="2019-10-10T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-10-10T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1356">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="Kotlin API Server on AWS Lambda" />
+<meta property="og:description" content="This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.
+The code is located on GitHub.
+Tech Stack Choices Kotlin Kotlin is developed by JetBrains. It can be treated as a &#34;better Java&#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.
+As a Lisp lover, I really favor the functional programming style Kotlin introduces." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2019-10-10_kotlin-api-server-on-aws-lambda/" /><meta property="article:published_time" content="2019-10-10T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-10-10T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kotlin API Server on AWS Lambda"/>
+<meta name="twitter:description" content="This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.
+The code is located on GitHub.
+Tech Stack Choices Kotlin Kotlin is developed by JetBrains. It can be treated as a &#34;better Java&#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.
+As a Lisp lover, I really favor the functional programming style Kotlin introduces."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Kotlin API Server on AWS Lambda</title>
+	<link rel="stylesheet" href="/css/style.min.4b21ce88e94e6ff8eb47d816b952379f79e2302f1dcf462cadc11096afb7a536.css" integrity="sha256-SyHOiOlOb/jrR9gWuVI3n3niMC8dz0YsrcEQlq+3pTY=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="/">Danny&#39;s Blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="/posts/">Posts</a>
+					<a href="/tags/">Tags</a>
+					<a href="/about-me/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sheepduke" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="https://www.linkedin.com/in/daian-yue-908862118/" target="_blank" rel="noopener me" title="Linkedin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="/posts/">Posts</a></li>
+			<li><a href="/tags/">Tags</a></li>
+			<li><a href="/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Oct 10, 2019</span></div>
+				<h1>Kotlin API Server on AWS Lambda</h1>
+			</header>
+			<div class="content">
+				<p>This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.</p>
+
+<p>The code is located on <a href="https://github.com/sheepduke/demo-kotlin-aws-api-server" title="GitHub">GitHub</a>.</p>
+
+<h2 id="tech-stack-choices">Tech Stack Choices<a href="#tech-stack-choices" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<h3 id="kotlin">Kotlin<a href="#kotlin" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p><a href="https://kotlinlang" title="Kotlin">Kotlin</a> is developed by JetBrains. It can be treated as a "better Java". It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.</p>
+
+<p>As a Lisp lover, I really favor the functional programming style Kotlin introduces. It is far better than Java Stream API in my opinion.</p>
+
+<p>Maybe it is time to consider replacing Java with Kotlin code!</p>
+
+<h3 id="gradle">Gradle<a href="#gradle" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Gradle is something in the middle of Maven and Ant. It supports 2 DSL: Groovy and Kotlin. It is not only a build tool, it is build tooling.</p>
+
+<p>Please note that compared with Maven, Gradle is more complicated and may have some unexpected behavior if you are not familiar with it.</p>
+
+<h3 id="selected-techniques">Selected Techniques<a href="#selected-techniques" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>In this article I am using techniques of following versions:</p>
+
+<ul>
+<li>Kotlin 1.3.50</li>
+<li>Gradle 5.5.1</li>
+<li>Serverless 1.52.2</li>
+</ul>
+
+<h2 id="system-architecture">System Architecture<a href="#system-architecture" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<h3 id="web-framework-is-not-necessary">Web Framework is Not Necessary<a href="#web-framework-is-not-necessary" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>At first I thought Spring Boot was mandatory to develop an API server on AWS Lambda, so I created <a href="https://github.com/sheepduke/demo-spring-boot-gradle-aws-lambda" title="this repository">this repository</a>. But later I found that I was wrong.</p>
+
+<p>Since the API server is going to run behind AWS API Gateway, the Lambda function does not need to deal with routing or serialization. Instead, it can (and probably should) only care about incoming event. Otherwise every time the Lambda function is invoked, it takes seconds for Spring Boot to initialize.</p>
+
+<p>The incoming HTTP requests are converted by API Gateway to a map that can be represented as <code>Map&lt;String, Any&gt;</code>, which is the input of handler. The response of the handler is a <code>String</code> or anything that can be serialized to a <code>String</code>.</p>
+
+<h3 id="building-basic-abstraction">Building Basic Abstraction<a href="#building-basic-abstraction" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Since there is no more Spring Boot that takes care of MVC layers, we need to roll our own. First let's abstract the request and response.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * Const variables used globally.
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#ff79c6">object</span> <span style="color:#50fa7b">Globals</span> {
+    <span style="color:#ff79c6">val</span> objectMapper: ObjectMapper = jacksonObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, <span style="color:#ff79c6">false</span>)
+
+    <span style="color:#ff79c6">object</span> <span style="color:#50fa7b">Environment</span> {
+        <span style="color:#ff79c6">val</span> PATH: String = System.getenv(<span style="color:#f1fa8c">&#34;PATH&#34;</span>)
+    }
+}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ApiGatewayRequest</span>(
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * The request body as String.
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#ff79c6">var</span> body: String? = <span style="color:#ff79c6">null</span>) {
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * Decode request body as JSON string.
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#ff79c6">inline</span> <span style="color:#ff79c6">fun</span> &lt;reified T&gt; <span style="color:#50fa7b">decodeBody</span>(): T? {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">try</span> {
+            <span style="color:#ff79c6">if</span> (body != <span style="color:#ff79c6">null</span>) Globals.objectMapper.readValue(body, T<span style="color:#ff79c6">::</span><span style="color:#ff79c6">class</span>.java) <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">null</span>
+        } <span style="color:#ff79c6">catch</span> (e: JsonProcessingException) {
+            <span style="color:#ff79c6">null</span>
+        }
+    }
+}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ApiGatewayResponse</span>&lt;T&gt;(
+    <span style="color:#ff79c6">val</span> statusCode: Int = <span style="color:#bd93f9">200</span>,
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * Any body that can be serialized to String.
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#ff79c6">val</span> body: T? = <span style="color:#ff79c6">null</span>) {
+
+    <span style="color:#ff79c6">val</span> bodyString: String = Globals.objectMapper.writeValueAsString(body)
+}</code></pre></div>
+<h3 id="building-common-base-class">Building Common Base Class<a href="#building-common-base-class" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Each handler needs to implement <code>RequestHandler</code> interface that defines a single <code>handleRequest</code> function. Since you may want to add some common logic to all handlers, it is a good idea to create a common base class that will be inherited by all handlers.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">object</span> <span style="color:#50fa7b">ApiGatewayRequestKeys</span> {
+    <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> BODY: String = <span style="color:#f1fa8c">&#34;body&#34;</span>
+}
+
+<span style="color:#ff79c6">object</span> <span style="color:#50fa7b">ApiGatewayResponseKeys</span> {
+    <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> STATUS_CODE = <span style="color:#f1fa8c">&#34;statusCode&#34;</span>
+    <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> BODY: String = <span style="color:#f1fa8c">&#34;body&#34;</span>
+}
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * A thin wrapper of [RequestHandler].
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#ff79c6">abstract</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ApiGatewayHandler</span>&lt;Out&gt;
+    : RequestHandler&lt;Map&lt;String, Any&gt;, Map&lt;String, Any&gt;&gt; {
+    <span style="color:#ff79c6">private</span> <span style="color:#ff79c6">val</span> log = KotlinLogging.logger {}
+
+    <span style="color:#ff79c6">override</span> <span style="color:#ff79c6">fun</span> <span style="color:#50fa7b">handleRequest</span>(input: Map&lt;String, Any&gt;, context: Context): Map&lt;String, Any&gt; {
+        log.info { <span style="color:#f1fa8c">&#34;Request: $input&#34;</span> }
+        log.info {
+            <span style="color:#f1fa8c">&#34;&#34;&#34;
+</span><span style="color:#f1fa8c">            Environment:
+</span><span style="color:#f1fa8c">            PATH=${Globals.Environment.PATH}
+</span><span style="color:#f1fa8c">        &#34;&#34;&#34;</span>.trimIndent()
+        }
+
+        <span style="color:#ff79c6">val</span> response: ApiGatewayResponse&lt;Out&gt; = <span style="color:#ff79c6">try</span> {
+            <span style="color:#ff79c6">val</span> requestBody = input<span style="color:#50fa7b">[ApiGatewayRequestKeys.BODY]</span> <span style="color:#ff79c6">as</span> String?
+            <span style="color:#ff79c6">val</span> request = ApiGatewayRequest(body = requestBody)
+            handleRequest(request)
+        } <span style="color:#ff79c6">catch</span> (e: BadRequestException) {
+            log.warn { <span style="color:#f1fa8c">&#34;Bad request: ${e.message}&#34;</span> }
+            ApiGatewayResponse(statusCode = <span style="color:#bd93f9">400</span>)
+        }
+
+        <span style="color:#ff79c6">return</span> response.toMap()
+    }
+
+    <span style="color:#ff79c6">abstract</span> <span style="color:#ff79c6">fun</span> <span style="color:#50fa7b">handleRequest</span>(request: ApiGatewayRequest): ApiGatewayResponse&lt;Out&gt;
+}
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * Convert [ApiGatewayResponse] to corresponding [Map] that will be returned to the caller.
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#ff79c6">fun</span> &lt;T&gt; <span style="color:#50fa7b">ApiGatewayResponse</span>&lt;T&gt;.toMap(): Map&lt;String, Any&gt; {
+    <span style="color:#ff79c6">return</span> mapOf(
+        ApiGatewayResponseKeys.STATUS_CODE to <span style="color:#ff79c6">this</span>.statusCode,
+        ApiGatewayResponseKeys.BODY to <span style="color:#ff79c6">this</span>.bodyString)
+}</code></pre></div>
+<ul>
+The <code>ApiGatewayHandler</code> class serves as an adapter between our basic abstractions and Lambda ~RequestHandler~:
+<li>It takes incoming map and convert it to <code>ApiGatewayRequest</code>.</li>
+<li>It calls its own abstract function <code>handleRequest</code> and converts the result to JSON string. The abstract function <code>handleRequest</code> will be override by all handlers.</li>
+</ul>
+
+<p>By doing so, it may be much easier to switch to another cloud service, or even go back to the Spring Boot framework.</p>
+
+<h3 id="defining-sample-handler">Defining Sample Handler<a href="#defining-sample-handler" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Now we may define our handlers based on above abstraction blocks.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">HelloRequest</span>(
+    <span style="color:#ff79c6">var</span> name: String = <span style="color:#f1fa8c">&#34;&#34;</span>
+)
+
+<span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">HelloResult</span>(
+    <span style="color:#ff79c6">var</span> message: String = <span style="color:#f1fa8c">&#34;&#34;</span>
+)
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * Handlers /hello request.
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#ff79c6">class</span> <span style="color:#50fa7b">HelloHandler</span> : ApiGatewayHandler&lt;HelloResult&gt;() {
+
+    <span style="color:#ff79c6">override</span> <span style="color:#ff79c6">fun</span> <span style="color:#50fa7b">handleRequest</span>(request: ApiGatewayRequest): ApiGatewayResponse&lt;HelloResult&gt; {
+        <span style="color:#ff79c6">val</span> helloRequest = request.decodeBody&lt;HelloRequest&gt;() <span style="color:#ff79c6">?:</span> <span style="color:#ff79c6">throw</span> BadRequestException()
+        <span style="color:#ff79c6">return</span> ApiGatewayResponse(body = HelloResult(message = <span style="color:#f1fa8c">&#34;Hello, ${helloRequest.name}&#34;</span>))
+    }
+}</code></pre></div>
+<p>You may note that the <code>HelloHandler</code> only focuses on the real business logic. All the serialization work is done in the common class.</p>
+
+<h3 id="writing-unit-tests">Writing Unit Tests<a href="#writing-unit-tests" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Unit tests are important to ensure that new functions will be break existing ones.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">HelloHandlerTest</span> {
+    @Test
+    <span style="color:#ff79c6">fun</span> <span style="color:#50fa7b">`test handleRequest`</span>() {
+        <span style="color:#ff79c6">val</span> request = ApiGatewayRequest(body = <span style="color:#f1fa8c">&#34;{\&#34;name\&#34;: \&#34;John\&#34;}&#34;</span>)
+        <span style="color:#ff79c6">val</span> handler = HelloHandler()
+        <span style="color:#ff79c6">val</span> response = handler.handleRequest(request)
+        assertNotNull(response.body)
+        assertEquals(<span style="color:#f1fa8c">&#34;{\&#34;message\&#34;:\&#34;Hello, John\&#34;}&#34;</span>, response.bodyString)
+    }
+}</code></pre></div>
+<h2 id="using-gradle-to-build-it">Using Gradle to Build It<a href="#using-gradle-to-build-it" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>AWS Lambda requires a JAR file, or a ZIP file. We may add the following snippet to the <code>build.gradle.kts</code> file in order to build a fat JAR.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">object</span> <span style="color:#50fa7b">Constants</span> {
+    <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> appName = <span style="color:#f1fa8c">&#34;demo-api-server&#34;</span>
+    <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> appVersion = <span style="color:#f1fa8c">&#34;latest&#34;</span>
+}
+
+tasks.withType&lt;Jar&gt; {
+    archiveBaseName.<span style="color:#ff79c6">set</span>(<span style="color:#f1fa8c">&#34;demo-api-server&#34;</span>)
+
+    from(configurations.compileClasspath.<span style="color:#ff79c6">get</span>().map {
+        <span style="color:#ff79c6">if</span> (it.isDirectory) it <span style="color:#ff79c6">else</span> zipTree(it)
+    })
+}</code></pre></div>
+<p>Fat JAR, aka Uber JAR, is a JAR file that contains all the classes and their dependencies. Please note that you may want to remove unused dependencies to reduce the size of JAR file.</p>
+
+<h2 id="using-serverless-to-test-and-deploy">Using Serverless to Test and Deploy<a href="#using-serverless-to-test-and-deploy" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<h3 id="serverless">Serverless<a href="#serverless" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p><a href="https://serverless.com/" title="Serverless">Serverless</a> is very handy if you use <a href="https://aws.amazon.com/codebuild/" title="AWS CodeBuild">AWS CodeBuild</a>. It generates <a href="https://aws.amazon.com/cloudformation/" title="AWS CloudFormation">AWS CloudFormation</a> template from a YAML file. You may install it globally using the following command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ npm install -g serverless</code></pre></div>
+<p>Afterwards <code>serverless</code> or simply <code>sls</code> can be used to invoke Serverless CLI.</p>
+
+<h3 id="writing-serverless-yaml">Writing Serverless YAML<a href="#writing-serverless-yaml" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>The <a href="https://serverless.com/framework/docs/providers/aws/" title="official documentation">official documentation</a> of Serverless contains very detailed information about how to write its YAML file. Our <code>demo-api-server</code> project may looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">plugins:
+  <span style="color:#6272a4"># Used for warming up JVM container.</span>
+  - serverless-plugin-warmup
+
+custom:
+  params:
+    product: <span style="color:#f1fa8c">&#34;demo-api-server&#34;</span>
+  warmup:
+    timeout: <span style="color:#bd93f9">20</span>
+    events:
+      <span style="color:#6272a4"># Run every 5 minutes from 00:00 to 14:00 UTC, Monday to Friday.</span>
+      - schedule: <span style="color:#f1fa8c">&#34;cron(0/5 0-14 ? * MON-FRI *)&#34;</span>
+    concurrency: <span style="color:#bd93f9">2</span>
+    prewarm: <span style="color:#ff79c6">true</span>
+
+service: ${self:custom.params.product}
+
+provider:
+  name: aws
+  runtime: java8
+  timeout: <span style="color:#bd93f9">60</span>
+  memorySize: <span style="color:#bd93f9">128</span>
+
+functions:
+  hello:
+    handler: com.sheepduke.api.server.hello.HelloHandler::handleRequest
+    package:
+      artifact: build/libs/demo-api-server-<span style="color:#bd93f9">1.0</span>.jar
+    events:
+      - http:
+          path: ${self:custom.params.product}/hello
+          method: post
+    warmup:
+      enabled: <span style="color:#ff79c6">true</span></code></pre></div>
+<h3 id="testing-lambda-function-locally">Testing Lambda Function Locally<a href="#testing-lambda-function-locally" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Serverless comes with a handy function to test Lambda functions locally:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sls invoke <span style="color:#8be9fd;font-style:italic">local</span> --docker --function hello --data <span style="color:#f1fa8c">&#39;{&#34;body&#34;:&#34;{\&#34;name\&#34;:\&#34;John\&#34;}&#34;}&#39;</span></code></pre></div>
+<p>The command above invokes <code>hello</code> function defined in the YAML file.</p>
+
+<p>Please note that the string after <code>--data</code> is passed to the function, so it must follow the format<sup class="footnote-ref" id="fnref:aws-api-gateway-format"><a href="#fn:aws-api-gateway-format">1</a></sup> of API Gateway input event.</p>
+
+<p>Now you should have seen the following output on your screen:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Serverless: WarmUp: setting 1 lambdas to be warm
+Serverless: WarmUp: api-server-dev-hello
+Serverless: Packaging service...
+Serverless: Excluding development dependencies...
+Serverless: Building Docker image...
+START RequestId: 1ba968e6-f425-449d-b246-bdab04174ac1 Version: $LATEST
+
+09:48:03.937 [main] INFO com.sheepduke.api.server.common.ApiGatewayHandler - Request: {body={&#34;name&#34;:&#34;John&#34;}}
+
+09:48:03.962 [main] INFO com.sheepduke.api.server.common.ApiGatewayHandler - Environment:
+PATH=/usr/local/bin:/usr/bin/:/bin:/opt/bin
+
+END RequestId: 1ba968e6-f425-449d-b246-bdab04174ac1
+
+REPORT RequestId: 1ba968e6-f425-449d-b246-bdab04174ac1  Duration: 522.24 ms     Billed Duration: 600 ms Memory Size: 1536 MB  Max Memory Used: 51 MB
+
+
+{&#34;statusCode&#34;:200,&#34;body&#34;:&#34;{\&#34;message\&#34;:\&#34;Hello, John\&#34;}&#34;}</code></pre></div>
+<h2 id="optimization">Optimization<a href="#optimization" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<h3 id="warm-up-to-reduce-code-start-time">Warm Up to Reduce Code Start Time<a href="#warm-up-to-reduce-code-start-time" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>In the <a href="../2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts" title="last post">last post</a> I mentioned that Java applications have long cold start time. To warm it up, we can apply <code>serverless-plugin-warmup</code> plugin to Serverless. From my experiments, 5 minutes is a reasonable value for Lambda functions that are not in any VPC.</p>
+
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Some conclusions here:</p>
+
+<ol>
+<li>AWS API Gateway converts HTTP request to a JSON string that can be deserialized to a map.</li>
+<li>AWS API Gateway wants a response whose body is a string. If you are returning JSON, please note that the body is a JSON string. Do not put object in it, otherwise API Gateway will not be able to recognize it.</li>
+<li>A Uber JAR/ZIP is required to deploy your application.</li>
+<li>Warm up is <strong>not</strong> guaranteed to work because the containers are maintained by AWS.</li>
+</ol>
+
+<p>Happy hacking.</p>
+
+<p><sup class="footnote-ref" id="fnref:aws-api-gateway-format"><a href="#fn:aws-api-gateway-format">2</a></sup> https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:aws-api-gateway-format">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-api-gateway-format"><sup>[return]</sup></a></li>
+
+<li id="fn:aws-api-gateway-format">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-api-gateway-format"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1356 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-10-10</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>JVM on AWS Cloud: Investigation and Thoughts</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sheepduke" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="/">YUE Daian</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>

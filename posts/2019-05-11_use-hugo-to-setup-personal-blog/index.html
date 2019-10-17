@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en_US">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="Use Hugo to Setup Personal Blog">
+<meta itemprop="description" content="Welcome to my blog!
+This is the first post. This blog is constructed using Hugo. Praise the creators of it!
+In this blog I am going to introduce the procedure of building this blog.
+Introduction Hugo is a framework written in Go to generate static blog site from various formats of content. It has various shining points:
+ It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON.">
+
+
+<meta itemprop="datePublished" content="2019-05-11T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-11T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="406">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="Use Hugo to Setup Personal Blog" />
+<meta property="og:description" content="Welcome to my blog!
+This is the first post. This blog is constructed using Hugo. Praise the creators of it!
+In this blog I am going to introduce the procedure of building this blog.
+Introduction Hugo is a framework written in Go to generate static blog site from various formats of content. It has various shining points:
+ It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2019-05-11_use-hugo-to-setup-personal-blog/" /><meta property="article:published_time" content="2019-05-11T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-11T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Use Hugo to Setup Personal Blog"/>
+<meta name="twitter:description" content="Welcome to my blog!
+This is the first post. This blog is constructed using Hugo. Praise the creators of it!
+In this blog I am going to introduce the procedure of building this blog.
+Introduction Hugo is a framework written in Go to generate static blog site from various formats of content. It has various shining points:
+ It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Use Hugo to Setup Personal Blog</title>
+	<link rel="stylesheet" href="/css/style.min.4b21ce88e94e6ff8eb47d816b952379f79e2302f1dcf462cadc11096afb7a536.css" integrity="sha256-SyHOiOlOb/jrR9gWuVI3n3niMC8dz0YsrcEQlq+3pTY=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="/">Danny&#39;s Blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="/posts/">Posts</a>
+					<a href="/tags/">Tags</a>
+					<a href="/about-me/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sheepduke" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="https://www.linkedin.com/in/daian-yue-908862118/" target="_blank" rel="noopener me" title="Linkedin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="/posts/">Posts</a></li>
+			<li><a href="/tags/">Tags</a></li>
+			<li><a href="/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>May 11, 2019</span></div>
+				<h1>Use Hugo to Setup Personal Blog</h1>
+			</header>
+			<div class="content">
+				<p>Welcome to my blog!</p>
+
+<p>This is the first post. This blog is constructed using Hugo. Praise the creators of it!</p>
+
+<p>In this blog I am going to introduce the procedure of building this blog.</p>
+
+<h2 id="introduction">Introduction<a href="#introduction" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p><a href="https://gohugo.io/" title="Hugo">Hugo</a> is a framework written in Go to generate static blog site from <a href="https://gohugo.io/content-management/formats/" title="various formats">various formats</a> of content. It has various shining points:</p>
+
+<ul>
+<li>It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON.</li>
+</ul>
+
+<ul>
+<li>It supports Org Mode natively. As an Emacs user, I can simply write my blog posts (like this one) in Org Mode and Hugo will convert it to static HTML files.</li>
+</ul>
+
+<p>The files generated by Hugo are put under a specific directory <code>public/</code>,
+which can be directly copied to remote server and hosted by any web server,
+e.g. Nginx.</p>
+
+<p>The official <a href="https://gohugo.io/getting-started/quick-start/" title="quick start">quick start</a> provides very detailed information of setup a blog
+site. Here I only introduce some confusing parts.</p>
+
+<h2 id="themes">Themes<a href="#themes" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Hugo supports different themes. It is relatively easy to switch to another
+theme. I am using <a href="https://github.com/Track3/hermit" title="Hermit">Hermit</a>, but please note that this theme <strong>cannot</strong> be used
+directly with quick-start. The best way to use it is to copy its sample
+configuration file <code>themes/hermit/exampleSite/config.toml</code> to the root
+directory and customize it.</p>
+
+<h2 id="code-syntax-highlighting">Code Syntax Highlighting<a href="#code-syntax-highlighting" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>From Hugo 0.28, chroma is used to provide syntax highlighting
+functionality. You need to add the following lines into <code>config.toml</code> file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#6272a4"># Enable syntax highlighting for code blocks.</span>
+pygmentsCodefences = <span style="color:#ff79c6">true</span>
+<span style="color:#6272a4"># Use your favorite code theme here!</span>
+pygmentsStyle = <span style="color:#f1fa8c">&#34;pygments&#34;</span></code></pre></div>
+<p>Voilà! Now you have the magical power. No need to install external programs
+or generate any CSS file.</p>
+
+<h2 id="tags">Tags<a href="#tags" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Hugo provides functionality to categorize posts called <em>taxonomies</em>. It can be
+enabled by adding following snippet to <code>config.toml</code> file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[taxonomies]
+tag = <span style="color:#f1fa8c">&#34;tags&#34;</span></code></pre></div>
+<p>Then while editing posts, simply define tags and Hugo will handle it for
+you. For Org Mode this done by adding option <code>#+TAGS</code>.</p>
+
+<p>Hugo will tag posts with given tags and provide a page to list all tags, under
+the URL <code>tags/</code>.</p>
+
+<p>See <a href="https://gohugo.io/content-management/taxonomies/#default-taxonomies" title="this page">this page</a> for more detail.</p>
+
+<h2 id="deployment">Deployment<a href="#deployment" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>I am using Nginx to serve generated static files, so I can simply use ~rsync~
+to deploy blog posts described <a href="https://gohugo.io/hosting-and-deployment/deployment-with-rsync/" title="here">here</a>.</p>
+
+<h2 id="summary">Summary<a href="#summary" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>In conclusion, Hugo implements functionality for a typical blog. It can be
+configured easily to setup a blog without a single line of code. Also its
+out-of-box native support for Org Mode, Markdown etc really shines.</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>406 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-05-11</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="/posts/2019-05-16_develop-common-lisp-on-your-android-phone/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Develop Common Lisp on Your Android Phone</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sheepduke" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="/">YUE Daian</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>

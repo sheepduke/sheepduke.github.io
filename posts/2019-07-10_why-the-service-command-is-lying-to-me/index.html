@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en_US">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="Why the service Command Is Lying to Me">
+<meta itemprop="description" content="Prologue Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.
+So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux service command.">
+
+
+<meta itemprop="datePublished" content="2019-07-10T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-07-10T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1351">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="Why the service Command Is Lying to Me" />
+<meta property="og:description" content="Prologue Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.
+So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux service command." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2019-07-10_why-the-service-command-is-lying-to-me/" /><meta property="article:published_time" content="2019-07-10T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-07-10T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Why the service Command Is Lying to Me"/>
+<meta name="twitter:description" content="Prologue Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.
+So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux service command."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Why the service Command Is Lying to Me</title>
+	<link rel="stylesheet" href="/css/style.min.4b21ce88e94e6ff8eb47d816b952379f79e2302f1dcf462cadc11096afb7a536.css" integrity="sha256-SyHOiOlOb/jrR9gWuVI3n3niMC8dz0YsrcEQlq+3pTY=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="/">Danny&#39;s Blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="/posts/">Posts</a>
+					<a href="/tags/">Tags</a>
+					<a href="/about-me/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sheepduke" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="https://www.linkedin.com/in/daian-yue-908862118/" target="_blank" rel="noopener me" title="Linkedin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="/posts/">Posts</a></li>
+			<li><a href="/tags/">Tags</a></li>
+			<li><a href="/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jul 10, 2019</span></div>
+				<h1>Why the service Command Is Lying to Me</h1>
+			</header>
+			<div class="content">
+				<h1 id="prologue">Prologue<a href="#prologue" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.</p>
+
+<p>So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux <code>service</code> command.</p>
+
+<p>In this article I will take down the troubleshooting process, in order to provide some clues if the reader get similar problems.</p>
+
+<h1 id="background">Background<a href="#background" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<h2 id="ebs-shrink-scripts">EBS Shrink Scripts<a href="#ebs-shrink-scripts" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>The scripts basically do the following things:</p>
+
+<ol>
+<li>Stop PostgreSQL service.</li>
+<li>Create snapshots for old volumes.</li>
+<li>Create a new data volume from the snapshot.</li>
+<li>Create a new empty volume of target size.</li>
+<li>Copy the data from old data volume to the new empty volume using <code>rsync</code>.</li>
+<li>Make sure the contents between old and new volumes are same using <code>diff</code>.</li>
+<li>Unmount and detach old data volume and attach the new one.</li>
+<li>Restart PostgreSQL service.</li>
+</ol>
+
+<h2 id="problem">Problem<a href="#problem" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>One day, I got reported from an operator that the script failed on a commercial environment after a long execution time. The old and newly created data volumes were still mounted and <code>service</code> command gives the following output:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo service postgresql status
+postgresql stop/waiting
+
+~ $ sudo service postgresql start
+postgresql start/running, process <span style="color:#bd93f9">6102</span>
+
+~ $ sudo service postgresql status
+postgresql stop/waiting</code></pre></div>
+<p>The status of PostgreSQL service became <code>stop/waiting</code> immediately after executing <code>start</code> command.</p>
+
+<h1 id="troubleshooting-process">Troubleshooting Process<a href="#troubleshooting-process" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<h2 id="first-try-to-recover-postgresql-service">First try to Recover PostgreSQL Service<a href="#first-try-to-recover-postgresql-service" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>From the description, it could be easily inferred that the EBS shrink script failed at the step 7, as the original data volume was not yet unmounted or removed.</p>
+
+<p>I thought it would be easy to fix by simply restarting PostgreSQL service and removing additional volumes in order to restore the environment.</p>
+
+<p>However, the <code>sudo service postgresql status</code> kept telling that PostgreSQL service is not running, even restarting the instance did not work.</p>
+
+<h2 id="targeting-problem-source">Targeting Problem Source<a href="#targeting-problem-source" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>At first I wanted to find out if this is related to specific product version, in order to get PostgreSQL service up and running as soon as possible. So I selected a testing environment with same version but everything worked properly, as shown below:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo service postgresql status
+pg_ctl: server is running <span style="color:#ff79c6">(</span>PID: <span style="color:#bd93f9">5822</span><span style="color:#ff79c6">)</span>
+/usr/local/pgsql/bin/postgres <span style="color:#f1fa8c">&#34;-D&#34;</span> <span style="color:#f1fa8c">&#34;/postgresql/data&#34;</span></code></pre></div>
+<p>Because our script did not touch PostgreSQL configurations at all, we then assumed that this problem is bound to that specific environment.</p>
+
+<p>When Linux is booting, the kernel boots first. Afterwards, an <em>init system</em> is invoked to initialize system processes that are necessary for use. The init system creates process <code>init</code> with PID 1 and other processes under the <code>init</code> process, constructing a process tree.</p>
+
+<p>We ensured that the Linux version running on that environment was Ubuntu 14.04 by using <code>uname -a</code> command. The Ubuntu 14.04 uses <em>upstart</em> init system that executes corresponding scripts under <code>/etc/init.d/</code> directory. The user may use <code>service</code> command to manipulate running services.</p>
+
+<p>So we asked the operator to view the content of <code>postgresql</code> file under that directory.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo cat /etc/init.d/postgresql
+cat: /etc/init.d/postgresql: No such file or directory</code></pre></div>
+<p>We were surprised that the <code>postgresql</code> script did not exist! This should never happen in a normal Ubuntu 14.04 environment. We checked the corresponding testing environment and that file existed. At this point, I was sure that the commercial environment was broken.</p>
+
+<h2 id="finding-the-ghost-process-of-postgresql">Finding the Ghost Process of PostgreSQL<a href="#finding-the-ghost-process-of-postgresql" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>We then investigated the log of upstart init system and got the following output:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">pg_ctl: another server might be running; trying to start server anyway
+server starting
+pg_ctl: another server might be running; trying to start server anyway
+server starting
+<span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">10</span>:54:03 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">1867</span><span style="color:#ff79c6">]</span> FATAL:  lock file <span style="color:#f1fa8c">&#34;postmaster.pid&#34;</span> already exists
+<span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">10</span>:54:03 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">1867</span><span style="color:#ff79c6">]</span> HINT:  Is another postmaster <span style="color:#ff79c6">(</span>PID <span style="color:#bd93f9">1027</span><span style="color:#ff79c6">)</span> running in data directory <span style="color:#f1fa8c">&#34;/postgresql/data&#34;</span>?</code></pre></div>
+<p>This partly explained that reason that restarting PostgreSQL kept failing. The PostgreSQL failed to start because the lock file was occupied. We then tried the following command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/var/run# ps aux | grep postgres
+postgres       <span style="color:#bd93f9">1027</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.8 <span style="color:#bd93f9">560320</span> <span style="color:#bd93f9">73300</span> ?        S    <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 /usr/local/pgsql/bin/postgres
+postgres       <span style="color:#bd93f9">1093</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">26752</span>  <span style="color:#bd93f9">2132</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: logger process
+postgres       <span style="color:#bd93f9">1099</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0 <span style="color:#bd93f9">560320</span>  <span style="color:#bd93f9">2964</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: checkpointer process
+postgres       <span style="color:#bd93f9">1100</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0 <span style="color:#bd93f9">560320</span>  <span style="color:#bd93f9">6648</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: writer process
+postgres       <span style="color:#bd93f9">1101</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0 <span style="color:#bd93f9">560320</span>  <span style="color:#bd93f9">2964</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: wal writer process
+postgres       <span style="color:#bd93f9">1102</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0 <span style="color:#bd93f9">560752</span>  <span style="color:#bd93f9">5308</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: autovacuum launcher process
+postgres       <span style="color:#bd93f9">1103</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">28972</span>  <span style="color:#bd93f9">3020</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: stats collector process
+root      <span style="color:#bd93f9">2295</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">11424</span>  <span style="color:#bd93f9">2196</span> pts/0    S+   <span style="color:#bd93f9">11</span>:11   <span style="color:#bd93f9">0</span>:00 grep --color<span style="color:#ff79c6">=</span>auto postgres</code></pre></div>
+<p>Aha! The PostgreSQL was actually running, but it was not monitored by upstart system for some unknown reason.</p>
+
+<p>Then we tried to kill the running process and restart it using the <code>service</code> command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/var/run# <span style="color:#8be9fd;font-style:italic">kill</span> -9 <span style="color:#bd93f9">1027</span>
+
+/var/run# ps aux | grep post
+root      <span style="color:#bd93f9">2310</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">11420</span>  <span style="color:#bd93f9">2172</span> pts/0    S+   <span style="color:#bd93f9">11</span>:12   <span style="color:#bd93f9">0</span>:00 grep --color<span style="color:#ff79c6">=</span>auto post
+
+/var/run# service postgresql status
+postgresql stop/waiting
+
+/var/run# service postgresql start
+postgresql start/running, process <span style="color:#bd93f9">2337</span>
+
+/var/run# service postgresql status
+postgresql stop/waiting</code></pre></div>
+<p>I suspected that it was because the <code>service</code> command used wrong arguments when starting PostgreSQL. So we killed the PostgreSQL process 2337 and manually started it using correct commands copied from another normal environment:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D /postgresql/data start
+pg_ctl: another server might be running; trying to start server anyway
+server starting
+<span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">11</span>:18:55 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">2478</span><span style="color:#ff79c6">]</span> LOG:  redirecting log output to logging collector process
+<span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">11</span>:18:55 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">2478</span><span style="color:#ff79c6">]</span> HINT:  Future log output will appear in directory <span style="color:#f1fa8c">&#34;/postgresql/log&#34;</span>.</code></pre></div>
+<p>It seemed working, but the <code>service</code> command insisted that the PostgreSQL process was dead:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ service postgresql status
+postgresql stop/waiting
+
+~ $ sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D /postgresql/data status
+pg_ctl: server is running <span style="color:#ff79c6">(</span>PID: <span style="color:#bd93f9">2478</span><span style="color:#ff79c6">)</span>
+/usr/local/pgsql/bin/postgres <span style="color:#f1fa8c">&#34;-D&#34;</span> <span style="color:#f1fa8c">&#34;/postgresql/data&#34;</span></code></pre></div>
+<p>At this point I was sure that the <code>service</code> command was lying and the PostgreSQL service was running properly.</p>
+
+<h2 id="why-the-service-command-is-lying">Why the <code>service</code> Command Is Lying<a href="#why-the-service-command-is-lying" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Our script was written as an Ansible playbook. Its <a href="https://docs.ansible.com/ansible/latest/modules/service_module.html" title="official documentation">official documentation</a> says that supported init systems include BSD init, OpenRC, SysV, Solaris SMF, systemd and upstart. Why even the great Ansible <code>service</code> modules was not working? After some investigation, I finally found the root cause of this problem.</p>
+
+<p>In environments before product version 17.06, those instances used upstart to manage the PostgreSQL service. The upstart way was to put configurations files under the directory <code>/etc/init/</code> and write corresponding commands in configuration file. Newer instances used SystemV way to manage PostgreSQL service, i.e. using script files under <code>/etc/init.d/</code> directory. Both ways are supported by Ubuntu 14.04 system.</p>
+
+<p>However, there used to be a bug in upgrading scripts that caused the conversion between the two ways mentioned above was not done properly. This bug was fixed in a commit later, but in environments created before that commit, the file <code>/etc/init.d/postgresql</code> did not exist, while <code>/etc/init/postgresql.conf</code> still existed.</p>
+
+<p>The <code>service</code> command is compatible with both way. It first checks if <code>/etc/init/postgresql.conf</code> exists and execute commands defined in it. Otherwise, the <code>service</code> command checks if <code>/etc/init.d/postgresql</code> exists and execute commands accordingly. Because of the change, the <code>service</code> command could not manage the state of PostgreSQL correctly.</p>
+
+<h2 id="the-end-of-the-story">The End of the Story<a href="#the-end-of-the-story" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Since the root cause was found, I wrote another script to fix this problem by renaming the <code>/etc/init/postgresql.conf</code> file and create the <code>/etc/init.d/postgresql</code> file according to existing templates. Also a checking code was added to the EBS shrink script to automatically fix affected environments.</p>
+
+<h1 id="conclusion">Conclusion<a href="#conclusion" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>From this even I learned some lessons and got some inspirations:</p>
+
+<ol>
+<li>The most important thing is, the production (commercial) environment might be much more complicated than you thought. You can never be prepared enough.</li>
+<li>The old environments might not work as expected according to historical reasons. It is important to get service up and running at first, then try to investigate and fix the root cause.</li>
+<li>There are many hidden details in the tools we are using every day. Personally I never knew that <code>/etc/init/xxx.conf</code> is actually the upstart way to manage services.</li>
+</ol>
+
+<p>I wish this little story will bring you something useful.</p>
+
+<p>Thanks for reading.</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1351 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-07-10</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>JVM on AWS Cloud: Investigation and Thoughts</span>
+			</a>
+			<a class="prev-post" href="/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Setup Home Net Disk Using Raspberry Pi</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sheepduke" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="/">YUE Daian</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>

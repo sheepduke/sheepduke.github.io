@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Danny&#39;s Blog</title>
+    <link>/</link>
+    <description>Recent content on Danny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en_US</language>
+    <copyright>All rights preserved.</copyright>
+    <lastBuildDate>Thu, 10 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kotlin API Server on AWS Lambda</title>
+      <link>/posts/2019-10-10_kotlin-api-server-on-aws-lambda/</link>
+      <pubDate>Thu, 10 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-10-10_kotlin-api-server-on-aws-lambda/</guid>
+      <description>This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.
+The code is located on GitHub.
+Tech Stack Choices Kotlin Kotlin is developed by JetBrains. It can be treated as a &#34;better Java&#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.
+As a Lisp lover, I really favor the functional programming style Kotlin introduces.</description>
+    </item>
+    
+    <item>
+      <title>JVM on AWS Cloud: Investigation and Thoughts</title>
+      <link>/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/</link>
+      <pubDate>Tue, 08 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/</guid>
+      <description>Amazon has been the largest cloud service vendor for quite a while.
+AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.
+If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.</description>
+    </item>
+    
+    <item>
+      <title>Why the service Command Is Lying to Me</title>
+      <link>/posts/2019-07-10_why-the-service-command-is-lying-to-me/</link>
+      <pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-07-10_why-the-service-command-is-lying-to-me/</guid>
+      <description>Prologue Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.
+So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux service command.</description>
+    </item>
+    
+    <item>
+      <title>Setup Home Net Disk Using Raspberry Pi</title>
+      <link>/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/</link>
+      <pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/</guid>
+      <description>Background Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.
+Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access.</description>
+    </item>
+    
+    <item>
+      <title>JVM Memory Management and Garbage Collection</title>
+      <link>/posts/2019-06-17_jvm-memory/</link>
+      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-06-17_jvm-memory/</guid>
+      <description>Memory basics Memory model In JVM memory can be divided into two categories: stack memory and heap memory.
+Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.
+Heap memory are managed by /Garbage Collector (GC)/1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.
+Heap memory model is much more complicated, and most tuning happens here.</description>
+    </item>
+    
+    <item>
+      <title>Develop Common Lisp on Your Android Phone</title>
+      <link>/posts/2019-05-16_develop-common-lisp-on-your-android-phone/</link>
+      <pubDate>Thu, 16 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-05-16_develop-common-lisp-on-your-android-phone/</guid>
+      <description>Long time ago, I was wondering: is it ever possible to write Common Lisp code on my Android phone? It seems useful when I want to experiment with something on the train.
+I found this application: CL REPL - Google Play.
+It is actually an ECL bundled with ASDF and Slime, in a traditional Android application, as you might imagine. It is a great application, but it still lacks some useful features compared with SLIME/SLY.</description>
+    </item>
+    
+    <item>
+      <title>Use Hugo to Setup Personal Blog</title>
+      <link>/posts/2019-05-11_use-hugo-to-setup-personal-blog/</link>
+      <pubDate>Sat, 11 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-05-11_use-hugo-to-setup-personal-blog/</guid>
+      <description>Welcome to my blog!
+This is the first post. This blog is constructed using Hugo. Praise the creators of it!
+In this blog I am going to introduce the procedure of building this blog.
+Introduction Hugo is a framework written in Go to generate static blog site from various formats of content. It has various shining points:
+ It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON.</description>
+    </item>
+    
+    <item>
+      <title>About Me</title>
+      <link>/about-me/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about-me/</guid>
+      <description>Familiar Technologies  Common Lisp C++  </description>
+    </item>
+    
+  </channel>
+</rss>
