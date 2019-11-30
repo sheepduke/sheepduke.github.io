@@ -1801,8 +1801,15 @@ extra-keys = [[<span style="color:#f1fa8c">&#39;TAB&#39;</span>,<span style="col
 It is also possible to use the volume keys plus the normal keys to type special characters. See its <a href="https://wiki.termux.com/wiki/Main_Page">Wiki page</a> for more details.
 </p>
 <h2 id="headline-2">
-Compile ECL
+Install ECL
 </h2>
+<p>
+There are 2 ways to install ECL on your Android phone: you may compile it
+manually, or install it directly via <code>apt</code>.
+</p>
+<h3 id="headline-3">
+Compile ECL Manually
+</h3>
 <p>
 I first tried to install <a href="https://github.com/roswell/roswell/releases">Roswell</a>. Unfortunately, it did not work because Termux seemed not to support 32-bit on 64-bit machine and my phone was an aarch64 device. So I had to compile ECL manually. Please let me know if you know how to use Roswell with Termux.
 </p>
@@ -1822,7 +1829,36 @@ Then compile it using the following commands.
 <p>
 It is time to make yourself a cup of coffee now because it would take a relatively long time to finish. You deserve it!
 </p>
-<h2 id="headline-3">
+<h3 id="headline-4">
+Install ECL From Repository
+</h3>
+<p>
+Before we start, please keep in mind that the <code>$PREFIX</code> in the following code
+represents the parent path of <code>$HOME</code>. On my phone it is
+<code>/data/data/com.termux/files</code>.
+</p>
+<p>
+Edit the file <code>$PREFIX/usr/etc/apt/sources.list</code> and add the following line:
+</p>
+<div class="src src-text">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">deb https://its-pointless.github.io/files/24  termux extras</code></pre></div>
+</div>
+<p>
+Then run the following commands:
+</p>
+<div class="src src-sh">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#6272a4"># Install GnuPG.</span>
+apt install gnupg
+<span style="color:#6272a4"># Download GPG signature file.</span>
+curl -O https://its-pointless.github.io/setup-pointless-repo.sh
+<span style="color:#6272a4"># add the key to apt</span>
+apt-key add pointless.gpg
+<span style="color:#6272a4"># Update the package list.</span>
+apt update
+<span style="color:#6272a4"># Install ECL.</span>
+apt install ecl</code></pre></div>
+</div>
+<h2 id="headline-5">
 Setup Emacs
 </h2>
 <p>
@@ -1843,7 +1879,7 @@ One setting that might need to be changed is the variable <code>inferior-lisp-pr
 <div class="src src-emacs-lisp">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-emacs-lisp" data-lang="emacs-lisp">(<span style="color:#8be9fd;font-style:italic">setq</span> <span style="color:#8be9fd;font-style:italic">inferior-lisp-program</span> <span style="color:#f1fa8c">&#34;ecl&#34;</span>)</code></pre></div>
 </div>
-<h2 id="headline-4">
+<h2 id="headline-6">
 Run It!
 </h2>
 <p>

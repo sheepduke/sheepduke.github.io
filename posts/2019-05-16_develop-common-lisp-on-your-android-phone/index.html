@@ -13,7 +13,7 @@
 
 <meta itemprop="datePublished" content="2019-05-16T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-05-16T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="568">
+<meta itemprop="wordCount" content="677">
 
 
 
@@ -130,8 +130,15 @@ extra-keys = [[<span style="color:#f1fa8c">&#39;TAB&#39;</span>,<span style="col
 It is also possible to use the volume keys plus the normal keys to type special characters. See its <a href="https://wiki.termux.com/wiki/Main_Page">Wiki page</a> for more details.
 </p>
 <h2 id="headline-2">
-Compile ECL
+Install ECL
 </h2>
+<p>
+There are 2 ways to install ECL on your Android phone: you may compile it
+manually, or install it directly via <code>apt</code>.
+</p>
+<h3 id="headline-3">
+Compile ECL Manually
+</h3>
 <p>
 I first tried to install <a href="https://github.com/roswell/roswell/releases">Roswell</a>. Unfortunately, it did not work because Termux seemed not to support 32-bit on 64-bit machine and my phone was an aarch64 device. So I had to compile ECL manually. Please let me know if you know how to use Roswell with Termux.
 </p>
@@ -151,7 +158,36 @@ Then compile it using the following commands.
 <p>
 It is time to make yourself a cup of coffee now because it would take a relatively long time to finish. You deserve it!
 </p>
-<h2 id="headline-3">
+<h3 id="headline-4">
+Install ECL From Repository
+</h3>
+<p>
+Before we start, please keep in mind that the <code>$PREFIX</code> in the following code
+represents the parent path of <code>$HOME</code>. On my phone it is
+<code>/data/data/com.termux/files</code>.
+</p>
+<p>
+Edit the file <code>$PREFIX/usr/etc/apt/sources.list</code> and add the following line:
+</p>
+<div class="src src-text">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">deb https://its-pointless.github.io/files/24  termux extras</code></pre></div>
+</div>
+<p>
+Then run the following commands:
+</p>
+<div class="src src-sh">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#6272a4"># Install GnuPG.</span>
+apt install gnupg
+<span style="color:#6272a4"># Download GPG signature file.</span>
+curl -O https://its-pointless.github.io/setup-pointless-repo.sh
+<span style="color:#6272a4"># add the key to apt</span>
+apt-key add pointless.gpg
+<span style="color:#6272a4"># Update the package list.</span>
+apt update
+<span style="color:#6272a4"># Install ECL.</span>
+apt install ecl</code></pre></div>
+</div>
+<h2 id="headline-5">
 Setup Emacs
 </h2>
 <p>
@@ -172,7 +208,7 @@ One setting that might need to be changed is the variable <code>inferior-lisp-pr
 <div class="src src-emacs-lisp">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-emacs-lisp" data-lang="emacs-lisp">(<span style="color:#8be9fd;font-style:italic">setq</span> <span style="color:#8be9fd;font-style:italic">inferior-lisp-program</span> <span style="color:#f1fa8c">&#34;ecl&#34;</span>)</code></pre></div>
 </div>
-<h2 id="headline-4">
+<h2 id="headline-6">
 Run It!
 </h2>
 <p>
@@ -197,7 +233,7 @@ and see the result.
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="/tags/common-lisp">common-lisp</a></span><span class="tag"><a href="/tags/emacs">emacs</a></span><span class="tag"><a href="/tags/android">android</a></span><span class="tag"><a href="/tags/termux">termux</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>568 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>677 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-05-16</p>
 			</footer>
 		</article>
