@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>common-lisp on Danny&#39;s Blog</title>
+    <link>/tags/common-lisp/</link>
+    <description>Recent content in common-lisp on Danny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en_US</language>
+    <copyright>All rights preserved.</copyright>
+    <lastBuildDate>Thu, 16 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/common-lisp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Develop Common Lisp on Your Android Phone</title>
+      <link>/posts/2019-05-16_develop-common-lisp-on-your-android-phone/</link>
+      <pubDate>Thu, 16 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-05-16_develop-common-lisp-on-your-android-phone/</guid>
+      <description>Long time ago, I was wondering: is it ever possible to write Common Lisp code on my Android phone? It seems useful when I want to experiment with something on the train.  I found this application: CL REPL - Google Play.  It is actually an ECL bundled with ASDF and Slime, in a traditional Android application, as you might imagine. It is a great application, but it still lacks some useful features compared with SLIME/SLY.</description>
+    </item>
+    
+  </channel>
+</rss>

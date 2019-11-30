@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jvm on Danny&#39;s Blog</title>
+    <link>/tags/jvm/</link>
+    <description>Recent content in jvm on Danny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en_US</language>
+    <copyright>All rights preserved.</copyright>
+    <lastBuildDate>Thu, 10 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kotlin API Server on AWS Lambda</title>
+      <link>/posts/2019-10-10_kotlin-api-server-on-aws-lambda/</link>
+      <pubDate>Thu, 10 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-10-10_kotlin-api-server-on-aws-lambda/</guid>
+      <description>This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.  The code is located on GitHub. Tech Stack Choices  Kotlin   Kotlin is developed by JetBrains. It can be treated as a &amp;#34;better Java&amp;#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.</description>
+    </item>
+    
+    <item>
+      <title>JVM on AWS Cloud: Investigation and Thoughts</title>
+      <link>/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/</link>
+      <pubDate>Tue, 08 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/</guid>
+      <description>Amazon has been the largest cloud service vendor for quite a while.  AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.  If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.</description>
+    </item>
+    
+    <item>
+      <title>JVM Memory Management and Garbage Collection</title>
+      <link>/posts/2019-06-17_jvm-memory/</link>
+      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-06-17_jvm-memory/</guid>
+      <description>Memory basics  Memory model   In JVM memory can be divided into two categories: stack memory and heap memory.  Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.  Heap memory are managed by Garbage Collector (GC)1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.</description>
+    </item>
+    
+  </channel>
+</rss>

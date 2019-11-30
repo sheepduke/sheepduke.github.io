@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Posts on Danny&#39;s Blog</title>
@@ -16,53 +15,83 @@
 			<pubDate>Thu, 10 Oct 2019 00:00:00 +0000</pubDate>
 			
 			<guid>/posts/2019-10-10_kotlin-api-server-on-aws-lambda/</guid>
-			<description>This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.
-The code is located on GitHub.
-Tech Stack Choices Kotlin Kotlin is developed by JetBrains. It can be treated as a &#34;better Java&#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.
-As a Lisp lover, I really favor the functional programming style Kotlin introduces.</description>
-			<content type="html"><![CDATA[<p>This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.</p>
-
-<p>The code is located on <a href="https://github.com/sheepduke/demo-kotlin-aws-api-server" title="GitHub">GitHub</a>.</p>
-
-<h2 id="tech-stack-choices">Tech Stack Choices</h2>
-
-<h3 id="kotlin">Kotlin</h3>
-
-<p><a href="https://kotlinlang" title="Kotlin">Kotlin</a> is developed by JetBrains. It can be treated as a "better Java". It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.</p>
-
-<p>As a Lisp lover, I really favor the functional programming style Kotlin introduces. It is far better than Java Stream API in my opinion.</p>
-
-<p>Maybe it is time to consider replacing Java with Kotlin code!</p>
-
-<h3 id="gradle">Gradle</h3>
-
-<p>Gradle is something in the middle of Maven and Ant. It supports 2 DSL: Groovy and Kotlin. It is not only a build tool, it is build tooling.</p>
-
-<p>Please note that compared with Maven, Gradle is more complicated and may have some unexpected behavior if you are not familiar with it.</p>
-
-<h3 id="selected-techniques">Selected Techniques</h3>
-
-<p>In this article I am using techniques of following versions:</p>
-
+			<description>This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.  The code is located on GitHub. Tech Stack Choices  Kotlin   Kotlin is developed by JetBrains. It can be treated as a &amp;#34;better Java&amp;#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.</description>
+			<content type="html"><![CDATA[
+<p>
+This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.
+</p>
+<p>
+The code is located on <a href="https://github.com/sheepduke/demo-kotlin-aws-api-server">GitHub</a>.
+</p>
+<h2 id="headline-1">
+Tech Stack Choices
+</h2>
+<h3 id="headline-2">
+Kotlin
+</h3>
+<p>
+<a href="https://kotlinlang.org">Kotlin</a> is developed by JetBrains. It can be treated as a &#34;better Java&#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.
+</p>
+<p>
+As a Lisp lover, I really favor the functional programming style Kotlin introduces. It is far better than Java Stream API in my opinion.
+</p>
+<p>
+Maybe it is time to consider replacing Java with Kotlin code!
+</p>
+<h3 id="headline-3">
+Gradle
+</h3>
+<p>
+Gradle is something in the middle of Maven and Ant. It supports 2 DSL: Groovy and Kotlin. It is not only a build tool, it is build tooling.
+</p>
+<p>
+Please note that compared with Maven, Gradle is more complicated and may have some unexpected behavior if you are not familiar with it.
+</p>
+<h3 id="headline-4">
+Selected Techniques
+</h3>
+<p>
+In this article I am using techniques of following versions:
+</p>
 <ul>
-<li>Kotlin 1.3.50</li>
-<li>Gradle 5.5.1</li>
-<li>Serverless 1.52.2</li>
+<li>
+<p>
+Kotlin 1.3.50
+</p>
+</li>
+<li>
+<p>
+Gradle 5.5.1
+</p>
+</li>
+<li>
+<p>
+Serverless 1.52.2
+</p>
+</li>
 </ul>
-
-<h2 id="system-architecture">System Architecture</h2>
-
-<h3 id="web-framework-is-not-necessary">Web Framework is Not Necessary</h3>
-
-<p>At first I thought Spring Boot was mandatory to develop an API server on AWS Lambda, so I created <a href="https://github.com/sheepduke/demo-spring-boot-gradle-aws-lambda" title="this repository">this repository</a>. But later I found that I was wrong.</p>
-
-<p>Since the API server is going to run behind AWS API Gateway, the Lambda function does not need to deal with routing or serialization. Instead, it can (and probably should) only care about incoming event. Otherwise every time the Lambda function is invoked, it takes seconds for Spring Boot to initialize.</p>
-
-<p>The incoming HTTP requests are converted by API Gateway to a map that can be represented as <code>Map&lt;String, Any&gt;</code>, which is the input of handler. The response of the handler is a <code>String</code> or anything that can be serialized to a <code>String</code>.</p>
-
-<h3 id="building-basic-abstraction">Building Basic Abstraction</h3>
-
-<p>Since there is no more Spring Boot that takes care of MVC layers, we need to roll our own. First let's abstract the request and response.</p>
+<h2 id="headline-5">
+System Architecture
+</h2>
+<h3 id="headline-6">
+Web Framework is Not Necessary
+</h3>
+<p>
+At first I thought Spring Boot was mandatory to develop an API server on AWS Lambda, so I created <a href="https://github.com/sheepduke/demo-spring-boot-gradle-aws-lambda">this repository</a>. But later I found that I was wrong.
+</p>
+<p>
+Since the API server is going to run behind AWS API Gateway, the Lambda function does not need to deal with routing or serialization. Instead, it can (and probably should) only care about incoming event. Otherwise every time the Lambda function is invoked, it takes seconds for Spring Boot to initialize.
+</p>
+<p>
+The incoming HTTP requests are converted by API Gateway to a map that can be represented as <code>Map&lt;String, Any&gt;</code>, which is the input of handler. The response of the handler is a <code>String</code> or anything that can be serialized to a <code>String</code>.
+</p>
+<h3 id="headline-7">
+Building Basic Abstraction
+</h3>
+<p>
+Since there is no more Spring Boot that takes care of MVC layers, we need to roll our own. First let&#39;s abstract the request and response.
+</p>
+<div class="src src-kotlin">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#6272a4">/**
 </span><span style="color:#6272a4"> * Const variables used globally.
 </span><span style="color:#6272a4"> */</span>
@@ -73,7 +102,10 @@ As a Lisp lover, I really favor the functional programming style Kotlin introduc
     <span style="color:#ff79c6">object</span> <span style="color:#50fa7b">Environment</span> {
         <span style="color:#ff79c6">val</span> PATH: String = System.getenv(<span style="color:#f1fa8c">&#34;PATH&#34;</span>)
     }
-}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ApiGatewayRequest</span>(
+}</code></pre></div>
+</div>
+<div class="src src-kotlin">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ApiGatewayRequest</span>(
     <span style="color:#6272a4">/**
 </span><span style="color:#6272a4">     * The request body as String.
 </span><span style="color:#6272a4">     */</span>
@@ -89,7 +121,10 @@ As a Lisp lover, I really favor the functional programming style Kotlin introduc
             <span style="color:#ff79c6">null</span>
         }
     }
-}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ApiGatewayResponse</span>&lt;T&gt;(
+}</code></pre></div>
+</div>
+<div class="src src-kotlin">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ApiGatewayResponse</span>&lt;T&gt;(
     <span style="color:#ff79c6">val</span> statusCode: Int = <span style="color:#bd93f9">200</span>,
     <span style="color:#6272a4">/**
 </span><span style="color:#6272a4">     * Any body that can be serialized to String.
@@ -98,9 +133,14 @@ As a Lisp lover, I really favor the functional programming style Kotlin introduc
 
     <span style="color:#ff79c6">val</span> bodyString: String = Globals.objectMapper.writeValueAsString(body)
 }</code></pre></div>
-<h3 id="building-common-base-class">Building Common Base Class</h3>
-
-<p>Each handler needs to implement <code>RequestHandler</code> interface that defines a single <code>handleRequest</code> function. Since you may want to add some common logic to all handlers, it is a good idea to create a common base class that will be inherited by all handlers.</p>
+</div>
+<h3 id="headline-8">
+Building Common Base Class
+</h3>
+<p>
+Each handler needs to implement <code>RequestHandler</code> interface that defines a single <code>handleRequest</code> function. Since you may want to add some common logic to all handlers, it is a good idea to create a common base class that will be inherited by all handlers.
+</p>
+<div class="src src-kotlin">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">object</span> <span style="color:#50fa7b">ApiGatewayRequestKeys</span> {
     <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> BODY: String = <span style="color:#f1fa8c">&#34;body&#34;</span>
 }
@@ -127,7 +167,7 @@ As a Lisp lover, I really favor the functional programming style Kotlin introduc
         }
 
         <span style="color:#ff79c6">val</span> response: ApiGatewayResponse&lt;Out&gt; = <span style="color:#ff79c6">try</span> {
-            <span style="color:#ff79c6">val</span> requestBody = input<span style="color:#50fa7b">[ApiGatewayRequestKeys.BODY]</span> <span style="color:#ff79c6">as</span> String?
+            <span style="color:#ff79c6">val</span> requestBody = input[ApiGatewayRequestKeys.BODY] <span style="color:#ff79c6">as</span> String?
             <span style="color:#ff79c6">val</span> request = ApiGatewayRequest(body = requestBody)
             handleRequest(request)
         } <span style="color:#ff79c6">catch</span> (e: BadRequestException) {
@@ -149,17 +189,32 @@ As a Lisp lover, I really favor the functional programming style Kotlin introduc
         ApiGatewayResponseKeys.STATUS_CODE to <span style="color:#ff79c6">this</span>.statusCode,
         ApiGatewayResponseKeys.BODY to <span style="color:#ff79c6">this</span>.bodyString)
 }</code></pre></div>
+</div>
+<p>
+The <code>ApiGatewayHandler</code> class serves as an adapter between our basic abstractions and Lambda <code>RequestHandler</code>:
+</p>
 <ul>
-The <code>ApiGatewayHandler</code> class serves as an adapter between our basic abstractions and Lambda ~RequestHandler~:
-<li>It takes incoming map and convert it to <code>ApiGatewayRequest</code>.</li>
-<li>It calls its own abstract function <code>handleRequest</code> and converts the result to JSON string. The abstract function <code>handleRequest</code> will be override by all handlers.</li>
+<li>
+<p>
+It takes incoming map and convert it to <code>ApiGatewayRequest</code>.
+</p>
+</li>
+<li>
+<p>
+It calls its own abstract function <code>handleRequest</code> and converts the result to JSON string. The abstract function <code>handleRequest</code> will be override by all handlers.
+</p>
+</li>
 </ul>
-
-<p>By doing so, it may be much easier to switch to another cloud service, or even go back to the Spring Boot framework.</p>
-
-<h3 id="defining-sample-handler">Defining Sample Handler</h3>
-
-<p>Now we may define our handlers based on above abstraction blocks.</p>
+<p>
+By doing so, it may be much easier to switch to another cloud service, or even go back to the Spring Boot framework.
+</p>
+<h3 id="headline-9">
+Defining Sample Handler
+</h3>
+<p>
+Now we may define our handlers based on above abstraction blocks.
+</p>
+<div class="src src-kotlin">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">data</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">HelloRequest</span>(
     <span style="color:#ff79c6">var</span> name: String = <span style="color:#f1fa8c">&#34;&#34;</span>
 )
@@ -178,11 +233,17 @@ The <code>ApiGatewayHandler</code> class serves as an adapter between our basic 
         <span style="color:#ff79c6">return</span> ApiGatewayResponse(body = HelloResult(message = <span style="color:#f1fa8c">&#34;Hello, ${helloRequest.name}&#34;</span>))
     }
 }</code></pre></div>
-<p>You may note that the <code>HelloHandler</code> only focuses on the real business logic. All the serialization work is done in the common class.</p>
-
-<h3 id="writing-unit-tests">Writing Unit Tests</h3>
-
-<p>Unit tests are important to ensure that new functions will be break existing ones.</p>
+</div>
+<p>
+You may note that the <code>HelloHandler</code> only focuses on the real business logic. All the serialization work is done in the common class.
+</p>
+<h3 id="headline-10">
+Writing Unit Tests
+</h3>
+<p>
+Unit tests are important to ensure that new functions will be break existing ones.
+</p>
+<div class="src src-kotlin">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">HelloHandlerTest</span> {
     @Test
     <span style="color:#ff79c6">fun</span> <span style="color:#50fa7b">`test handleRequest`</span>() {
@@ -193,9 +254,14 @@ The <code>ApiGatewayHandler</code> class serves as an adapter between our basic 
         assertEquals(<span style="color:#f1fa8c">&#34;{\&#34;message\&#34;:\&#34;Hello, John\&#34;}&#34;</span>, response.bodyString)
     }
 }</code></pre></div>
-<h2 id="using-gradle-to-build-it">Using Gradle to Build It</h2>
-
-<p>AWS Lambda requires a JAR file, or a ZIP file. We may add the following snippet to the <code>build.gradle.kts</code> file in order to build a fat JAR.</p>
+</div>
+<h2 id="headline-11">
+Using Gradle to Build It
+</h2>
+<p>
+AWS Lambda requires a JAR file, or a ZIP file. We may add the following snippet to the <code>build.gradle.kts</code> file in order to build a fat JAR.
+</p>
+<div class="src src-kotlin">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#ff79c6">object</span> <span style="color:#50fa7b">Constants</span> {
     <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> appName = <span style="color:#f1fa8c">&#34;demo-api-server&#34;</span>
     <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">val</span> appVersion = <span style="color:#f1fa8c">&#34;latest&#34;</span>
@@ -208,19 +274,32 @@ tasks.withType&lt;Jar&gt; {
         <span style="color:#ff79c6">if</span> (it.isDirectory) it <span style="color:#ff79c6">else</span> zipTree(it)
     })
 }</code></pre></div>
-<p>Fat JAR, aka Uber JAR, is a JAR file that contains all the classes and their dependencies. Please note that you may want to remove unused dependencies to reduce the size of JAR file.</p>
-
-<h2 id="using-serverless-to-test-and-deploy">Using Serverless to Test and Deploy</h2>
-
-<h3 id="serverless">Serverless</h3>
-
-<p><a href="https://serverless.com/" title="Serverless">Serverless</a> is very handy if you use <a href="https://aws.amazon.com/codebuild/" title="AWS CodeBuild">AWS CodeBuild</a>. It generates <a href="https://aws.amazon.com/cloudformation/" title="AWS CloudFormation">AWS CloudFormation</a> template from a YAML file. You may install it globally using the following command:</p>
+</div>
+<p>
+Fat JAR, aka Uber JAR, is a JAR file that contains all the classes and their dependencies. Please note that you may want to remove unused dependencies to reduce the size of JAR file.
+</p>
+<h2 id="headline-12">
+Using Serverless to Test and Deploy
+</h2>
+<h3 id="headline-13">
+Serverless
+</h3>
+<p>
+<a href="https://serverless.com/">Serverless</a> is very handy if you use <a href="https://aws.amazon.com/codebuild/">AWS CodeBuild</a>. It generates <a href="https://aws.amazon.com/cloudformation/">AWS CloudFormation</a> template from a YAML file. You may install it globally using the following command:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ npm install -g serverless</code></pre></div>
-<p>Afterwards <code>serverless</code> or simply <code>sls</code> can be used to invoke Serverless CLI.</p>
-
-<h3 id="writing-serverless-yaml">Writing Serverless YAML</h3>
-
-<p>The <a href="https://serverless.com/framework/docs/providers/aws/" title="official documentation">official documentation</a> of Serverless contains very detailed information about how to write its YAML file. Our <code>demo-api-server</code> project may looks like this:</p>
+</div>
+<p>
+Afterwards <code>serverless</code> or simply <code>sls</code> can be used to invoke Serverless CLI.
+</p>
+<h3 id="headline-14">
+Writing Serverless YAML
+</h3>
+<p>
+The <a href="https://serverless.com/framework/docs/providers/aws/">official documentation</a> of Serverless contains very detailed information about how to write its YAML file. Our <code>demo-api-server</code> project may looks like this:
+</p>
+<div class="src src-yaml">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">plugins:
   <span style="color:#6272a4"># Used for warming up JVM container.</span>
   - serverless-plugin-warmup
@@ -248,22 +327,33 @@ functions:
   hello:
     handler: com.sheepduke.api.server.hello.HelloHandler::handleRequest
     package:
-      artifact: build/libs/demo-api-server-<span style="color:#bd93f9">1.0</span>.jar
+      artifact: build/libs/demo-api-server<span style="color:#bd93f9">-1.0</span>.jar
     events:
       - http:
           path: ${self:custom.params.product}/hello
           method: post
     warmup:
       enabled: <span style="color:#ff79c6">true</span></code></pre></div>
-<h3 id="testing-lambda-function-locally">Testing Lambda Function Locally</h3>
-
-<p>Serverless comes with a handy function to test Lambda functions locally:</p>
+</div>
+<h3 id="headline-15">
+Testing Lambda Function Locally
+</h3>
+<p>
+Serverless comes with a handy function to test Lambda functions locally:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sls invoke <span style="color:#8be9fd;font-style:italic">local</span> --docker --function hello --data <span style="color:#f1fa8c">&#39;{&#34;body&#34;:&#34;{\&#34;name\&#34;:\&#34;John\&#34;}&#34;}&#39;</span></code></pre></div>
-<p>The command above invokes <code>hello</code> function defined in the YAML file.</p>
-
-<p>Please note that the string after <code>--data</code> is passed to the function, so it must follow the format<sup class="footnote-ref" id="fnref:aws-api-gateway-format"><a href="#fn:aws-api-gateway-format">1</a></sup> of API Gateway input event.</p>
-
-<p>Now you should have seen the following output on your screen:</p>
+</div>
+<p>
+The command above invokes <code>hello</code> function defined in the YAML file.
+</p>
+<p>
+Please note that the string after <code>--data</code> is passed to the function, so it must follow the format<sup class="footnote-reference"><a id="footnote-reference-1" href="#footnote-1">1</a></sup> of API Gateway input event.
+</p>
+<p>
+Now you should have seen the following output on your screen:
+</p>
+<div class="src src-text">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Serverless: WarmUp: setting 1 lambdas to be warm
 Serverless: WarmUp: api-server-dev-hello
 Serverless: Packaging service...
@@ -282,35 +372,59 @@ REPORT RequestId: 1ba968e6-f425-449d-b246-bdab04174ac1  Duration: 522.24 ms     
 
 
 {&#34;statusCode&#34;:200,&#34;body&#34;:&#34;{\&#34;message\&#34;:\&#34;Hello, John\&#34;}&#34;}</code></pre></div>
-<h2 id="optimization">Optimization</h2>
-
-<h3 id="warm-up-to-reduce-code-start-time">Warm Up to Reduce Code Start Time</h3>
-
-<p>In the <a href="../2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts" title="last post">last post</a> I mentioned that Java applications have long cold start time. To warm it up, we can apply <code>serverless-plugin-warmup</code> plugin to Serverless. From my experiments, 5 minutes is a reasonable value for Lambda functions that are not in any VPC.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>Some conclusions here:</p>
-
+</div>
+<h2 id="headline-16">
+Optimization
+</h2>
+<h3 id="headline-17">
+Warm Up to Reduce Code Start Time
+</h3>
+<p>
+In the <a href="../2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts">last post</a> I mentioned that Java applications have long cold start time. To warm it up, we can apply <code>serverless-plugin-warmup</code> plugin to Serverless. From my experiments, 5 minutes is a reasonable value for Lambda functions that are not in any VPC.
+</p>
+<h2 id="headline-18">
+Conclusion
+</h2>
+<p>
+Some conclusions here:
+</p>
 <ol>
-<li>AWS API Gateway converts HTTP request to a JSON string that can be deserialized to a map.</li>
-<li>AWS API Gateway wants a response whose body is a string. If you are returning JSON, please note that the body is a JSON string. Do not put object in it, otherwise API Gateway will not be able to recognize it.</li>
-<li>A Uber JAR/ZIP is required to deploy your application.</li>
-<li>Warm up is <strong>not</strong> guaranteed to work because the containers are maintained by AWS.</li>
+<li>
+<p>
+AWS API Gateway converts HTTP request to a JSON string that can be deserialized to a map.
+</p>
+</li>
+<li>
+<p>
+AWS API Gateway wants a response whose body is a string. If you are returning JSON, please note that the body is a JSON string. Do not put object in it, otherwise API Gateway will not be able to recognize it.
+</p>
+</li>
+<li>
+<p>
+A Uber JAR/ZIP is required to deploy your application.
+</p>
+</li>
+<li>
+<p>
+Warm up is <strong>not</strong> guaranteed to work because the containers are maintained by AWS.
+</p>
+</li>
 </ol>
-
-<p>Happy hacking.</p>
-
-<p><sup class="footnote-ref" id="fnref:aws-api-gateway-format"><a href="#fn:aws-api-gateway-format">2</a></sup> https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html</p>
+<p>
+Happy hacking.
+</p>
 <div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:aws-api-gateway-format">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-api-gateway-format"><sup>[return]</sup></a></li>
-
-<li id="fn:aws-api-gateway-format">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-api-gateway-format"><sup>[return]</sup></a></li>
-</ol>
+<hr class="footnotes-separatator">
+<div class="footnote-definitions">
+<div class="footnote-definition">
+<sup id="footnote-1"><a href="#footnote-reference-1">1</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html">https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html</a>
+</p>
+</div>
+</div>
+</div>
 </div>
 ]]></content>
 		</item>
@@ -321,79 +435,107 @@ REPORT RequestId: 1ba968e6-f425-449d-b246-bdab04174ac1  Duration: 522.24 ms     
 			<pubDate>Tue, 08 Oct 2019 00:00:00 +0000</pubDate>
 			
 			<guid>/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/</guid>
-			<description>Amazon has been the largest cloud service vendor for quite a while.
-AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.
-If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.</description>
-			<content type="html"><![CDATA[<p>Amazon has been the largest cloud service vendor for quite a while.</p>
-
-<p><a href="https://aws.amazon.com/lambda/" title="AWS Lambda">AWS Lambda</a> is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.</p>
-
-<p>If you do not care about <a href="https://en.wikipedia.org/wiki/Vendor_lock-in" title="vendor lock-in">vendor lock-in</a>, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.</p>
-
-<p>One more thing to take care of is pricing. Many AWS services charge by usage. It may seem to be very cheap at first, but when your business grows, the pricing may not be delightful.</p>
-
-<p>In addition, you have to be very careful not to leak your credential information. I have witnessed an incident that an employee leaked the code containing AWS access key to GitHub (which is illegal in the first place). Later on the access key was detected by a cracker who abused it to create a hundred of Amazon EC2 instances. Several hours later, the company received report from Amazon and shut down the instances.</p>
-
-<p>Of course the same security rule applies if you are managing physical servers by yourself. However, with a physical machine you may power it off in the worst case, but you can do nothing for AWS instances.</p>
-
-<p>Anyway, AWS is a bless and a curse. Evaluate your requirements and use it wisely.</p>
-
-<h2 id="aws-lambda-internals-cold-start-and-warm-up">AWS Lambda Internals: Cold Start and Warm Up</h2>
-
-<p>AWS lambda is actually a container running upon a Linux image customized by Amazon<sup class="footnote-ref" id="fnref:amazon-lambda-runtimes"><a href="#fn:amazon-lambda-runtimes">1</a></sup>, there is no magic in it.</p>
-
-<p>When a Lambda functions is triggered for the first time, the corresponding container is initialized and started. This process is called <em>cold start</em>. It may take up to several seconds to finish according to the programming language that Lambda function was developed in.</p>
-
-<p>Afterwards, the container will be kept running for some time, so that the cold start will be avoided for the following requests. During this time, the upcoming requests will be handled immediately. If the Lambda function is not triggered for some time, the container will be inactive.</p>
-
-<p>Unfortunately, there is no way to control this process, since it is managed by AWS.</p>
-
-<h2 id="jvm-and-aws-lambda-unavoidable-high-latency">JVM and AWS Lambda: Unavoidable High Latency</h2>
-
-<p>Java has much larger memory footprint and longer start time compared with other light-weight languages like Node.js. These two problems become much more obvious if cold start is taken into consideration.</p>
-
-<p>A JVM container might take several seconds to start, according to the memory allocated to the Lambda function. Generally speaking, for a given Java Lambda function, bigger memory leads to faster initialization process<sup class="footnote-ref" id="fnref:JVM-benchmark"><a href="#fn:JVM-benchmark">2</a></sup>.</p>
-
-<p>(Amazon: Want more speed? Shut up and bring your money!)</p>
-
-<p>In order to solve the cold start problem, there is a technique called <em>warm up</em>. The key point is to create a CloudWatch rule that triggers the target Lambda function periodically to keep the container alive. Please note that this is not really reliable because AWS is a black box.</p>
-
-<p>So if your application is written in Java, you have to bear with the really long cold start time that may cause high latency, which might not be satisfying if your application is user oriented.</p>
-
-<h2 id="languages-with-fast-starting-process">Languages with Fast Starting Process</h2>
-
-<p>In the end of 2018, AWS announced the C++ Lambda runtime<sup class="footnote-ref" id="fnref:introduce-cpp-lambda-runtime"><a href="#fn:introduce-cpp-lambda-runtime">3</a></sup> that declares single digit millisecond<sup class="footnote-ref" id="fnref:aws-lambda-cpp-github"><a href="#fn:aws-lambda-cpp-github">4</a></sup>. But it is relatively hard to write highly reliable C++ code. Also the development speed of C++ is relatively low compared with other popular high level languages.</p>
-
-<p>Node.js has the shortest start time among all supported languages except C++. If your application is not heavily computation oriented, it might be a good idea to consider Node.js. Otherwise, "heavy-weighed" languages like Java or C# has better raw performance.</p>
-
-<p><sup class="footnote-ref" id="fnref:amazon-lambda-runtimes"><a href="#fn:amazon-lambda-runtimes">5</a></sup> https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html</p>
-
-<p><sup class="footnote-ref" id="fnref:JVM-benchmark"><a href="#fn:JVM-benchmark">6</a></sup> https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76</p>
-
-<p><sup class="footnote-ref" id="fnref:introduce-cpp-lambda-runtime"><a href="#fn:introduce-cpp-lambda-runtime">7</a></sup> https://aws.amazon.com/blogs/compute/introducing-the-c-lambda-runtime/</p>
-
-<p><sup class="footnote-ref" id="fnref:aws-lambda-cpp-github"><a href="#fn:aws-lambda-cpp-github">8</a></sup> https://github.com/awslabs/aws-lambda-cpp#design-goals</p>
+			<description>Amazon has been the largest cloud service vendor for quite a while.  AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.  If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.</description>
+			<content type="html"><![CDATA[
+<p>
+Amazon has been the largest cloud service vendor for quite a while. 
+</p>
+<p>
+<a href="https://aws.amazon.com/lambda/">AWS Lambda</a> is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.
+</p>
+<p>
+If you do not care about <a href="https://en.wikipedia.org/wiki/Vendor_lock-in">vendor lock-in</a>, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.
+</p>
+<p>
+One more thing to take care of is pricing. Many AWS services charge by usage. It may seem to be very cheap at first, but when your business grows, the pricing may not be delightful.
+</p>
+<p>
+In addition, you have to be very careful not to leak your credential information. I have witnessed an incident that an employee leaked the code containing AWS access key to GitHub (which is illegal in the first place). Later on the access key was detected by a cracker who abused it to create a hundred of Amazon EC2 instances. Several hours later, the company received report from Amazon and shut down the instances. 
+</p>
+<p>
+Of course the same security rule applies if you are managing physical servers by yourself. However, with a physical machine you may power it off in the worst case, but you can do nothing for AWS instances.
+</p>
+<p>
+Anyway, AWS is a bless and a curse. Evaluate your requirements and use it wisely.
+</p>
+<h2 id="headline-1">
+AWS Lambda Internals: Cold Start and Warm Up
+</h2>
+<p>
+AWS lambda is actually a container running upon a Linux image customized by Amazon<sup class="footnote-reference"><a id="footnote-reference-1" href="#footnote-1">1</a></sup>, there is no magic in it. 
+</p>
+<p>
+When a Lambda functions is triggered for the first time, the corresponding container is initialized and started. This process is called <em>cold start</em>. It may take up to several seconds to finish according to the programming language that Lambda function was developed in.
+</p>
+<p>
+Afterwards, the container will be kept running for some time, so that the cold start will be avoided for the following requests. During this time, the upcoming requests will be handled immediately. If the Lambda function is not triggered for some time, the container will be inactive.
+</p>
+<p>
+Unfortunately, there is no way to control this process, since it is managed by AWS.
+</p>
+<h2 id="headline-2">
+JVM and AWS Lambda: Unavoidable High Latency
+</h2>
+<p>
+Java has much larger memory footprint and longer start time compared with other light-weight languages like Node.js. These two problems become much more obvious if cold start is taken into consideration.
+</p>
+<p>
+A JVM container might take several seconds to start, according to the memory allocated to the Lambda function. Generally speaking, for a given Java Lambda function, bigger memory leads to faster initialization process<sup class="footnote-reference"><a id="footnote-reference-2" href="#footnote-2">2</a></sup>.
+</p>
+<p>
+(Amazon: Want more speed? Shut up and bring your money!)
+</p>
+<p>
+In order to solve the cold start problem, there is a technique called <em>warm up</em>. The key point is to create a CloudWatch rule that triggers the target Lambda function periodically to keep the container alive. Please note that this is not really reliable because AWS is a black box.
+</p>
+<p>
+So if your application is written in Java, you have to bear with the really long cold start time that may cause high latency, which might not be satisfying if your application is user oriented.
+</p>
+<h2 id="headline-3">
+Languages with Fast Starting Process
+</h2>
+<p>
+In the end of 2018, AWS announced the C++ Lambda runtime<sup class="footnote-reference"><a id="footnote-reference-3" href="#footnote-3">3</a></sup> that declares single digit millisecond<sup class="footnote-reference"><a id="footnote-reference-4" href="#footnote-4">4</a></sup>. But it is relatively hard to write highly reliable C++ code. Also the development speed of C++ is relatively low compared with other popular high level languages.
+</p>
+<p>
+Node.js has the shortest start time among all supported languages except C++. If your application is not heavily computation oriented, it might be a good idea to consider Node.js. Otherwise, &#34;heavy-weighed&#34; languages like Java or C# has better raw performance.
+</p>
 <div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:amazon-lambda-runtimes">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:amazon-lambda-runtimes"><sup>[return]</sup></a></li>
-
-<li id="fn:JVM-benchmark">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:JVM-benchmark"><sup>[return]</sup></a></li>
-
-<li id="fn:introduce-cpp-lambda-runtime">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:introduce-cpp-lambda-runtime"><sup>[return]</sup></a></li>
-
-<li id="fn:aws-lambda-cpp-github">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-lambda-cpp-github"><sup>[return]</sup></a></li>
-
-<li id="fn:amazon-lambda-runtimes">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:amazon-lambda-runtimes"><sup>[return]</sup></a></li>
-
-<li id="fn:JVM-benchmark">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:JVM-benchmark"><sup>[return]</sup></a></li>
-
-<li id="fn:introduce-cpp-lambda-runtime">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:introduce-cpp-lambda-runtime"><sup>[return]</sup></a></li>
-
-<li id="fn:aws-lambda-cpp-github">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-lambda-cpp-github"><sup>[return]</sup></a></li>
-</ol>
+<hr class="footnotes-separatator">
+<div class="footnote-definitions">
+<div class="footnote-definition">
+<sup id="footnote-1"><a href="#footnote-reference-1">1</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html">https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html</a>
+</p>
+</div>
+</div>
+<div class="footnote-definition">
+<sup id="footnote-2"><a href="#footnote-reference-2">2</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76">https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76</a>
+</p>
+</div>
+</div>
+<div class="footnote-definition">
+<sup id="footnote-3"><a href="#footnote-reference-3">3</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://aws.amazon.com/blogs/compute/introducing-the-c-lambda-runtime/">https://aws.amazon.com/blogs/compute/introducing-the-c-lambda-runtime/</a>
+</p>
+</div>
+</div>
+<div class="footnote-definition">
+<sup id="footnote-4"><a href="#footnote-reference-4">4</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://github.com/awslabs/aws-lambda-cpp#design-goals">https://github.com/awslabs/aws-lambda-cpp#design-goals</a>
+</p>
+</div>
+</div>
+</div>
 </div>
 ]]></content>
 		</item>
@@ -404,36 +546,78 @@ If you do not care about vendor lock-in, AWS suite may cover most of trivial bus
 			<pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate>
 			
 			<guid>/posts/2019-07-10_why-the-service-command-is-lying-to-me/</guid>
-			<description>Prologue Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.
-So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux service command.</description>
-			<content type="html"><![CDATA[<h1 id="prologue">Prologue</h1>
-
-<p>Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.</p>
-
-<p>So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux <code>service</code> command.</p>
-
-<p>In this article I will take down the troubleshooting process, in order to provide some clues if the reader get similar problems.</p>
-
-<h1 id="background">Background</h1>
-
-<h2 id="ebs-shrink-scripts">EBS Shrink Scripts</h2>
-
-<p>The scripts basically do the following things:</p>
-
+			<description>Prologue   Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.  So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux service command.</description>
+			<content type="html"><![CDATA[
+<h1 id="headline-1">
+Prologue
+</h1>
+<p>
+Cost reduction has been an important goal in our company. After some investigation, I found that some EBS data volumes that holds PostgreSQL data were assigned 300G space, while only a few megabytes were used.
+</p>
+<p>
+So in 2018, I developed an Ansible tool to reduce the size of EBS data volumes for these instances. The scripts applied smoothly, but in December 2018 I encountered an unexpected failure related to Linux <code>service</code> command.
+</p>
+<p>
+In this article I will take down the troubleshooting process, in order to provide some clues if the reader get similar problems.
+</p>
+<h1 id="headline-2">
+Background
+</h1>
+<h2 id="headline-3">
+EBS Shrink Scripts
+</h2>
+<p>
+The scripts basically do the following things:
+</p>
 <ol>
-<li>Stop PostgreSQL service.</li>
-<li>Create snapshots for old volumes.</li>
-<li>Create a new data volume from the snapshot.</li>
-<li>Create a new empty volume of target size.</li>
-<li>Copy the data from old data volume to the new empty volume using <code>rsync</code>.</li>
-<li>Make sure the contents between old and new volumes are same using <code>diff</code>.</li>
-<li>Unmount and detach old data volume and attach the new one.</li>
-<li>Restart PostgreSQL service.</li>
+<li>
+<p>
+Stop PostgreSQL service.
+</p>
+</li>
+<li>
+<p>
+Create snapshots for old volumes.
+</p>
+</li>
+<li>
+<p>
+Create a new data volume from the snapshot.
+</p>
+</li>
+<li>
+<p>
+Create a new empty volume of target size.
+</p>
+</li>
+<li>
+<p>
+Copy the data from old data volume to the new empty volume using <code>rsync</code>.
+</p>
+</li>
+<li>
+<p>
+Make sure the contents between old and new volumes are same using <code>diff</code>.
+</p>
+</li>
+<li>
+<p>
+Unmount and detach old data volume and attach the new one.
+</p>
+</li>
+<li>
+<p>
+Restart PostgreSQL service.
+</p>
+</li>
 </ol>
-
-<h2 id="problem">Problem</h2>
-
-<p>One day, I got reported from an operator that the script failed on a commercial environment after a long execution time. The old and newly created data volumes were still mounted and <code>service</code> command gives the following output:</p>
+<h2 id="headline-4">
+Problem
+</h2>
+<p>
+One day, I got reported from an operator that the script failed on a commercial environment after a long execution time. The old and newly created data volumes were still mounted and <code>service</code> command gives the following output:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo service postgresql status
 postgresql stop/waiting
 
@@ -442,45 +626,73 @@ postgresql start/running, process <span style="color:#bd93f9">6102</span>
 
 ~ $ sudo service postgresql status
 postgresql stop/waiting</code></pre></div>
-<p>The status of PostgreSQL service became <code>stop/waiting</code> immediately after executing <code>start</code> command.</p>
-
-<h1 id="troubleshooting-process">Troubleshooting Process</h1>
-
-<h2 id="first-try-to-recover-postgresql-service">First try to Recover PostgreSQL Service</h2>
-
-<p>From the description, it could be easily inferred that the EBS shrink script failed at the step 7, as the original data volume was not yet unmounted or removed.</p>
-
-<p>I thought it would be easy to fix by simply restarting PostgreSQL service and removing additional volumes in order to restore the environment.</p>
-
-<p>However, the <code>sudo service postgresql status</code> kept telling that PostgreSQL service is not running, even restarting the instance did not work.</p>
-
-<h2 id="targeting-problem-source">Targeting Problem Source</h2>
-
-<p>At first I wanted to find out if this is related to specific product version, in order to get PostgreSQL service up and running as soon as possible. So I selected a testing environment with same version but everything worked properly, as shown below:</p>
+</div>
+<p>
+The status of PostgreSQL service became <code>stop/waiting</code> immediately after executing <code>start</code> command.
+</p>
+<h1 id="headline-5">
+Troubleshooting Process
+</h1>
+<h2 id="headline-6">
+First try to Recover PostgreSQL Service
+</h2>
+<p>
+From the description, it could be easily inferred that the EBS shrink script failed at the step 7, as the original data volume was not yet unmounted or removed.
+</p>
+<p>
+I thought it would be easy to fix by simply restarting PostgreSQL service and removing additional volumes in order to restore the environment.
+</p>
+<p>
+However, the <code>sudo service postgresql status</code> kept telling that PostgreSQL service is not running, even restarting the instance did not work.
+</p>
+<h2 id="headline-7">
+Targeting Problem Source
+</h2>
+<p>
+At first I wanted to find out if this is related to specific product version, in order to get PostgreSQL service up and running as soon as possible. So I selected a testing environment with same version but everything worked properly, as shown below:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo service postgresql status
 pg_ctl: server is running <span style="color:#ff79c6">(</span>PID: <span style="color:#bd93f9">5822</span><span style="color:#ff79c6">)</span>
 /usr/local/pgsql/bin/postgres <span style="color:#f1fa8c">&#34;-D&#34;</span> <span style="color:#f1fa8c">&#34;/postgresql/data&#34;</span></code></pre></div>
-<p>Because our script did not touch PostgreSQL configurations at all, we then assumed that this problem is bound to that specific environment.</p>
-
-<p>When Linux is booting, the kernel boots first. Afterwards, an <em>init system</em> is invoked to initialize system processes that are necessary for use. The init system creates process <code>init</code> with PID 1 and other processes under the <code>init</code> process, constructing a process tree.</p>
-
-<p>We ensured that the Linux version running on that environment was Ubuntu 14.04 by using <code>uname -a</code> command. The Ubuntu 14.04 uses <em>upstart</em> init system that executes corresponding scripts under <code>/etc/init.d/</code> directory. The user may use <code>service</code> command to manipulate running services.</p>
-
-<p>So we asked the operator to view the content of <code>postgresql</code> file under that directory.</p>
+</div>
+<p>
+Because our script did not touch PostgreSQL configurations at all, we then assumed that this problem is bound to that specific environment.
+</p>
+<p>
+When Linux is booting, the kernel boots first. Afterwards, an <em>init system</em> is invoked to initialize system processes that are necessary for use. The init system creates process <code>init</code> with PID 1 and other processes under the <code>init</code> process, constructing a process tree.
+</p>
+<p>
+We ensured that the Linux version running on that environment was Ubuntu 14.04 by using <code>uname -a</code> command. The Ubuntu 14.04 uses <em>upstart</em> init system that executes corresponding scripts under <code>/etc/init.d/</code> directory. The user may use <code>service</code> command to manipulate running services.
+</p>
+<p>
+So we asked the operator to view the content of <code>postgresql</code> file under that directory.
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo cat /etc/init.d/postgresql
 cat: /etc/init.d/postgresql: No such file or directory</code></pre></div>
-<p>We were surprised that the <code>postgresql</code> script did not exist! This should never happen in a normal Ubuntu 14.04 environment. We checked the corresponding testing environment and that file existed. At this point, I was sure that the commercial environment was broken.</p>
-
-<h2 id="finding-the-ghost-process-of-postgresql">Finding the Ghost Process of PostgreSQL</h2>
-
-<p>We then investigated the log of upstart init system and got the following output:</p>
+</div>
+<p>
+We were surprised that the <code>postgresql</code> script did not exist! This should never happen in a normal Ubuntu 14.04 environment. We checked the corresponding testing environment and that file existed. At this point, I was sure that the commercial environment was broken.
+</p>
+<h2 id="headline-8">
+Finding the Ghost Process of PostgreSQL
+</h2>
+<p>
+We then investigated the log of upstart init system and got the following output:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">pg_ctl: another server might be running; trying to start server anyway
 server starting
 pg_ctl: another server might be running; trying to start server anyway
 server starting
 <span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">10</span>:54:03 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">1867</span><span style="color:#ff79c6">]</span> FATAL:  lock file <span style="color:#f1fa8c">&#34;postmaster.pid&#34;</span> already exists
 <span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">10</span>:54:03 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">1867</span><span style="color:#ff79c6">]</span> HINT:  Is another postmaster <span style="color:#ff79c6">(</span>PID <span style="color:#bd93f9">1027</span><span style="color:#ff79c6">)</span> running in data directory <span style="color:#f1fa8c">&#34;/postgresql/data&#34;</span>?</code></pre></div>
-<p>This partly explained that reason that restarting PostgreSQL kept failing. The PostgreSQL failed to start because the lock file was occupied. We then tried the following command:</p>
+</div>
+<p>
+This partly explained that reason that restarting PostgreSQL kept failing. The PostgreSQL failed to start because the lock file was occupied. We then tried the following command:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/var/run# ps aux | grep postgres
 postgres       <span style="color:#bd93f9">1027</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.8 <span style="color:#bd93f9">560320</span> <span style="color:#bd93f9">73300</span> ?        S    <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 /usr/local/pgsql/bin/postgres
 postgres       <span style="color:#bd93f9">1093</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">26752</span>  <span style="color:#bd93f9">2132</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: logger process
@@ -490,9 +702,14 @@ postgres       <span style="color:#bd93f9">1101</span>  <span style="color:#bd93
 postgres       <span style="color:#bd93f9">1102</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0 <span style="color:#bd93f9">560752</span>  <span style="color:#bd93f9">5308</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: autovacuum launcher process
 postgres       <span style="color:#bd93f9">1103</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">28972</span>  <span style="color:#bd93f9">3020</span> ?        Ss   <span style="color:#bd93f9">10</span>:47   <span style="color:#bd93f9">0</span>:00 postgres: stats collector process
 root      <span style="color:#bd93f9">2295</span>  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">0</span>.0  <span style="color:#bd93f9">11424</span>  <span style="color:#bd93f9">2196</span> pts/0    S+   <span style="color:#bd93f9">11</span>:11   <span style="color:#bd93f9">0</span>:00 grep --color<span style="color:#ff79c6">=</span>auto postgres</code></pre></div>
-<p>Aha! The PostgreSQL was actually running, but it was not monitored by upstart system for some unknown reason.</p>
-
-<p>Then we tried to kill the running process and restart it using the <code>service</code> command:</p>
+</div>
+<p>
+Aha! The PostgreSQL was actually running, but it was not monitored by upstart system for some unknown reason.
+</p>
+<p>
+Then we tried to kill the running process and restart it using the <code>service</code> command:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/var/run# <span style="color:#8be9fd;font-style:italic">kill</span> -9 <span style="color:#bd93f9">1027</span>
 
 /var/run# ps aux | grep post
@@ -506,48 +723,81 @@ postgresql start/running, process <span style="color:#bd93f9">2337</span>
 
 /var/run# service postgresql status
 postgresql stop/waiting</code></pre></div>
-<p>I suspected that it was because the <code>service</code> command used wrong arguments when starting PostgreSQL. So we killed the PostgreSQL process 2337 and manually started it using correct commands copied from another normal environment:</p>
+</div>
+<p>
+I suspected that it was because the <code>service</code> command used wrong arguments when starting PostgreSQL. So we killed the PostgreSQL process 2337 and manually started it using correct commands copied from another normal environment:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D /postgresql/data start
 pg_ctl: another server might be running; trying to start server anyway
 server starting
 <span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">11</span>:18:55 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">2478</span><span style="color:#ff79c6">]</span> LOG:  redirecting log output to logging collector process
 <span style="color:#ff79c6">[</span><span style="color:#bd93f9">2018</span>-12-13 <span style="color:#bd93f9">11</span>:18:55 JST<span style="color:#ff79c6">][][][][</span><span style="color:#bd93f9">2478</span><span style="color:#ff79c6">]</span> HINT:  Future log output will appear in directory <span style="color:#f1fa8c">&#34;/postgresql/log&#34;</span>.</code></pre></div>
-<p>It seemed working, but the <code>service</code> command insisted that the PostgreSQL process was dead:</p>
+</div>
+<p>
+It seemed working, but the <code>service</code> command insisted that the PostgreSQL process was dead:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ service postgresql status
 postgresql stop/waiting
 
 ~ $ sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D /postgresql/data status
 pg_ctl: server is running <span style="color:#ff79c6">(</span>PID: <span style="color:#bd93f9">2478</span><span style="color:#ff79c6">)</span>
 /usr/local/pgsql/bin/postgres <span style="color:#f1fa8c">&#34;-D&#34;</span> <span style="color:#f1fa8c">&#34;/postgresql/data&#34;</span></code></pre></div>
-<p>At this point I was sure that the <code>service</code> command was lying and the PostgreSQL service was running properly.</p>
-
-<h2 id="why-the-service-command-is-lying">Why the <code>service</code> Command Is Lying</h2>
-
-<p>Our script was written as an Ansible playbook. Its <a href="https://docs.ansible.com/ansible/latest/modules/service_module.html" title="official documentation">official documentation</a> says that supported init systems include BSD init, OpenRC, SysV, Solaris SMF, systemd and upstart. Why even the great Ansible <code>service</code> modules was not working? After some investigation, I finally found the root cause of this problem.</p>
-
-<p>In environments before product version 17.06, those instances used upstart to manage the PostgreSQL service. The upstart way was to put configurations files under the directory <code>/etc/init/</code> and write corresponding commands in configuration file. Newer instances used SystemV way to manage PostgreSQL service, i.e. using script files under <code>/etc/init.d/</code> directory. Both ways are supported by Ubuntu 14.04 system.</p>
-
-<p>However, there used to be a bug in upgrading scripts that caused the conversion between the two ways mentioned above was not done properly. This bug was fixed in a commit later, but in environments created before that commit, the file <code>/etc/init.d/postgresql</code> did not exist, while <code>/etc/init/postgresql.conf</code> still existed.</p>
-
-<p>The <code>service</code> command is compatible with both way. It first checks if <code>/etc/init/postgresql.conf</code> exists and execute commands defined in it. Otherwise, the <code>service</code> command checks if <code>/etc/init.d/postgresql</code> exists and execute commands accordingly. Because of the change, the <code>service</code> command could not manage the state of PostgreSQL correctly.</p>
-
-<h2 id="the-end-of-the-story">The End of the Story</h2>
-
-<p>Since the root cause was found, I wrote another script to fix this problem by renaming the <code>/etc/init/postgresql.conf</code> file and create the <code>/etc/init.d/postgresql</code> file according to existing templates. Also a checking code was added to the EBS shrink script to automatically fix affected environments.</p>
-
-<h1 id="conclusion">Conclusion</h1>
-
-<p>From this even I learned some lessons and got some inspirations:</p>
-
+</div>
+<p>
+At this point I was sure that the <code>service</code> command was lying and the PostgreSQL service was running properly.
+</p>
+<h2 id="headline-9">
+Why the <code>service</code> Command Is Lying
+</h2>
+<p>
+Our script was written as an Ansible playbook. Its <a href="https://docs.ansible.com/ansible/latest/modules/service_module.html">official documentation</a> says that supported init systems include BSD init, OpenRC, SysV, Solaris SMF, systemd and upstart. Why even the great Ansible <code>service</code> modules was not working? After some investigation, I finally found the root cause of this problem. 
+</p>
+<p>
+In environments before product version 17.06, those instances used upstart to manage the PostgreSQL service. The upstart way was to put configurations files under the directory <code>/etc/init/</code> and write corresponding commands in configuration file. Newer instances used SystemV way to manage PostgreSQL service, i.e. using script files under <code>/etc/init.d/</code> directory. Both ways are supported by Ubuntu 14.04 system.
+</p>
+<p>
+However, there used to be a bug in upgrading scripts that caused the conversion between the two ways mentioned above was not done properly. This bug was fixed in a commit later, but in environments created before that commit, the file <code>/etc/init.d/postgresql</code> did not exist, while <code>/etc/init/postgresql.conf</code> still existed.
+</p>
+<p>
+The <code>service</code> command is compatible with both way. It first checks if <code>/etc/init/postgresql.conf</code> exists and execute commands defined in it. Otherwise, the <code>service</code> command checks if <code>/etc/init.d/postgresql</code> exists and execute commands accordingly. Because of the change, the <code>service</code> command could not manage the state of PostgreSQL correctly.
+</p>
+<h2 id="headline-10">
+The End of the Story
+</h2>
+<p>
+Since the root cause was found, I wrote another script to fix this problem by renaming the <code>/etc/init/postgresql.conf</code> file and create the <code>/etc/init.d/postgresql</code> file according to existing templates. Also a checking code was added to the EBS shrink script to automatically fix affected environments.
+</p>
+<h1 id="headline-11">
+Conclusion
+</h1>
+<p>
+From this even I learned some lessons and got some inspirations:
+</p>
 <ol>
-<li>The most important thing is, the production (commercial) environment might be much more complicated than you thought. You can never be prepared enough.</li>
-<li>The old environments might not work as expected according to historical reasons. It is important to get service up and running at first, then try to investigate and fix the root cause.</li>
-<li>There are many hidden details in the tools we are using every day. Personally I never knew that <code>/etc/init/xxx.conf</code> is actually the upstart way to manage services.</li>
+<li>
+<p>
+The most important thing is, the production (commercial) environment might be much more complicated than you thought. You can never be prepared enough.
+</p>
+</li>
+<li>
+<p>
+The old environments might not work as expected according to historical reasons. It is important to get service up and running at first, then try to investigate and fix the root cause.
+</p>
+</li>
+<li>
+<p>
+There are many hidden details in the tools we are using every day. Personally I never knew that <code>/etc/init/xxx.conf</code> is actually the upstart way to manage services.
+</p>
+</li>
 </ol>
-
-<p>I wish this little story will bring you something useful.</p>
-
-<p>Thanks for reading.</p>
+<p>
+I wish this little story will bring you something useful. 
+</p>
+<p>
+Thanks for reading.
+</p>
 ]]></content>
 		</item>
 		
@@ -557,53 +807,100 @@ pg_ctl: server is running <span style="color:#ff79c6">(</span>PID: <span style="
 			<pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
 			
 			<guid>/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/</guid>
-			<description>Background Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.
-Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access.</description>
-			<content type="html"><![CDATA[<h2 id="background">Background</h2>
-
-<p>Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.</p>
-
-<p>Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access. I can imagine that this will make file sharing between family members blazingly easy.</p>
-
-<p>I would like the net disk to be managed by a Linux device. Raspberry Pi would do the trick pretty well, as long as it is connected to an external hard drive, otherwise the R/W speed of the internal SD card is relatively slow. Of course, a 7x24 PC will also work but you will have to pay the electricity bill. ;-)</p>
-
-<p>This post will be structured into several parts:</p>
-
+			<description>Background   Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.  Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access.</description>
+			<content type="html"><![CDATA[
+<h2 id="headline-1">
+Background
+</h2>
+<p>
+Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.
+</p>
+<p>
+Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access. I can imagine that this will make file sharing between family members blazingly easy.
+</p>
+<p>
+I would like the net disk to be managed by a Linux device. Raspberry Pi would do the trick pretty well, as long as it is connected to an external hard drive, otherwise the R/W speed of the internal SD card is relatively slow. Of course, a 7x24 PC will also work but you will have to pay the electricity bill. ;-)
+</p>
+<p>
+This post will be structured into several parts:
+</p>
 <ul>
-<li>Setup the file sharing server.</li>
-<li>Setup the file sharing clients.</li>
+<li>
+<p>
+Setup the file sharing server.
+</p>
+</li>
+<li>
+<p>
+Setup the file sharing clients.
+</p>
+</li>
 </ul>
-
-<h2 id="file-sharing-server">File Sharing Server</h2>
-
-<p>So the net disk device must be able to be accessed by various devices and my projector shall be able to directly play the videos from it. There are multiple choices:</p>
-
+<h2 id="headline-2">
+File Sharing Server
+</h2>
+<p>
+So the net disk device must be able to be accessed by various devices and my projector shall be able to directly play the videos from it. There are multiple choices:
+</p>
 <ul>
-<li>Using <a href="https://en.wikipedia.org/wiki/Samba_(software)" title="Samba">Samba</a>. Samba is a free software re-implementation of the SMB networking protocol. It is very friendly to Windows clients. I recommend this way.</li>
-<li>Using <a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol" title="File Transfer Protocol (FTP)">File Transfer Protocol (FTP)</a>. FTP is a standard network protocol, but it is rather old and totally insecure. It is acceptable in a local network, but definitely bad for Internet use.</li>
-<li>Using <a href="Https://En.Wikipedia.Org/Wiki/Vsftpd" title="Very Secure FTP Daemon (VSFTP)">Very Secure FTP Daemon (VSFTP)</a>. VSFTP is a more secure FTP protocol. But for some unclear reason, I abandoned it.</li>
-<li>Using Secure FTP (SFTP). Unlike FTP, the transmission is done in a encrypted way. It is a FTP wrapper upon SSH. If the transmission goes through the Internet, SFTP might be the most secure among the four.</li>
+<li>
+<p>
+Using <a href="https://en.wikipedia.org/wiki/Samba_(software)">Samba</a>. Samba is a free software re-implementation of the SMB networking protocol. It is very friendly to Windows clients. I recommend this way.
+</p>
+</li>
+<li>
+<p>
+Using <a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">File Transfer Protocol (FTP)</a>. FTP is a standard network protocol, but it is rather old and totally insecure. It is acceptable in a local network, but definitely bad for Internet use.
+</p>
+</li>
+<li>
+<p>
+Using <a href="Https://En.Wikipedia.Org/Wiki/Vsftpd">Very Secure FTP Daemon (VSFTP)</a>. VSFTP is a more secure FTP protocol. But for some unclear reason, I abandoned it.
+</p>
+</li>
+<li>
+<p>
+Using Secure FTP (SFTP). Unlike FTP, the transmission is done in a encrypted way. It is a FTP wrapper upon SSH. If the transmission goes through the Internet, SFTP might be the most secure among the four.
+</p>
+</li>
 </ul>
-
-<p>Here I will introduce Samba and SFTP solutions.</p>
-
-<h3 id="samba">Samba</h3>
-
-<h4 id="creating-users">Creating Users</h4>
-
-<p>First you need to install samba on the server (Raspberry Pi in my case). Since I am using Arch Linux, a simple <code>pacman -S samba</code> will do the trick.</p>
-
-<p>Samba uses the Linux system users but it has its own password management facility. Let's create an system user first. Since this user is only to access shared data, we put some restriction on it.</p>
+<p>
+Here I will introduce Samba and SFTP solutions.
+</p>
+<h3 id="headline-3">
+Samba
+</h3>
+<h4 id="headline-4">
+Creating Users
+</h4>
+<p>
+First you need to install samba on the server (Raspberry Pi in my case). Since I am using Arch Linux, a simple <code>pacman -S samba</code> will do the trick.
+</p>
+<p>
+Samba uses the Linux system users but it has its own password management facility. Let&#39;s create an system user first. Since this user is only to access shared data, we put some restriction on it.
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ useradd -s /sbin/nologin --no-create-home --no-user-group samba</code></pre></div>
-<p>The CLI tool <code>pdbedit</code> might be used to manage the users. Suppose you already have a user named <code>samba</code> in the OS. In order to add it to Samba, simply run the following command:</p>
+</div>
+<p>
+The CLI tool <code>pdbedit</code> might be used to manage the users. Suppose you already have a user named <code>samba</code> in the OS. In order to add it to Samba, simply run the following command:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ pdbedit -a samba</code></pre></div>
-<p>Then set the password for this account. Please remember that it is mandatory that both system user and Samba user needs to be created.</p>
-
-<p>In my settings the user <code>samba</code> is for R/W operations on the shared disk. Besides, let's create another user called <code>visitor</code> who has read-only permission.</p>
-
-<h4 id="configuring-samba-server">Configuring Samba Server</h4>
-
-<p>The configuration file of Samba server is located at <code>/etc/samba/smb.conf</code>. The following snippet is a working example with users we just created.</p>
+</div>
+<p>
+Then set the password for this account. Please remember that it is mandatory that both system user and Samba user needs to be created.
+</p>
+<p>
+In my settings the user <code>samba</code> is for R/W operations on the shared disk. Besides, let&#39;s create another user called <code>visitor</code> who has read-only permission.
+</p>
+<h4 id="headline-5">
+Configuring Samba Server
+</h4>
+<p>
+The configuration file of Samba server is located at <code>/etc/samba/smb.conf</code>. The following snippet is a working example with users we just created.
+</p>
+<div class="src src-toml">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[global]
 <span style="color:#6272a4"># Set the work group.</span>
 workgroup = home
@@ -644,32 +941,55 @@ path = /data/shared/public/
 browsable = yes
 valid users = visitor
 read only = yes</code></pre></div>
-<h4 id="finalizing">Finalizing</h4>
-
-<p>On Arch Linux, you can start the Samba service using the following command:</p>
+</div>
+<h4 id="headline-6">
+Finalizing
+</h4>
+<p>
+On Arch Linux, you can start the Samba service using the following command:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ systemctl <span style="color:#8be9fd;font-style:italic">enable</span> smb
 ~ $ systemctl start smb</code></pre></div>
-<p>The CLI tool <code>smbclient</code> can be used as below. Note that <code>rpi</code> refers to the hostname of my Raspberry Pi.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#6272a4"># List the share points. 
-</span><span style="color:#6272a4"># -W and -U specifies workgroup and user respectively.
-</span><span style="color:#6272a4"></span>~ $ smbclient -L //rpi/ -W home -U samba
-<span style="color:#6272a4"># Connect to the share point.
-</span><span style="color:#6272a4"></span>~ $ smbclient //rpi/shared -W home -U samba</code></pre></div>
-<p>If you see the <code>smb: \&gt;</code> prompt, then congrats! Your Samba server is working properly.</p>
-
-<h3 id="sftp">SFTP</h3>
-
-<h4 id="creating-a-user">Creating a User</h4>
-
-<p>Similar to Samba setup, create a user (let's name it <code>share</code>) as following:</p>
+</div>
+<p>
+The CLI tool <code>smbclient</code> can be used as below. Note that <code>rpi</code> refers to the hostname of my Raspberry Pi.
+</p>
+<div class="src src-sh">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#6272a4"># List the share points.</span> 
+<span style="color:#6272a4"># -W and -U specifies workgroup and user respectively.</span>
+~ $ smbclient -L //rpi/ -W home -U samba
+<span style="color:#6272a4"># Connect to the share point.</span>
+~ $ smbclient //rpi/shared -W home -U samba</code></pre></div>
+</div>
+<p>
+If you see the <code>smb: \&gt;</code> prompt, then congrats! Your Samba server is working properly.
+</p>
+<h3 id="headline-7">
+SFTP
+</h3>
+<h4 id="headline-8">
+Creating a User
+</h4>
+<p>
+Similar to Samba setup, create a user (let&#39;s name it <code>share</code>) as following:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ useradd -s /sbin/nologin --no-create-home --no-user-group share</code></pre></div>
-<h4 id="putting-the-user-into-jail">Putting the User Into Jail</h4>
-
-<p>At the very beginning, there are some very basic rules about SSH configuration, such as disabling password login by default (especially for root) etc. I recommended you to look through materials about SSH security.</p>
-
-<p>It is possible to make a chroot environment for the user so that directories out of the environment cannot be accessed.</p>
-
-<p>Edit the file <code>/etc/ssh/sshd_config</code> and put the following lines into it. Also you need to comment out the existing line starting with <code>Subsystem sftp</code>.</p>
+</div>
+<h4 id="headline-9">
+Putting the User Into Jail
+</h4>
+<p>
+At the very beginning, there are some very basic rules about SSH configuration, such as disabling password login by default (especially for root) etc. I recommended you to look through materials about SSH security.
+</p>
+<p>
+It is possible to make a chroot environment for the user so that directories out of the environment cannot be accessed.
+</p>
+<p>
+Edit the file <code>/etc/ssh/sshd_config</code> and put the following lines into it. Also you need to comment out the existing line starting with <code>Subsystem sftp</code>.
+</p>
+<div class="src src-conf">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-conf" data-lang="conf">Subsystem sftp internal-sftp
 
 # Group can also be a match condition here.
@@ -680,55 +1000,92 @@ Match User share
   ForceCommand internal-sftp
   X11Forwarding no
   AllowTcpForwarding no</code></pre></div>
-<p>The owner of directory specified by <code>ChrootDirectory</code> must be <code>root</code>, which means that you need to create a new directory inside <code>/data/root/</code> and set the owner of it to the corresponding user, i.e. <code>share</code> in our example.</p>
-
-<p>After this step, the user <code>share</code> can only use SFTP (or SSHFS) with specific directory. Both SSH login and access outside the sandbox is prohibited.</p>
-
-<h2 id="file-sharing-client">File Sharing Client</h2>
-
-<h3 id="linux">Linux</h3>
-
-<h4 id="samba-1">Samba</h4>
-
-<p>As shown above, <code>smbclient</code> is the main CLI tool to work with Samba. If you use Emacs, use tramp with format <code>/smb:xiaoneng%home@rpi:/shared</code> to directly open the shared folder.</p>
-
-<p>If you want to mount the shared directory automatically, you may add the following line into the <code>/etc/fstab</code> file.</p>
+</div>
+<p>
+The owner of directory specified by <code>ChrootDirectory</code> must be <code>root</code>, which means that you need to create a new directory inside <code>/data/root/</code> and set the owner of it to the corresponding user, i.e. <code>share</code> in our example.
+</p>
+<p>
+After this step, the user <code>share</code> can only use SFTP (or SSHFS) with specific directory. Both SSH login and access outside the sandbox is prohibited.
+</p>
+<h2 id="headline-10">
+File Sharing Client
+</h2>
+<h3 id="headline-11">
+Linux
+</h3>
+<h4 id="headline-12">
+Samba
+</h4>
+<p>
+As shown above, <code>smbclient</code> is the main CLI tool to work with Samba. If you use Emacs, use tramp with format <code>/smb:xiaoneng%home@rpi:/shared</code> to directly open the shared folder.
+</p>
+<p>
+If you want to mount the shared directory automatically, you may add the following line into the <code>/etc/fstab</code> file.
+</p>
+<div class="src src-conf">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-conf" data-lang="conf">//rpi/shared /mnt/samba auto credentials=/etc/samba/pass.txt,vers=1.0	0 0</code></pre></div>
-<p>Here in order not to input the password, especially when the OS is booting ;-), you may write the credentials to <code>/etc/samba/pass.txt</code> as mentioned above, with the following format:</p>
+</div>
+<p>
+Here in order not to input the password, especially when the OS is booting ;-), you may write the credentials to <code>/etc/samba/pass.txt</code> as mentioned above, with the following format:
+</p>
+<div class="src src-conf">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-conf" data-lang="conf">username=samba
 password=pass</code></pre></div>
-<p>Making the mode of this file <code>0400</code> under <code>root</code> account might be a good idea.</p>
-
-<h4 id="sftp-1">SFTP</h4>
-
-<p>You may use this method in 2 ways:</p>
-
+</div>
+<p>
+Making the mode of this file <code>0400</code> under <code>root</code> account might be a good idea.
+</p>
+<h4 id="headline-13">
+SFTP
+</h4>
+<p>
+You may use this method in 2 ways:
+</p>
 <ul>
-<li>Directly using <code>sftp</code> command.</li>
-<li>Using <code>sshfs</code> to mount the remote shared directory to a local position.</li>
+<li>
+<p>
+Directly using <code>sftp</code> command.
+</p>
+</li>
+<li>
+<p>
+Using <code>sshfs</code> to mount the remote shared directory to a local position.
+</p>
+</li>
 </ul>
-
-<h3 id="windows">Windows</h3>
-
-<h4 id="samba-2">Samba</h4>
-
-<p>Windows supports Samba natively. Simply opening the file explorer and add a network location will do the trick.</p>
-
-<h4 id="sftp-2">SFTP</h4>
-
-<p>It is essential to install an external SFTP client for unlucky Windows users. Something like WinSCP or FileZilla will work perfectly.</p>
-
-<h3 id="android">Android</h3>
-
-<p>A single open-source software <a href="https://mixplorer.com/" title="MiXplorer">MiXplorer</a> will rule them all!</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>It is relatively easy to setup Samba or SFTP to share files at home. Samba requires a little bit more work on the server side, but it is more friendly to all sorts of clients. The transmission of Samba is not encrypted, so it is very suitable for in-house file sharing.</p>
-
-<p>When security is a critical concern, SFTP might meet your needs better.</p>
-
-<p>So, choose whichever works and have a try!</p>
+<h3 id="headline-14">
+Windows
+</h3>
+<h4 id="headline-15">
+Samba
+</h4>
+<p>
+Windows supports Samba natively. Simply opening the file explorer and add a network location will do the trick.
+</p>
+<h4 id="headline-16">
+SFTP
+</h4>
+<p>
+It is essential to install an external SFTP client for unlucky Windows users. Something like WinSCP or FileZilla will work perfectly.
+</p>
+<h3 id="headline-17">
+Android
+</h3>
+<p>
+A single open-source software <a href="https://mixplorer.com/">MiXplorer</a> will rule them all!
+</p>
+<h2 id="headline-18">
+Conclusion
+</h2>
+<p>
+It is relatively easy to setup Samba or SFTP to share files at home. Samba requires a little bit more work on the server side, but it is more friendly to all sorts of clients. The transmission of Samba is not encrypted, so it is very suitable for in-house file sharing.
+</p>
+<p>
+When security is a critical concern, SFTP might meet your needs better.
+</p>
+<p>
+So, choose whichever works and have a try!
+</p>
 ]]></content>
 		</item>
 		
@@ -738,378 +1095,646 @@ password=pass</code></pre></div>
 			<pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
 			
 			<guid>/posts/2019-06-17_jvm-memory/</guid>
-			<description>Memory basics Memory model In JVM memory can be divided into two categories: stack memory and heap memory.
-Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.
-Heap memory are managed by /Garbage Collector (GC)/1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.
-Heap memory model is much more complicated, and most tuning happens here.</description>
-			<content type="html"><![CDATA[<h1 id="memory-basics">Memory basics</h1>
-
-<h2 id="memory-model">Memory model</h2>
-
-<p>In JVM memory can be divided into two categories: <em>stack</em> memory and <em>heap</em> memory.</p>
-
-<p>Each thread has its own stack memory that can <strong>only</strong> be accessed by itself. Stack memory stores some local references, functional call stack etc.</p>
-
-<p>Heap memory are managed by /Garbage Collector (GC)/<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.</p>
-
-<p>Heap memory model is much more complicated, and most tuning happens here.</p>
-
-<h2 id="garbage-collection">Garbage Collection</h2>
-
-<p>Garbage collector is responsible for 3 things:</p>
-
+			<description>Memory basics  Memory model   In JVM memory can be divided into two categories: stack memory and heap memory.  Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.  Heap memory are managed by Garbage Collector (GC)1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.</description>
+			<content type="html"><![CDATA[
+<h1 id="headline-1">
+Memory basics
+</h1>
+<h2 id="headline-2">
+Memory model
+</h2>
+<p>
+In JVM memory can be divided into two categories: <em>stack</em> memory and <em>heap</em> memory.
+</p>
+<p>
+Each thread has its own stack memory that can <strong>only</strong> be accessed by itself. Stack memory stores some local references, functional call stack etc.
+</p>
+<p>
+Heap memory are managed by <em>Garbage Collector (GC)</em><sup class="footnote-reference"><a id="footnote-reference-1" href="#footnote-1">1</a></sup> dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.
+</p>
+<p>
+Heap memory model is much more complicated, and most tuning happens here.
+</p>
+<h2 id="headline-3">
+Garbage Collection
+</h2>
+<p>
+Garbage collector is responsible for 3 things:
+</p>
 <ol>
-<li>Allocate memory dynamically.</li>
+<li>
+<p>
+Allocate memory dynamically.
+</p>
+</li>
+<li>
+<p>
+Ensure valid objects remain in memory (i.e. valid object reference does not fail).
+</p>
+</li>
+<li>
+<p>
+Release unused memory when the memory area cannot be accessed anywhere in the program.
+</p>
+</li>
 </ol>
-
+<h1 id="headline-4">
+GC basics
+</h1>
+<h2 id="headline-5">
+A simple GC
+</h2>
+<p>
+Now consider how a simple GC is implemented. A very naive GC can be described below:
+</p>
 <ol>
-<li>Ensure valid objects remain in memory (i.e. valid object reference does not fail).</li>
+<li>
+<p>
+Looking through the heap memory and <em>mark</em> all objects as <em>alive</em> or <em>dead</em>. An object is considered <em>dead</em> if there is no pointer that points to it in the running program, aka unreferenced.
+</p>
+</li>
+<li>
+<p>
+Delete all dead objects.
+</p>
+</li>
 </ol>
-
-<ol>
-<li>Release unused memory when the memory area cannot be accessed anywhere in the program.</li>
-</ol>
-
-<h1 id="gc-basics">GC basics</h1>
-
-<h2 id="a-simple-gc">A simple GC</h2>
-
-<p>Now consider how a simple GC is implemented. A very naive GC can be described below:</p>
-
-<ol>
-<li>Looking through the heap memory and <em>mark</em> all objects as <em>alive</em> or <em>dead</em>. An object is considered <em>dead</em> if there is no pointer that points to it in the running program, aka unreferenced.</li>
-</ol>
-
-<ol>
-<li>Delete all dead objects.</li>
-</ol>
-
-<h2 id="problems">Problems</h2>
-
-<ol>
+<h2 id="headline-6">
+Problems
+</h2>
+<p>
 There are some problems with the simple solution given above, some obvious ones are:
-<li>Every time the GC is needed, the whole heap memory must be went through, which costs much time. In a <em>stop-the-world</em> (<em>STW</em>) fashion, this will stuck the whole application and brings very bad user experience (or timeout etc).</li>
-</ol>
-
+</p>
 <ol>
-<li>After some time, this methods leaves many "holes" in the memory which makes it harder and less efficient for future memory allocation.</li>
+<li>
+<p>
+Every time the GC is needed, the whole heap memory must be went through, which costs much time. In a <em>stop-the-world</em> (<em>STW</em>) fashion, this will stuck the whole application and brings very bad user experience (or timeout etc).
+</p>
+</li>
+<li>
+<p>
+After some time, this methods leaves many &#34;holes&#34; in the memory which makes it harder and less efficient for future memory allocation.
+</p>
+</li>
 </ol>
-
-<h2 id="evaluation-metrics">Evaluation metrics</h2>
-
-<p>How do we evaluate if a GC is <em>good</em>? There are some performance metrics:</p>
-
+<h2 id="headline-7">
+Evaluation metrics
+</h2>
+<p>
+How do we evaluate if a GC is <em>good</em>? There are some performance metrics:
+</p>
 <ul>
-<li><strong>Throughput</strong>, the percentage of total time not spent in garbage collection, considered over long periods of time.</li>
+<li>
+<p>
+<strong>Throughput</strong>, the percentage of total time not spent in garbage collection, considered over long periods of time.
+</p>
+</li>
+<li>
+<p>
+<strong>Garbage collection overhead</strong>, the inverse of throughput, that is, the percentage of total time spent in garbage collection.
+</p>
+</li>
+<li>
+<p>
+<strong>Pause time</strong>, the length of time during which application execution is stopped while garbage collection is occurring.
+</p>
+</li>
+<li>
+<p>
+<strong>Frequency of collection</strong>, how often collection occurs, relative to application execution.
+</p>
+</li>
+<li>
+<p>
+<strong>Footprint</strong>, a measure of size, such as heap size.
+</p>
+</li>
+<li>
+<p>
+<strong>Promptness</strong>, the time between when an object becomes garbage and when the memory got released.
+</p>
+</li>
 </ul>
-
-<ul>
-<li><strong>Garbage collection overhead</strong>, the inverse of throughput, that is, the percentage of total time spent in garbage collection.</li>
-</ul>
-
-<ul>
-<li><strong>Pause time</strong>, the length of time during which application execution is stopped while garbage collection is occurring.</li>
-</ul>
-
-<ul>
-<li><strong>Frequency of collection</strong>, how often collection occurs, relative to application execution.</li>
-</ul>
-
-<ul>
-<li><strong>Footprint</strong>, a measure of size, such as heap size.</li>
-</ul>
-
-<ul>
-<li><strong>Promptness</strong>, the time between when an object becomes garbage and when the memory got released.</li>
-</ul>
-
-<p>These metrics do not work alone: they affect each other. For example, a bigger heap size potentially leads to lower frequency to perform GC, but it raises the footprint and makes each GC take more time.</p>
-
-<p>Also, importance of each metrics is different for different kinds of application. For example, an interactive application might require low pause time to get a better user experience, whereas an embedded device requires smaller footprint.</p>
-
-<p>So it is usually trade-offs among these factors while choosing or tuning GC.</p>
-
-<h1 id="generational-collection">Generational collection</h1>
-
-<p>In order to optimize overall GC performance, JVM uses <em>generational collection</em> to manage heap memory.</p>
-
-<h2 id="prologue">Prologue</h2>
-
-<p>The following picture shows a typical distribution of lifetimes of objects.</p>
-
-<p><img src="/jvm-memory/object-lifetime.png" alt="Typical lifetime of objects"/></p>
-
-<p>As shown in the figure above, a huge amount of objects are dead shortly after they are created. Even though not every application fits in this graph, but a large number process this general shape, i.e. live fast, die young.</p>
-
-<h2 id="heap-memory-model">Heap Memory model</h2>
-
-<p>When generational collection is used, memory is divided into several small parts called <em>generations</em>, which means memory areas that holds objects of different ages, as shown below.</p>
-
-<p><img src="/jvm-memory/heap-arch.png" alt="Heap memory architecture" /></p>
-
-<p>Heap memory is organized into three generations: young generation, old generation and permanent generation. Most objects are initially allocated in young generation. When some of them survives after some number of GC, they are moved to old generation. Permanent generation is used to store meta data of classes, methods or other information used by JVM internally.</p>
-
-<h2 id="fast-memory-allocation">Fast memory allocation</h2>
-
-<p>A technique called <em>bump-the-pointer</em> is used to achieve fast memory allocation. It means the JVM keeps track of previously allocated object and allocates new object in the next continuous memory.</p>
-
-<p>When multi-thread is considered, allocation must be thread safe. One way to guarantee that is to add a global lock every time allocation is performed. However locking and unlocking are very slow and are purely waste of time. Thus a technique named <em>Thread-Local Allocation Buffers</em> (<em>TLABs</em>) is used to avoid performance bottleneck introduced by global lock. Using TLABs each generation are divided into smaller pieces and assigned to each thread as its local buffer.</p>
-
-<p>The combination of TLABs and linear allocations enables each allocation to be more efficient.</p>
-
-<h1 id="legacy-gc-algorithms">Legacy GC algorithms</h1>
-
-<h2 id="serial-gc">Serial GC</h2>
-
-<p>With <em>serial</em> collector, both young and old collections are done serially, in a STW fashion.</p>
-
-<h3 id="young-gc">Young GC</h3>
-
-<p><img src="/jvm-memory/serial-gc-young.png" alt="Young GC" /></p>
-
-<p>Using this GC, between S0 and S1, there is always one space that is empty at any time. Suppose the S0 space is empty before GC starts. The live objects in Eden and S1 are copied to S0 space (the empty survivor space) if there is enough space. Otherwise, the object directly goes to old generation despite how many GC it really survived.</p>
-
-<p>After this move, Eden and S1 becomes empty. For the next young GC, S0 and S1 swap their role and S1 becomes the empty space to hold survived objects.</p>
-
-<h3 id="old-gc">Old GC</h3>
-
-<ol>
+<p>
+These metrics do not work alone: they affect each other. For example, a bigger heap size potentially leads to lower frequency to perform GC, but it raises the footprint and makes each GC take more time.
+</p>
+<p>
+Also, importance of each metrics is different for different kinds of application. For example, an interactive application might require low pause time to get a better user experience, whereas an embedded device requires smaller footprint.
+</p>
+<p>
+So it is usually trade-offs among these factors while choosing or tuning GC.
+</p>
+<h1 id="headline-8">
+Generational collection
+</h1>
+<p>
+In order to optimize overall GC performance, JVM uses <em>generational collection</em> to manage heap memory.
+</p>
+<h2 id="headline-9">
+Prologue
+</h2>
+<p>
+The following picture shows a typical distribution of lifetimes of objects.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/object-lifetime.png&#34; alt=&#34;Typical lifetime of objects&#34;/&gt;
+</p>
+<p>
+As shown in the figure above, a huge amount of objects are dead shortly after they are created. Even though not every application fits in this graph, but a large number process this general shape, i.e. live fast, die young.
+</p>
+<h2 id="headline-10">
+Heap Memory model
+</h2>
+<p>
+When generational collection is used, memory is divided into several small parts called <em>generations</em>, which means memory areas that holds objects of different ages, as shown below.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/heap-arch.png&#34; alt=&#34;Heap memory architecture&#34; /&gt;
+</p>
+<p>
+Heap memory is organized into three generations: young generation, old generation and permanent generation. Most objects are initially allocated in young generation. When some of them survives after some number of GC, they are moved to old generation. Permanent generation is used to store meta data of classes, methods or other information used by JVM internally.
+</p>
+<h2 id="headline-11">
+Fast memory allocation
+</h2>
+<p>
+A technique called <em>bump-the-pointer</em> is used to achieve fast memory allocation. It means the JVM keeps track of previously allocated object and allocates new object in the next continuous memory.
+</p>
+<p>
+When multi-thread is considered, allocation must be thread safe. One way to guarantee that is to add a global lock every time allocation is performed. However locking and unlocking are very slow and are purely waste of time. Thus a technique named <em>Thread-Local Allocation Buffers</em> (<em>TLABs</em>) is used to avoid performance bottleneck introduced by global lock. Using TLABs each generation are divided into smaller pieces and assigned to each thread as its local buffer.
+</p>
+<p>
+The combination of TLABs and linear allocations enables each allocation to be more efficient.
+</p>
+<h1 id="headline-12">
+Legacy GC algorithms
+</h1>
+<h2 id="headline-13">
+Serial GC
+</h2>
+<p>
+With <em>serial</em> collector, both young and old collections are done serially, in a STW fashion.
+</p>
+<h3 id="headline-14">
+Young GC
+</h3>
+<p>
+&lt;img src=&#34;/jvm-memory/serial-gc-young.png&#34; alt=&#34;Young GC&#34; /&gt;
+</p>
+<p>
+Using this GC, between S0 and S1, there is always one space that is empty at any time. Suppose the S0 space is empty before GC starts. The live objects in Eden and S1 are copied to S0 space (the empty survivor space) if there is enough space. Otherwise, the object directly goes to old generation despite how many GC it really survived.
+</p>
+<p>
+After this move, Eden and S1 becomes empty. For the next young GC, S0 and S1 swap their role and S1 becomes the empty space to hold survived objects.
+</p>
+<h3 id="headline-15">
+Old GC
+</h3>
+<p>
 The old and permanent generations are collected via <em>mark-sweep-compact</em> algorithm, which consists of three steps:
-<li>In <em>mark</em> step, the collector identifies which objects are still alive and mark them.</li>
-</ol>
-
+</p>
 <ol>
-<li>In <em>sweep</em> phase, the collector looks for garbage memory and identifies them.</li>
+<li>
+<p>
+In <em>mark</em> step, the collector identifies which objects are still alive and mark them.
+</p>
+</li>
+<li>
+<p>
+In <em>sweep</em> phase, the collector looks for garbage memory and identifies them.
+</p>
+</li>
+<li>
+<p>
+In <em>compaction</em> phase, the collector moves all live objects to the start of old generation (or perm generation) so that a continuous memory chunk is generated that can be used for fast allocation.
+</p>
+</li>
 </ol>
-
-<ol>
-<li>In <em>compaction</em> phase, the collector moves all live objects to the start of old generation (or perm generation) so that a continuous memory chunk is generated that can be used for fast allocation.</li>
-</ol>
-
-<h3 id="evaluation">Evaluation</h3>
-
-<p>Serial collector are suitable for single-process machine with small footprint that does not require very low pause time.</p>
-
-<h2 id="parallel-gc">Parallel GC</h2>
-
-<p><em>Parallel</em> collector is very similar to serial GC. It uses multiple threads to performs GC in parallel to speed it up and reduce pause time. It is suitable for multi-core machines.</p>
-
-<h2 id="concurrent-mark-sweep-cms-gc">Concurrent Mark-Sweep (CMS) GC</h2>
-
-<p>It is also called <em>low-latency</em> collector. Compared with GC introduced above, it provides fast response time.</p>
-
-<h3 id="young-gc-1">Young GC</h3>
-
-<p>Very similar to the parallel GC.</p>
-
-<p><img src="/jvm-memory/cms-young-1.png"></p>
-
-<p><img src="/jvm-memory/cms-young-2.png">2</p>
-
-<h3 id="old-gc-1">Old GC</h3>
-
-<p>Most GC of old generation is done concurrently with the execution of the application.</p>
-
-<ol>
+<h3 id="headline-16">
+Evaluation
+</h3>
+<p>
+Serial collector are suitable for single-process machine with small footprint that does not require very low pause time.
+</p>
+<h2 id="headline-17">
+Parallel GC
+</h2>
+<p>
+<em>Parallel</em> collector is very similar to serial GC. It uses multiple threads to performs GC in parallel to speed it up and reduce pause time. It is suitable for multi-core machines.
+</p>
+<h2 id="headline-18">
+Concurrent Mark-Sweep (CMS) GC
+</h2>
+<p>
+It is also called <em>low-latency</em> collector. Compared with GC introduced above, it provides fast response time.
+</p>
+<h3 id="headline-19">
+Young GC
+</h3>
+<p>
+Very similar to the parallel GC.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-young-1.png&#34;&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-young-2.png&#34;&gt;2
+</p>
+<h3 id="headline-20">
+Old GC
+</h3>
+<p>
+Most GC of old generation is done concurrently with the execution of the application.
+</p>
+<p>
 The process of CMS old GC can be described as below:
-<li>It starts with a short pause stage called <em>initial mark</em>. During this stage an initial set of live objects directly reachable from <em>root</em> region is created. The <em>root</em> region may be application thread stacks and registers, or young generation objects.</li>
-</ol>
-
+</p>
 <ol>
-<li>During <em>concurrent marking phase</em>, the collector marks all live objects that are transitively reachable from the initial set. All objects assigned during this phase are marked as alive. Because CMS runs concurrently with the application, the object references might be updated while it is performing GC. Thus the result is not accurate.</li>
+<li>
+<p>
+It starts with a short pause stage called <em>initial mark</em>. During this stage an initial set of live objects directly reachable from <em>root</em> region is created. The <em>root</em> region may be application thread stacks and registers, or young generation objects.
+</p>
+</li>
+<li>
+<p>
+During <em>concurrent marking phase</em>, the collector marks all live objects that are transitively reachable from the initial set. All objects assigned during this phase are marked as alive. Because CMS runs concurrently with the application, the object references might be updated while it is performing GC. Thus the result is not accurate.
+</p>
+</li>
+<li>
+<p>
+The last phase <em>remark</em> pauses the application again. During this period the collector revisits any objects that were modified during the second phase and update object marks. Multiple threads are used to speed it up. After this step, it is guaranteed that <strong>all</strong> objects are correctly marked. The garbage will be collected while application is running without STW.
+</p>
+</li>
 </ol>
-
-<ol>
-<li>The last phase <em>remark</em> pauses the application again. During this period the collector revisits any objects that were modified during the second phase and update object marks. Multiple threads are used to speed it up. After this step, it is guaranteed that <strong>all</strong> objects are correctly marked. The garbage will be collected while application is running without STW.</li>
-</ol>
-
-<p>The overall status before and after old GC is show in following figures.</p>
-
-<p><img src="/jvm-memory/cms-old-1.png" /></p>
-
-<p><img src="/jvm-memory/cms-old-2.png" /></p>
-
-<h3 id="evaluation-1">Evaluation</h3>
-
-<ul>
+<p>
+The overall status before and after old GC is show in following figures.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-old-1.png&#34; /&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-old-2.png&#34; /&gt;
+</p>
+<h3 id="headline-21">
+Evaluation
+</h3>
+<p>
 CMS sacrificed a lot to achieve low latency:
-<li>CMS does not do memory compacting, so it cannot simply use a pointer when allocating memory. Instead, a linked list is used to store available memory pieces. Every time an object is moved to old generation, the list has to be traversed until a suitable memory hole is found, which is expensive. This also raises another problem that the footprint is much larger because of the usage of linked list.</li>
-</ul>
-
+</p>
 <ul>
-<li>CMS collector tries to start a collection as early as possible to keep memory available. If the GC has to be triggered when the old generation is full, an old STW full GC is performed.</li>
+<li>
+<p>
+CMS does not do memory compacting, so it cannot simply use a pointer when allocating memory. Instead, a linked list is used to store available memory pieces. Every time an object is moved to old generation, the list has to be traversed until a suitable memory hole is found, which is expensive. This also raises another problem that the footprint is much larger because of the usage of linked list.
+</p>
+</li>
+<li>
+<p>
+CMS collector tries to start a collection as early as possible to keep memory available. If the GC has to be triggered when the old generation is full, an old STW full GC is performed.
+</p>
+</li>
 </ul>
-
-<h1 id="gargage-first-g1-gc">Gargage First (G1) GC</h1>
-
-<p>G1 was newly added in Oracle JDK 7 update 4 and later version. It takes a very different way compared with those legacy GC, from memory model to collection algorithm.</p>
-
-<h2 id="memory-model-1">Memory model</h2>
-
-<p>Unlike other garbage collectors, with G1 the heap memory is partitioned into a set of equal-sized heap regions, as shown in the figure below. Certain region sets are assigned the same roles (Eden, survivor, old) but their sizes are not fixed.</p>
-
-<p><img src="/jvm-memory/g1-heap-arch.png" alt="G1 heap memory structure" /></p>
-
-<p>The heap is split into around 2000 regions, with minimum size of 1Mb and maximum size of 32 Mb. Sizes of these regions can be adjusted dynamically by G1 when in need.</p>
-
-<p>G1 has larger footprint mainly because two information are recorded:</p>
-
+<h1 id="headline-22">
+Gargage First (G1) GC
+</h1>
+<p>
+G1 was newly added in Oracle JDK 7 update 4 and later version. It takes a very different way compared with those legacy GC, from memory model to collection algorithm.
+</p>
+<h2 id="headline-23">
+Memory model
+</h2>
+<p>
+Unlike other garbage collectors, with G1 the heap memory is partitioned into a set of equal-sized heap regions, as shown in the figure below. Certain region sets are assigned the same roles (Eden, survivor, old) but their sizes are not fixed.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-heap-arch.png&#34; alt=&#34;G1 heap memory structure&#34; /&gt;
+</p>
+<p>
+The heap is split into around 2000 regions, with minimum size of 1Mb and maximum size of 32 Mb. Sizes of these regions can be adjusted dynamically by G1 when in need.
+</p>
+<p>
+G1 has larger footprint mainly because two information are recorded:
+</p>
 <ol>
-<li><em>Remembered Sets</em> or <em>RSets</em> track object references into a given region. There is one RSet per region in the heap. The overall footprint impact of RSets is less than 5%.</li>
+<li>
+<p>
+<em>Remembered Sets</em> or <em>RSets</em> track object references into a given region. There is one RSet per region in the heap. The overall footprint impact of RSets is less than 5%.
+</p>
+</li>
+<li>
+<p>
+<em>Collection Sets</em> or <em>CSets</em> are sets of regions that will be collected in an GC. All live data in a CSet is evacuated during a GC. CSets have a less than 1% impact on the size of the footprint.
+</p>
+</li>
 </ol>
-
-<ol>
-<li><em>Collection Sets</em> or <em>CSets</em> are sets of regions that will be collected in an GC. All live data in a CSet is evacuated during a GC. CSets have a less than 1% impact on the size of the footprint.</li>
-</ol>
-
-<h2 id="gc-algorithm">GC algorithm</h2>
-
-<h3 id="young-gc-2">Young GC</h3>
-
-<p>Live objects are evacuated to one or more survivor regions, or even old generation regions. This process is a STW pause. Eden size and survivor size is calculated for the next young GC.</p>
-
-<p><img src="/jvm-memory/g1-young-1.png"></p>
-
-<p><img src="/jvm-memory/g1-young-2.png"></p>
-
-<h3 id="old-gc-2">Old GC</h3>
-
-<p>GC for old generation can be described below:</p>
-
-<h4 id="initial-mark-stw">Initial mark (STW)</h4>
-
-<p>Similar to CMS algorithm, G1 starts with a concurrent global marking phase. This phase is done just after a young GC, marking all alive objects. In the log it is noted as <code>GC pause (young)(inital-mark)</code>.</p>
-
-<p><img src="/jvm-memory/g1-old-1.png" /></p>
-
-<h4 id="concurrent-marking">Concurrent marking</h4>
-
-<p>If empty regions are found, they are marked for deletion. Also some information that decides aliveness is calculated during this phase.</p>
-
-<p><img src="/jvm-memory/g1-old-2.png" /></p>
-
-<h4 id="remark-stw">Remark (STW)</h4>
-
-<p>All empty regions are removed and aliveness of all regions is calculated.</p>
-
-<p><img src="/jvm-memory/g1-old-3.png" /></p>
-
-<h4 id="cleanup-stw">Cleanup (STW)</h4>
-
-<p>G1 selects the regions with most garbage, i.e. regions that can be reclaimed fastest. These regions are collected at the same time of young GC. This is noted as <code>GC pause (mixed)</code> in the log.</p>
-
-<p><img src="/jvm-memory/g1-old-4.png" /></p>
-
-<p><img src="/jvm-memory/g1-old-5.png" /></p>
-
-<p>G1 uses a prediction model to arrange its GC process. It collects information for every GC and estimate how many regions it can process within given pause time. However G1 is not a real-time collector. The pause time limit is not strictly satisfied.</p>
-
-<p>If in some rare cases, full GC is triggered, G1 falls back to legacy STW mode. Full GC can be avoided by tuning.</p>
-
-<h1 id="monitor-gc">Monitor GC</h1>
-
+<h2 id="headline-24">
+GC algorithm
+</h2>
+<h3 id="headline-25">
+Young GC
+</h3>
+<p>
+Live objects are evacuated to one or more survivor regions, or even old generation regions. This process is a STW pause. Eden size and survivor size is calculated for the next young GC.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-young-1.png&#34;&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-young-2.png&#34;&gt;
+</p>
+<h3 id="headline-26">
+Old GC
+</h3>
+<p>
+GC for old generation can be described below:
+</p>
+<h4 id="headline-27">
+Initial mark (STW)
+</h4>
+<p>
+Similar to CMS algorithm, G1 starts with a concurrent global marking phase. This phase is done just after a young GC, marking all alive objects. In the log it is noted as <code>GC pause (young)(inital-mark)</code>.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-1.png&#34; /&gt;
+</p>
+<h4 id="headline-28">
+Concurrent marking
+</h4>
+<p>
+If empty regions are found, they are marked for deletion. Also some information that decides aliveness is calculated during this phase.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-2.png&#34; /&gt;
+</p>
+<h4 id="headline-29">
+Remark (STW)
+</h4>
+<p>
+All empty regions are removed and aliveness of all regions is calculated.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-3.png&#34; /&gt;
+</p>
+<h4 id="headline-30">
+Cleanup (STW)
+</h4>
+<p>
+G1 selects the regions with most garbage, i.e. regions that can be reclaimed fastest. These regions are collected at the same time of young GC. This is noted as <code>GC pause (mixed)</code> in the log.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-4.png&#34; /&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-5.png&#34; /&gt;
+</p>
+<p>
+G1 uses a prediction model to arrange its GC process. It collects information for every GC and estimate how many regions it can process within given pause time. However G1 is not a real-time collector. The pause time limit is not strictly satisfied.
+</p>
+<p>
+If in some rare cases, full GC is triggered, G1 falls back to legacy STW mode. Full GC can be avoided by tuning.
+</p>
+<h1 id="headline-31">
+Monitor GC
+</h1>
 <ul>
-<li><code>-XX:+PrintGCDetails</code> Enable GC logging.</li>
-<li><code>-XX:+PrintGCDateStamps</code> Log timestamp.</li>
+<li>
+<p>
+<code>-XX:+PrintGCDetails</code> Enable GC logging.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+PrintGCDateStamps</code> Log timestamp.
+</p>
+</li>
 </ul>
-
-<h1 id="tuning">Tuning</h1>
-
-<h2 id="choosing-suitable-gc">Choosing suitable GC</h2>
-
+<h1 id="headline-32">
+Tuning
+</h1>
+<h2 id="headline-33">
+Choosing suitable GC
+</h2>
 <ul>
-<li><code>-XX:+UseSerialGC</code> Use serial GC.</li>
-<li><code>-XX:+UseParallelGC</code> Use parallel GC.</li>
-<li><code>-XX:+UseConcMarkSweepGC</code> Use CMS GC.</li>
-<li><code>-XX:+UseG1GC</code> Use G1 GC.</li>
+<li>
+<p>
+<code>-XX:+UseSerialGC</code> Use serial GC.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+UseParallelGC</code> Use parallel GC.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+UseConcMarkSweepGC</code> Use CMS GC.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+UseG1GC</code> Use G1 GC.
+</p>
+</li>
 </ul>
-
-<h2 id="heap-size-settings">Heap size settings</h2>
-
+<h2 id="headline-34">
+Heap size settings
+</h2>
 <ul>
-<li><code>-Xms&lt;n&gt;</code> Set the initial heap size when JVM starts.</li>
-<li><code>-Xmx&lt;n&gt;</code> Set the maximum heap size (might be related to <code>OutOfMemery</code> error).</li>
-<li><code>-Xmn&lt;n&gt;</code> Set the size of young generation, rest of the space goes for old generation.</li>
-<li><code>-XX:PermGen<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup></code> Set the initial size of the Permanent Generation Memory.</li>
-<li><code>-XX:MaxPermGen<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">3</a></sup></code> Set the maximum size of Perm Gen.</li>
-<li><code>-XX:SurvivorRatio</code> For providing ratio of Eden space, for example if young generation size is 10m and VM switch is –XX:SurvivorRatio=2 then 5m will be reserved for Eden space and 2.5m each for both the Survivor spaces. The default value is 8.</li>
-<li><code>-XX:NewRatio</code> For providing ratio of old/new generation sizes. The default value is 2.</li>
+<li>
+<p>
+<code>-Xms&lt;n&gt;</code> Set the initial heap size when JVM starts.
+</p>
+</li>
+<li>
+<p>
+<code>-Xmx&lt;n&gt;</code> Set the maximum heap size (might be related to <code>OutOfMemery</code> error).
+</p>
+</li>
+<li>
+<p>
+<code>-Xmn&lt;n&gt;</code> Set the size of young generation, rest of the space goes for old generation.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:PermGen[fn:2]</code> Set the initial size of the Permanent Generation Memory.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:MaxPermGen[fn:2]</code> Set the maximum size of Perm Gen.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:SurvivorRatio</code> For providing ratio of Eden space, for example if young generation size is 10m and VM switch is –XX:SurvivorRatio=2 then 5m will be reserved for Eden space and 2.5m each for both the Survivor spaces. The default value is 8.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:NewRatio</code> For providing ratio of old/new generation sizes. The default value is 2.
+</p>
+</li>
 </ul>
-
-<h2 id="behavior-based-collector-tuning">Behavior-based collector tuning</h2>
-
+<h2 id="headline-35">
+Behavior-based collector tuning
+</h2>
 <ul>
-<li><code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.</li>
-<li><code>-XX:GCTimeRatio=n</code> Set the value of <code>GC time/application time</code> as <code>1/(1 + n)</code>. The default value is 99, i.e. 1% time spent on GC.</li>
+<li>
+<p>
+<code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:GCTimeRatio=n</code> Set the value of <code>GC time/application time</code> as <code>1/(1 + n)</code>. The default value is 99, i.e. 1% time spent on GC.
+</p>
+</li>
 </ul>
-
-<h2 id="g1-switches">G1 switches</h2>
-
+<h2 id="headline-36">
+G1 switches
+</h2>
 <ul>
-<li><code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.</li>
-<li><code>-XX:InitiatingHeapOccupancyPercent=n</code> Percentage of the (entire) heap occupancy to start a concurrent GC cycle. It is used by GCs that trigger a concurrent GC cycle based on the occupancy of the entire heap, not just one of the generations (e.g., G1). A value of 0 denotes 'do constant GC cycles'. The default value is 45.</li>
-<li><code>-XX:NewRatio=n</code> Ratio of new/old generation sizes. The default value is 2.</li>
-<li><code>-XX:SurvivorRatio=n</code> Ratio of eden/survivor space size. The default value is 8.</li>
-<li><code>-XX:MaxTenuringThreshold=n</code> Maximum value for tenuring threshold. The default value is 15.</li>
-<li><code>-XX:ParallelGCThreads=n</code> Sets the number of threads used during parallel phases of the garbage collectors. The default value varies with the platform on which the JVM is running.</li>
-<li><code>-XX:ConcGCThreads=n</code> Number of threads concurrent garbage collectors will use. The default value varies with the platform on which the JVM is running.</li>
-<li><code>-XX:G1ReservePercent=n</code> Sets the amount of heap that is reserved as a false ceiling to reduce the possibility of promotion failure. The default value is 10.</li>
-<li><code>-XX:G1HeapRegionSize=n</code> With G1 the Java heap is subdivided into uniformly sized regions. This sets the size of the individual sub-divisions. The default value of this parameter is determined ergonomically based upon heap size. The minimum value is 1Mb and the maximum value is 32Mb.</li>
+<li>
+<p>
+<code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:InitiatingHeapOccupancyPercent=n</code> Percentage of the (entire) heap occupancy to start a concurrent GC cycle. It is used by GCs that trigger a concurrent GC cycle based on the occupancy of the entire heap, not just one of the generations (e.g., G1). A value of 0 denotes &#39;do constant GC cycles&#39;. The default value is 45.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:NewRatio=n</code> Ratio of new/old generation sizes. The default value is 2.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:SurvivorRatio=n</code> Ratio of eden/survivor space size. The default value is 8.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:MaxTenuringThreshold=n</code> Maximum value for tenuring threshold. The default value is 15.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:ParallelGCThreads=n</code> Sets the number of threads used during parallel phases of the garbage collectors. The default value varies with the platform on which the JVM is running.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:ConcGCThreads=n</code> Number of threads concurrent garbage collectors will use. The default value varies with the platform on which the JVM is running.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:G1ReservePercent=n</code> Sets the amount of heap that is reserved as a false ceiling to reduce the possibility of promotion failure. The default value is 10.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:G1HeapRegionSize=n</code> With G1 the Java heap is subdivided into uniformly sized regions. This sets the size of the individual sub-divisions. The default value of this parameter is determined ergonomically based upon heap size. The minimum value is 1Mb and the maximum value is 32Mb.
+</p>
+</li>
 </ul>
-
-<p>There are some best practices here while using G1:</p>
-
+<p>
+There are some best practices here while using G1:
+</p>
 <ul>
-<li><strong>Do not set young generation size</strong>. Young generation size should be maintained by G1 dynamically. If you do so, G1 will no long respect pause time target, or be able to expand and contract the young generation space as needed.</li>
+<li>
+<p>
+<strong>Do not set young generation size</strong>. Young generation size should be maintained by G1 dynamically. If you do so, G1 will no long respect pause time target, or be able to expand and contract the young generation space as needed.
+</p>
+</li>
+<li>
+<p>
+<strong>Better not setting average response time</strong>. Instead, set <code>-XX:MaxGCPauseMillis=&lt;N&gt;</code> option and set value of <code>N</code> to meet 90% of the time or more. This means that 90% of clients making a request will not experience a response time higher than the goal.
+</p>
+</li>
 </ul>
-
+<h1 id="headline-37">
+Java 8 related points
+</h1>
+<h2 id="headline-38">
+Changes of memory model
+</h2>
+<p>
+Since Java 8, the old <em>Permanent Generation</em> is totally removed from memory model. The main reason is that it is difficult to manage and tune. Thus there will be no error message like <code>OutOfMemoryError: PermGen space</code>.
+</p>
+<p>
+Java 8 added a new memory area called <em>Metaspace</em> to play a similar role as old PermGen. It stores meta information of classes, methods etc. 
+</p>
+<p>
+One important difference is that  Metaspace does not use JVM memory anymore. Instead, it uses raw memory (from OS) and automatically increases its size (up to what the underlying OS provides), while PermGen always has a fixed maximum size.
+</p>
+<p>
+Note that it is still possible to give a limit for <em>Metaspace</em> by passing corresponding start-up option.
+</p>
+<h1 id="headline-39">
+Q&amp;A
+</h1>
+<h2 id="headline-40">
+Is <em>PermGen</em> really part of heap memory?
+</h2>
+<p>
+According to <a href="https://stackoverflow.com/questions/41358895/permgen-is-part-of-heap-or-not">this question</a>, no. <a href="#heap-memory-model">This picture</a> is somehow incorrect.
+</p>
+<h2 id="headline-41">
+How does CMS <em>remark</em> phase really work?
+</h2>
+<p>
+According to <a href="https://blogs.oracle.com/jonthecollector/the-unspoken-phases-of-cms">this blog</a>, CMS records all object reference <em>changes</em> during <em>concurrent mark</em> phase. After entering <em>remark</em> phase, GC complement the reference information according to the changes it makes.
+</p>
+<h1 id="headline-42">
+References
+</h1>
 <ul>
-<li><strong>Better not setting average response time</strong>. Instead, set <code>-XX:MaxGCPauseMillis=&lt;N&gt;</code> option and set value of <code>N</code> to meet 90% of the time or more. This means that 90% of clients making a request will not experience a response time higher than the goal.</li>
-</ul>
-
-<h1 id="java-8-related-points">Java 8 related points</h1>
-
-<h2 id="changes-of-memory-model">Changes of memory model</h2>
-
-<p>Since Java 8, the old <em>Permanent Generation</em> is totally removed from memory model. The main reason is that it is difficult to manage and tune. Thus there will be no error message like <code>OutOfMemoryError: PermGen space</code>.</p>
-
-<p>Java 8 added a new memory area called <em>Metaspace</em> to play a similar role as old PermGen. It stores meta information of classes, methods etc.</p>
-
-<p>One important difference is that  Metaspace does not use JVM memory anymore. Instead, it uses raw memory (from OS) and automatically increases its size (up to what the underlying OS provides), while PermGen always has a fixed maximum size.</p>
-
-<p>Note that it is still possible to give a limit for <em>Metaspace</em> by passing corresponding start-up option.</p>
-
-<h1 id="q-a">Q&A</h1>
-
-<h2 id="is-permgen-really-part-of-heap-memory">Is <em>PermGen</em> really part of heap memory?</h2>
-
-<p>According to <a href="https://stackoverflow.com/questions/41358895/permgen-is-part-of-heap-or-not" title="this question">this question</a>, no. <a href="#heap-memory-model" title="This picture">This picture</a> is somehow incorrect.</p>
-
-<h2 id="how-does-cms-remark-phase-really-work">How does CMS <em>remark</em> phase really work?</h2>
-
-<p>According to <a href="https://blogs.oracle.com/jonthecollector/the-unspoken-phases-of-cms" title="this blog">this blog</a>, CMS records all object reference <em>changes</em> during <em>concurrent mark</em> phase. After entering <em>remark</em> phase, GC complement the reference information according to the changes it makes.</p>
-
-<h1 id="references">References</h1>
-
-<ul>
-<li><a href="http://tutorials.jenkov.com/java-concurrency/java-memory-model.html" title="A detailed explanation about JVM memory model (unofficial)">A detailed explanation about JVM memory model (unofficial)</a></li>
-<li><a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" title="Old but classic PDF that describes JVM memory management">Old but classic PDF that describes JVM memory management</a></li>
-<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning" title="Comprehensive JVM GC tuning">Comprehensive JVM GC tuning</a></li>
-<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/G1GettingStarted/index.html" title="Detailed explanation of G1 garbage collector">Detailed explanation of G1 garbage collector</a></li>
-<li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html" title="JVM command line options">JVM command line options</a></li>
-<li><a href="https://docs.oracle.com/javase/specs" title="Entry point of Java and JVM specifications">Entry point of Java and JVM specifications</a></li>
+<li>
+<p>
+<a href="http://tutorials.jenkov.com/java-concurrency/java-memory-model.html">A detailed explanation about JVM memory model (unofficial)</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf">Old but classic PDF that describes JVM memory management</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning">Comprehensive JVM GC tuning</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/G1GettingStarted/index.html">Detailed explanation of G1 garbage collector</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">JVM command line options</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/javase/specs">Entry point of Java and JVM specifications</a>
+</p>
+</li>
 </ul>
 <div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:1">Term /GC/ might refer to /Garbage Collector/ or /Garbage Collection/, according to the context. <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-
-<li id="fn:2">Does not work with Java 8. <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-
-<li id="fn:2">Does not work with Java 8. <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-</ol>
+<hr class="footnotes-separatator">
+<div class="footnote-definitions">
+<div class="footnote-definition">
+<sup id="footnote-1"><a href="#footnote-reference-1">1</a></sup>
+<div class="footnote-body">
+<p>
+Term <em>GC</em> might refer to <em>Garbage Collector</em> or <em>Garbage Collection</em>, according to the context.
+</p>
+</div>
+</div>
+</div>
 </div>
 ]]></content>
 		</item>
@@ -1120,74 +1745,122 @@ CMS sacrificed a lot to achieve low latency:
 			<pubDate>Thu, 16 May 2019 00:00:00 +0000</pubDate>
 			
 			<guid>/posts/2019-05-16_develop-common-lisp-on-your-android-phone/</guid>
-			<description>Long time ago, I was wondering: is it ever possible to write Common Lisp code on my Android phone? It seems useful when I want to experiment with something on the train.
-I found this application: CL REPL - Google Play.
-It is actually an ECL bundled with ASDF and Slime, in a traditional Android application, as you might imagine. It is a great application, but it still lacks some useful features compared with SLIME/SLY.</description>
-			<content type="html"><![CDATA[<p>Long time ago, I was wondering: is it ever possible to write Common Lisp code on my Android phone? It seems useful when I want to experiment with something on the train.</p>
-
-<p>I found this application: <a href="https://play.google.com/store/apps/details?id=org.eql5.android.repl&amp;hl=en_US" title="CL REPL - Google Play">CL REPL - Google Play</a>.</p>
-
-<p>It is actually an ECL bundled with ASDF and Slime, in a traditional Android application, as you might imagine. It is a great application, but it still lacks some useful features compared with SLIME/SLY.</p>
-
-<p>I thought, since it was an ECL anyway, is it possible to use my favorite SLIME/SLY on Android?</p>
-
-<p>The following content assumes that you have very basic idea about Linux shell, Common Lisp and Emacs.</p>
-
-<h2 id="install-termux">Install Termux</h2>
-
-<p>Termux is a shell emulator on Android. According to its <a href="https://termux.com" title="official website">official website</a>,</p>
-
+			<description>Long time ago, I was wondering: is it ever possible to write Common Lisp code on my Android phone? It seems useful when I want to experiment with something on the train.  I found this application: CL REPL - Google Play.  It is actually an ECL bundled with ASDF and Slime, in a traditional Android application, as you might imagine. It is a great application, but it still lacks some useful features compared with SLIME/SLY.</description>
+			<content type="html"><![CDATA[
+<p>
+Long time ago, I was wondering: is it ever possible to write Common Lisp code on my Android phone? It seems useful when I want to experiment with something on the train.
+</p>
+<p>
+I found this application: <a href="https://play.google.com/store/apps/details?id=org.eql5.android.repl&amp;hl=en_US">CL REPL - Google Play</a>.
+</p>
+<p>
+It is actually an ECL bundled with ASDF and Slime, in a traditional Android application, as you might imagine. It is a great application, but it still lacks some useful features compared with SLIME/SLY.
+</p>
+<p>
+I thought, since it was an ECL anyway, is it possible to use my favorite SLIME/SLY on Android?
+</p>
+<p>
+The following content assumes that you have very basic idea about Linux shell, Common Lisp and Emacs.
+</p>
+<h2 id="headline-1">
+Install Termux
+</h2>
+<p>
+Termux is a shell emulator on Android. According to its <a href="https://termux.com">official website</a>,
+</p>
 <blockquote>
 <p>
 Termux is an Android terminal emulator and Linux environment app that works directly with no rooting or setup required. A minimal base system is installed automatically - additional packages are available using the APT package manager.
 </p>
 </blockquote>
-
-<p>In short, it makes it possible to use native shell commands on the Android phone!</p>
-
-<p>You may need to install the following packages for the next steps.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ apt install binutils git make</code></pre></div>
-<p>Also, it is recommended to install some packages for better user experience, such as <code>zsh</code>, <code>ripgrep</code> etc.</p>
-
-<p>Termux provides a key bar for quick input of special characters that might be hard to type, which is customizable via modifying the configuration file <code>~/.termux/termux.properties</code>.</p>
-
-<p>Here is what I am using:</p>
+<p>
+In short, it makes it possible to use native shell commands on the Android phone!
+</p>
+<p>
+You may need to install the following packages for the next steps.
+</p>
+<div class="src src-sh">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ pkg install binutils git make clang texinfo</code></pre></div>
+</div>
+<p>
+Also, it is recommended to install some packages for better user experience, such as <code>zsh</code>, <code>ripgrep</code> etc.
+</p>
+<p>
+Termux provides a key bar for quick input of special characters that might be hard to type, which is customizable via modifying the configuration file <code>~/.termux/termux.properties</code>.
+</p>
+<p>
+Here is what I am using:
+</p>
+<div class="src src-toml">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#6272a4"># Ignore bell character.</span>
 bell-character = ignore
 <span style="color:#6272a4"># Extra line of keys above keyboard.</span>
 extra-keys = [[<span style="color:#f1fa8c">&#39;TAB&#39;</span>,<span style="color:#f1fa8c">&#39;CTRL&#39;</span>,<span style="color:#f1fa8c">&#39;ALT&#39;</span>,<span style="color:#f1fa8c">&#39;-&#39;</span>,<span style="color:#f1fa8c">&#39;_&#39;</span>,<span style="color:#f1fa8c">&#39;&#34;&#39;</span>,<span style="color:#f1fa8c">&#39;/&#39;</span>,<span style="color:#f1fa8c">&#34;&#39;&#34;</span>,<span style="color:#f1fa8c">&#39;(&#39;</span>,<span style="color:#f1fa8c">&#39;)&#39;</span>]]</code></pre></div>
-<p>It is also possible to use the volume keys plus the normal keys to type special characters. See its <a href="https://wiki.termux.com/wiki/Main_Page" title="Wiki page">Wiki page</a> for more details.</p>
-
-<h2 id="compile-ecl">Compile ECL</h2>
-
-<p>I first tried to install <a href="https://github.com/roswell/roswell/releases" title="Roswell">Roswell</a>. Unfortunately, it did not work because Termux seemed not to support 32-bit on 64-bit machine and my phone was an aarch64 device. So I had to compile ECL manually. Please let me know if you know how to use Roswell with Termux.</p>
-
-<p>First download ECL from its <a href="https://gitlab.com/embeddable-common-lisp/ecl" title="GitLab homepage">GitLab homepage</a>.</p>
+</div>
+<p>
+It is also possible to use the volume keys plus the normal keys to type special characters. See its <a href="https://wiki.termux.com/wiki/Main_Page">Wiki page</a> for more details.
+</p>
+<h2 id="headline-2">
+Compile ECL
+</h2>
+<p>
+I first tried to install <a href="https://github.com/roswell/roswell/releases">Roswell</a>. Unfortunately, it did not work because Termux seemed not to support 32-bit on 64-bit machine and my phone was an aarch64 device. So I had to compile ECL manually. Please let me know if you know how to use Roswell with Termux.
+</p>
+<p>
+First download ECL from its <a href="https://gitlab.com/embeddable-common-lisp/ecl">GitLab homepage</a>.
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ git clone https://gitlab.com/embeddable-common-lisp/ecl</code></pre></div>
-<p>Then compile it using the following commands.</p>
+</div>
+<p>
+Then compile it using the following commands.
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~/ecl $ ./configure --with-prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/software/ --build<span style="color:#ff79c6">=</span>aarch64-linux-android --enable-gmp<span style="color:#ff79c6">=</span>included
 ~/ecl $ make <span style="color:#ff79c6">&amp;&amp;</span> make install</code></pre></div>
-<p>It is time to make yourself a cup of coffee now because it would take a relatively long time to finish. You deserve it!</p>
-
-<h2 id="setup-emacs">Setup Emacs</h2>
-
-<p>Till now, the ECL should be usable already. But without SLIME/SLY, what is the difference between using ECL in Termux and using <em>CL REPL</em>?</p>
-
-<p>First you have to install Emacs on Termux.</p>
+</div>
+<p>
+It is time to make yourself a cup of coffee now because it would take a relatively long time to finish. You deserve it!
+</p>
+<h2 id="headline-3">
+Setup Emacs
+</h2>
+<p>
+Till now, the ECL should be usable already. But without SLIME/SLY, what is the difference between using ECL in Termux and using <em>CL REPL</em>?
+</p>
+<p>
+First you have to install Emacs on Termux.
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ apt install emacs</code></pre></div>
-<p>Then it is needed to setup the Emacs for connecting the ECL. It would be a good idea to use Git to manage your Emacs configurations, like <a href="https://github.com/sheepduke/emacs-settings" title="what I did">what I did</a>. Simply copy the configuration files and put them to the corresponding places.</p>
-
-<p>One setting that might need to be changed is the variable <code>inferior-lisp-program</code>. You need to change it as the following.</p>
+</div>
+<p>
+Then it is needed to setup the Emacs for connecting the ECL. It would be a good idea to use Git to manage your Emacs configurations, like <a href="https://github.com/sheepduke/emacs-settings">what I did</a>. Simply copy the configuration files and put them to the corresponding places.
+</p>
+<p>
+One setting that might need to be changed is the variable <code>inferior-lisp-program</code>. You need to change it as the following.
+</p>
+<div class="src src-emacs-lisp">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-emacs-lisp" data-lang="emacs-lisp">(<span style="color:#8be9fd;font-style:italic">setq</span> <span style="color:#8be9fd;font-style:italic">inferior-lisp-program</span> <span style="color:#f1fa8c">&#34;ecl&#34;</span>)</code></pre></div>
-<h2 id="run-it">Run It!</h2>
-
-<p>It is the moment now. First take a deep breath and calm down.</p>
-
-<p>Boot the Emacs, run command <code>slime</code> and you will see it compiling packages. It would take some time so you can make yourself a cookie now. Hope you did not finish your coffee ;-)</p>
-
-<p>After it finishes, you are able to use the REPL inside our favorite Emacs. Try evaluate</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lisp" data-lang="lisp">(<span style="color:#8be9fd;font-style:italic">format</span> t <span style="color:#f1fa8c">&#34;Hello, world&#34;</span>)</code></pre></div>
-<p>and see the result.</p>
+</div>
+<h2 id="headline-4">
+Run It!
+</h2>
+<p>
+It is the moment now. First take a deep breath and calm down.
+</p>
+<p>
+Boot the Emacs, run command <code>slime</code> and you will see it compiling packages. It would take some time so you can make yourself a cookie now. Hope you did not finish your coffee ;-)
+</p>
+<p>
+After it finishes, you are able to use the REPL inside our favorite Emacs. Try evaluate
+</p>
+<div class="src src-lisp">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lisp" data-lang="lisp">(<span style="color:#50fa7b">format</span> t <span style="color:#f1fa8c">&#34;Hello, world&#34;</span>)</code></pre></div>
+</div>
+<p>
+and see the result.
+</p>
 ]]></content>
 		</item>
 		
@@ -1197,79 +1870,108 @@ extra-keys = [[<span style="color:#f1fa8c">&#39;TAB&#39;</span>,<span style="col
 			<pubDate>Sat, 11 May 2019 00:00:00 +0000</pubDate>
 			
 			<guid>/posts/2019-05-11_use-hugo-to-setup-personal-blog/</guid>
-			<description>Welcome to my blog!
+			<description>Welcome to my blog!  This is the first post. This blog is constructed using Hugo. Praise the creators of it!  In this blog I am going to introduce the procedure of building this blog. Introduction   Hugo is a framework written in Go to generate static blog site from various formats of content. It has various shining points:    It can be easily configured in a TOML configuration file.</description>
+			<content type="html"><![CDATA[
+<p>
+Welcome to my blog!
+</p>
+<p>
 This is the first post. This blog is constructed using Hugo. Praise the creators of it!
+</p>
+<p>
 In this blog I am going to introduce the procedure of building this blog.
-Introduction Hugo is a framework written in Go to generate static blog site from various formats of content. It has various shining points:
- It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON.</description>
-			<content type="html"><![CDATA[<p>Welcome to my blog!</p>
-
-<p>This is the first post. This blog is constructed using Hugo. Praise the creators of it!</p>
-
-<p>In this blog I am going to introduce the procedure of building this blog.</p>
-
-<h2 id="introduction">Introduction</h2>
-
-<p><a href="https://gohugo.io/" title="Hugo">Hugo</a> is a framework written in Go to generate static blog site from <a href="https://gohugo.io/content-management/formats/" title="various formats">various formats</a> of content. It has various shining points:</p>
-
+</p>
+<h2 id="headline-1">
+Introduction
+</h2>
+<p>
+<a href="https://gohugo.io/">Hugo</a> is a framework written in Go to generate static blog site from <a href="https://gohugo.io/content-management/formats/">various formats</a> of content. It has various shining points:
+</p>
 <ul>
-<li>It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON.</li>
+<li>
+<p>
+It can be easily configured in a TOML configuration file. In my humble opinion, TOML files are easier to work with compared with YAML or JSON.
+</p>
+</li>
+<li>
+<p>
+It supports Org Mode natively. As an Emacs user, I can simply write my blog posts (like this one) in Org Mode and Hugo will convert it to static HTML files.
+</p>
+</li>
 </ul>
-
-<ul>
-<li>It supports Org Mode natively. As an Emacs user, I can simply write my blog posts (like this one) in Org Mode and Hugo will convert it to static HTML files.</li>
-</ul>
-
-<p>The files generated by Hugo are put under a specific directory <code>public/</code>,
+<p>
+The files generated by Hugo are put under a specific directory <code>public/</code>,
 which can be directly copied to remote server and hosted by any web server,
-e.g. Nginx.</p>
-
-<p>The official <a href="https://gohugo.io/getting-started/quick-start/" title="quick start">quick start</a> provides very detailed information of setup a blog
-site. Here I only introduce some confusing parts.</p>
-
-<h2 id="themes">Themes</h2>
-
-<p>Hugo supports different themes. It is relatively easy to switch to another
-theme. I am using <a href="https://github.com/Track3/hermit" title="Hermit">Hermit</a>, but please note that this theme <strong>cannot</strong> be used
+e.g. Nginx.
+</p>
+<p>
+The official <a href="https://gohugo.io/getting-started/quick-start/">quick start</a> provides very detailed information of setup a blog
+site. Here I only introduce some confusing parts.
+</p>
+<h2 id="headline-2">
+Themes
+</h2>
+<p>
+Hugo supports different themes. It is relatively easy to switch to another
+theme. I am using <a href="https://github.com/Track3/hermit">Hermit</a>, but please note that this theme <strong>cannot</strong> be used
 directly with quick-start. The best way to use it is to copy its sample
 configuration file <code>themes/hermit/exampleSite/config.toml</code> to the root
-directory and customize it.</p>
-
-<h2 id="code-syntax-highlighting">Code Syntax Highlighting</h2>
-
-<p>From Hugo 0.28, chroma is used to provide syntax highlighting
-functionality. You need to add the following lines into <code>config.toml</code> file:</p>
+directory and customize it.
+</p>
+<h2 id="headline-3">
+Code Syntax Highlighting
+</h2>
+<p>
+From Hugo 0.28, chroma is used to provide syntax highlighting
+functionality. You need to add the following lines into <code>config.toml</code> file:
+</p>
+<div class="src src-toml">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#6272a4"># Enable syntax highlighting for code blocks.</span>
 pygmentsCodefences = <span style="color:#ff79c6">true</span>
 <span style="color:#6272a4"># Use your favorite code theme here!</span>
 pygmentsStyle = <span style="color:#f1fa8c">&#34;pygments&#34;</span></code></pre></div>
-<p>Voilà! Now you have the magical power. No need to install external programs
-or generate any CSS file.</p>
-
-<h2 id="tags">Tags</h2>
-
-<p>Hugo provides functionality to categorize posts called <em>taxonomies</em>. It can be
-enabled by adding following snippet to <code>config.toml</code> file:</p>
+</div>
+<p>
+Voilà! Now you have the magical power. No need to install external programs
+or generate any CSS file.
+</p>
+<h2 id="headline-4">
+Tags
+</h2>
+<p>
+Hugo provides functionality to categorize posts called <em>taxonomies</em>. It can be
+enabled by adding following snippet to <code>config.toml</code> file:
+</p>
+<div class="src src-toml">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[taxonomies]
 tag = <span style="color:#f1fa8c">&#34;tags&#34;</span></code></pre></div>
-<p>Then while editing posts, simply define tags and Hugo will handle it for
-you. For Org Mode this done by adding option <code>#+TAGS</code>.</p>
-
-<p>Hugo will tag posts with given tags and provide a page to list all tags, under
-the URL <code>tags/</code>.</p>
-
-<p>See <a href="https://gohugo.io/content-management/taxonomies/#default-taxonomies" title="this page">this page</a> for more detail.</p>
-
-<h2 id="deployment">Deployment</h2>
-
-<p>I am using Nginx to serve generated static files, so I can simply use ~rsync~
-to deploy blog posts described <a href="https://gohugo.io/hosting-and-deployment/deployment-with-rsync/" title="here">here</a>.</p>
-
-<h2 id="summary">Summary</h2>
-
-<p>In conclusion, Hugo implements functionality for a typical blog. It can be
+</div>
+<p>
+Then while editing posts, simply define tags and Hugo will handle it for
+you. For Org Mode this done by adding option <code>#+TAGS</code>.
+</p>
+<p>
+Hugo will tag posts with given tags and provide a page to list all tags, under
+the URL <code>tags/</code>.
+</p>
+<p>
+See <a href="https://gohugo.io/content-management/taxonomies/#default-taxonomies">this page</a> for more detail.
+</p>
+<h2 id="headline-5">
+Deployment
+</h2>
+<p>
+I am using Nginx to serve generated static files, so I can simply use <code>rsync</code>
+to deploy blog posts described <a href="https://gohugo.io/hosting-and-deployment/deployment-with-rsync/">here</a>.
+</p>
+<h2 id="headline-6">
+Summary
+</h2>
+<p>
+In conclusion, Hugo implements functionality for a typical blog. It can be
 configured easily to setup a blog without a single line of code. Also its
-out-of-box native support for Org Mode, Markdown etc really shines.</p>
+out-of-box native support for Org Mode, Markdown etc really shines.
+</p>
 ]]></content>
 		</item>
 		

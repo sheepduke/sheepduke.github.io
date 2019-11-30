@@ -7,10 +7,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
-
 <meta itemprop="name" content="Setup Home Net Disk Using Raspberry Pi">
-<meta itemprop="description" content="Background Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.
-Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access.">
+<meta itemprop="description" content="Background   Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.  Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access.">
 
 
 <meta itemprop="datePublished" content="2019-06-22T00:00:00&#43;00:00" />
@@ -19,16 +17,16 @@ Since the projector is actually an Android device, I realized that this is actua
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="raspberry-pi," />
 <meta property="og:title" content="Setup Home Net Disk Using Raspberry Pi" />
-<meta property="og:description" content="Background Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.
-Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access." />
+<meta property="og:description" content="Background   Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.  Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/" /><meta property="article:published_time" content="2019-06-22T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-06-22T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta property="og:url" content="/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/" />
+<meta property="article:published_time" content="2019-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Setup Home Net Disk Using Raspberry Pi"/>
-<meta name="twitter:description" content="Background Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.
-Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access."/>
+<meta name="twitter:description" content="Background   Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.  Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -38,7 +36,7 @@ Since the projector is actually an Android device, I realized that this is actua
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>Setup Home Net Disk Using Raspberry Pi</title>
-	<link rel="stylesheet" href="/css/style.min.4b21ce88e94e6ff8eb47d816b952379f79e2302f1dcf462cadc11096afb7a536.css" integrity="sha256-SyHOiOlOb/jrR9gWuVI3n3niMC8dz0YsrcEQlq+3pTY=">
+	<link rel="stylesheet" href="/css/style.min.bbdfdbe22b04b310c3c2a48b7765d865ceff19c9989b1c578cb0c10b12c1cda8.css" integrity="sha256-u9/b4isEsxDDwqSLd2XYZc7/GcmYmxxXjLDBCxLBzag=">
 	
 </head>
 
@@ -77,51 +75,99 @@ Since the projector is actually an Android device, I realized that this is actua
 				<h1>Setup Home Net Disk Using Raspberry Pi</h1>
 			</header>
 			<div class="content">
-				<h2 id="background">Background<a href="#background" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.</p>
-
-<p>Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access. I can imagine that this will make file sharing between family members blazingly easy.</p>
-
-<p>I would like the net disk to be managed by a Linux device. Raspberry Pi would do the trick pretty well, as long as it is connected to an external hard drive, otherwise the R/W speed of the internal SD card is relatively slow. Of course, a 7x24 PC will also work but you will have to pay the electricity bill. ;-)</p>
-
-<p>This post will be structured into several parts:</p>
-
+				
+<h2 id="headline-1">
+Background
+</h2>
+<p>
+Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.
+</p>
+<p>
+Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access. I can imagine that this will make file sharing between family members blazingly easy.
+</p>
+<p>
+I would like the net disk to be managed by a Linux device. Raspberry Pi would do the trick pretty well, as long as it is connected to an external hard drive, otherwise the R/W speed of the internal SD card is relatively slow. Of course, a 7x24 PC will also work but you will have to pay the electricity bill. ;-)
+</p>
+<p>
+This post will be structured into several parts:
+</p>
 <ul>
-<li>Setup the file sharing server.</li>
-<li>Setup the file sharing clients.</li>
+<li>
+<p>
+Setup the file sharing server.
+</p>
+</li>
+<li>
+<p>
+Setup the file sharing clients.
+</p>
+</li>
 </ul>
-
-<h2 id="file-sharing-server">File Sharing Server<a href="#file-sharing-server" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>So the net disk device must be able to be accessed by various devices and my projector shall be able to directly play the videos from it. There are multiple choices:</p>
-
+<h2 id="headline-2">
+File Sharing Server
+</h2>
+<p>
+So the net disk device must be able to be accessed by various devices and my projector shall be able to directly play the videos from it. There are multiple choices:
+</p>
 <ul>
-<li>Using <a href="https://en.wikipedia.org/wiki/Samba_(software)" title="Samba">Samba</a>. Samba is a free software re-implementation of the SMB networking protocol. It is very friendly to Windows clients. I recommend this way.</li>
-<li>Using <a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol" title="File Transfer Protocol (FTP)">File Transfer Protocol (FTP)</a>. FTP is a standard network protocol, but it is rather old and totally insecure. It is acceptable in a local network, but definitely bad for Internet use.</li>
-<li>Using <a href="Https://En.Wikipedia.Org/Wiki/Vsftpd" title="Very Secure FTP Daemon (VSFTP)">Very Secure FTP Daemon (VSFTP)</a>. VSFTP is a more secure FTP protocol. But for some unclear reason, I abandoned it.</li>
-<li>Using Secure FTP (SFTP). Unlike FTP, the transmission is done in a encrypted way. It is a FTP wrapper upon SSH. If the transmission goes through the Internet, SFTP might be the most secure among the four.</li>
+<li>
+<p>
+Using <a href="https://en.wikipedia.org/wiki/Samba_(software)">Samba</a>. Samba is a free software re-implementation of the SMB networking protocol. It is very friendly to Windows clients. I recommend this way.
+</p>
+</li>
+<li>
+<p>
+Using <a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">File Transfer Protocol (FTP)</a>. FTP is a standard network protocol, but it is rather old and totally insecure. It is acceptable in a local network, but definitely bad for Internet use.
+</p>
+</li>
+<li>
+<p>
+Using <a href="Https://En.Wikipedia.Org/Wiki/Vsftpd">Very Secure FTP Daemon (VSFTP)</a>. VSFTP is a more secure FTP protocol. But for some unclear reason, I abandoned it.
+</p>
+</li>
+<li>
+<p>
+Using Secure FTP (SFTP). Unlike FTP, the transmission is done in a encrypted way. It is a FTP wrapper upon SSH. If the transmission goes through the Internet, SFTP might be the most secure among the four.
+</p>
+</li>
 </ul>
-
-<p>Here I will introduce Samba and SFTP solutions.</p>
-
-<h3 id="samba">Samba<a href="#samba" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<h4 id="creating-users">Creating Users<a href="#creating-users" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>First you need to install samba on the server (Raspberry Pi in my case). Since I am using Arch Linux, a simple <code>pacman -S samba</code> will do the trick.</p>
-
-<p>Samba uses the Linux system users but it has its own password management facility. Let's create an system user first. Since this user is only to access shared data, we put some restriction on it.</p>
+<p>
+Here I will introduce Samba and SFTP solutions.
+</p>
+<h3 id="headline-3">
+Samba
+</h3>
+<h4 id="headline-4">
+Creating Users
+</h4>
+<p>
+First you need to install samba on the server (Raspberry Pi in my case). Since I am using Arch Linux, a simple <code>pacman -S samba</code> will do the trick.
+</p>
+<p>
+Samba uses the Linux system users but it has its own password management facility. Let&#39;s create an system user first. Since this user is only to access shared data, we put some restriction on it.
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ useradd -s /sbin/nologin --no-create-home --no-user-group samba</code></pre></div>
-<p>The CLI tool <code>pdbedit</code> might be used to manage the users. Suppose you already have a user named <code>samba</code> in the OS. In order to add it to Samba, simply run the following command:</p>
+</div>
+<p>
+The CLI tool <code>pdbedit</code> might be used to manage the users. Suppose you already have a user named <code>samba</code> in the OS. In order to add it to Samba, simply run the following command:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ pdbedit -a samba</code></pre></div>
-<p>Then set the password for this account. Please remember that it is mandatory that both system user and Samba user needs to be created.</p>
-
-<p>In my settings the user <code>samba</code> is for R/W operations on the shared disk. Besides, let's create another user called <code>visitor</code> who has read-only permission.</p>
-
-<h4 id="configuring-samba-server">Configuring Samba Server<a href="#configuring-samba-server" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>The configuration file of Samba server is located at <code>/etc/samba/smb.conf</code>. The following snippet is a working example with users we just created.</p>
+</div>
+<p>
+Then set the password for this account. Please remember that it is mandatory that both system user and Samba user needs to be created.
+</p>
+<p>
+In my settings the user <code>samba</code> is for R/W operations on the shared disk. Besides, let&#39;s create another user called <code>visitor</code> who has read-only permission.
+</p>
+<h4 id="headline-5">
+Configuring Samba Server
+</h4>
+<p>
+The configuration file of Samba server is located at <code>/etc/samba/smb.conf</code>. The following snippet is a working example with users we just created.
+</p>
+<div class="src src-toml">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[global]
 <span style="color:#6272a4"># Set the work group.</span>
 workgroup = home
@@ -162,32 +208,55 @@ path = /data/shared/public/
 browsable = yes
 valid users = visitor
 read only = yes</code></pre></div>
-<h4 id="finalizing">Finalizing<a href="#finalizing" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>On Arch Linux, you can start the Samba service using the following command:</p>
+</div>
+<h4 id="headline-6">
+Finalizing
+</h4>
+<p>
+On Arch Linux, you can start the Samba service using the following command:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ systemctl <span style="color:#8be9fd;font-style:italic">enable</span> smb
 ~ $ systemctl start smb</code></pre></div>
-<p>The CLI tool <code>smbclient</code> can be used as below. Note that <code>rpi</code> refers to the hostname of my Raspberry Pi.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#6272a4"># List the share points. 
-</span><span style="color:#6272a4"># -W and -U specifies workgroup and user respectively.
-</span><span style="color:#6272a4"></span>~ $ smbclient -L //rpi/ -W home -U samba
-<span style="color:#6272a4"># Connect to the share point.
-</span><span style="color:#6272a4"></span>~ $ smbclient //rpi/shared -W home -U samba</code></pre></div>
-<p>If you see the <code>smb: \&gt;</code> prompt, then congrats! Your Samba server is working properly.</p>
-
-<h3 id="sftp">SFTP<a href="#sftp" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<h4 id="creating-a-user">Creating a User<a href="#creating-a-user" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>Similar to Samba setup, create a user (let's name it <code>share</code>) as following:</p>
+</div>
+<p>
+The CLI tool <code>smbclient</code> can be used as below. Note that <code>rpi</code> refers to the hostname of my Raspberry Pi.
+</p>
+<div class="src src-sh">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#6272a4"># List the share points.</span> 
+<span style="color:#6272a4"># -W and -U specifies workgroup and user respectively.</span>
+~ $ smbclient -L //rpi/ -W home -U samba
+<span style="color:#6272a4"># Connect to the share point.</span>
+~ $ smbclient //rpi/shared -W home -U samba</code></pre></div>
+</div>
+<p>
+If you see the <code>smb: \&gt;</code> prompt, then congrats! Your Samba server is working properly.
+</p>
+<h3 id="headline-7">
+SFTP
+</h3>
+<h4 id="headline-8">
+Creating a User
+</h4>
+<p>
+Similar to Samba setup, create a user (let&#39;s name it <code>share</code>) as following:
+</p>
+<div class="src src-sh">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ $ useradd -s /sbin/nologin --no-create-home --no-user-group share</code></pre></div>
-<h4 id="putting-the-user-into-jail">Putting the User Into Jail<a href="#putting-the-user-into-jail" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>At the very beginning, there are some very basic rules about SSH configuration, such as disabling password login by default (especially for root) etc. I recommended you to look through materials about SSH security.</p>
-
-<p>It is possible to make a chroot environment for the user so that directories out of the environment cannot be accessed.</p>
-
-<p>Edit the file <code>/etc/ssh/sshd_config</code> and put the following lines into it. Also you need to comment out the existing line starting with <code>Subsystem sftp</code>.</p>
+</div>
+<h4 id="headline-9">
+Putting the User Into Jail
+</h4>
+<p>
+At the very beginning, there are some very basic rules about SSH configuration, such as disabling password login by default (especially for root) etc. I recommended you to look through materials about SSH security.
+</p>
+<p>
+It is possible to make a chroot environment for the user so that directories out of the environment cannot be accessed.
+</p>
+<p>
+Edit the file <code>/etc/ssh/sshd_config</code> and put the following lines into it. Also you need to comment out the existing line starting with <code>Subsystem sftp</code>.
+</p>
+<div class="src src-conf">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-conf" data-lang="conf">Subsystem sftp internal-sftp
 
 # Group can also be a match condition here.
@@ -198,59 +267,99 @@ Match User share
   ForceCommand internal-sftp
   X11Forwarding no
   AllowTcpForwarding no</code></pre></div>
-<p>The owner of directory specified by <code>ChrootDirectory</code> must be <code>root</code>, which means that you need to create a new directory inside <code>/data/root/</code> and set the owner of it to the corresponding user, i.e. <code>share</code> in our example.</p>
-
-<p>After this step, the user <code>share</code> can only use SFTP (or SSHFS) with specific directory. Both SSH login and access outside the sandbox is prohibited.</p>
-
-<h2 id="file-sharing-client">File Sharing Client<a href="#file-sharing-client" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<h3 id="linux">Linux<a href="#linux" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<h4 id="samba-1">Samba<a href="#samba-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>As shown above, <code>smbclient</code> is the main CLI tool to work with Samba. If you use Emacs, use tramp with format <code>/smb:xiaoneng%home@rpi:/shared</code> to directly open the shared folder.</p>
-
-<p>If you want to mount the shared directory automatically, you may add the following line into the <code>/etc/fstab</code> file.</p>
+</div>
+<p>
+The owner of directory specified by <code>ChrootDirectory</code> must be <code>root</code>, which means that you need to create a new directory inside <code>/data/root/</code> and set the owner of it to the corresponding user, i.e. <code>share</code> in our example.
+</p>
+<p>
+After this step, the user <code>share</code> can only use SFTP (or SSHFS) with specific directory. Both SSH login and access outside the sandbox is prohibited.
+</p>
+<h2 id="headline-10">
+File Sharing Client
+</h2>
+<h3 id="headline-11">
+Linux
+</h3>
+<h4 id="headline-12">
+Samba
+</h4>
+<p>
+As shown above, <code>smbclient</code> is the main CLI tool to work with Samba. If you use Emacs, use tramp with format <code>/smb:xiaoneng%home@rpi:/shared</code> to directly open the shared folder.
+</p>
+<p>
+If you want to mount the shared directory automatically, you may add the following line into the <code>/etc/fstab</code> file.
+</p>
+<div class="src src-conf">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-conf" data-lang="conf">//rpi/shared /mnt/samba auto credentials=/etc/samba/pass.txt,vers=1.0	0 0</code></pre></div>
-<p>Here in order not to input the password, especially when the OS is booting ;-), you may write the credentials to <code>/etc/samba/pass.txt</code> as mentioned above, with the following format:</p>
+</div>
+<p>
+Here in order not to input the password, especially when the OS is booting ;-), you may write the credentials to <code>/etc/samba/pass.txt</code> as mentioned above, with the following format:
+</p>
+<div class="src src-conf">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-conf" data-lang="conf">username=samba
 password=pass</code></pre></div>
-<p>Making the mode of this file <code>0400</code> under <code>root</code> account might be a good idea.</p>
-
-<h4 id="sftp-1">SFTP<a href="#sftp-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>You may use this method in 2 ways:</p>
-
+</div>
+<p>
+Making the mode of this file <code>0400</code> under <code>root</code> account might be a good idea.
+</p>
+<h4 id="headline-13">
+SFTP
+</h4>
+<p>
+You may use this method in 2 ways:
+</p>
 <ul>
-<li>Directly using <code>sftp</code> command.</li>
-<li>Using <code>sshfs</code> to mount the remote shared directory to a local position.</li>
+<li>
+<p>
+Directly using <code>sftp</code> command.
+</p>
+</li>
+<li>
+<p>
+Using <code>sshfs</code> to mount the remote shared directory to a local position.
+</p>
+</li>
 </ul>
-
-<h3 id="windows">Windows<a href="#windows" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<h4 id="samba-2">Samba<a href="#samba-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>Windows supports Samba natively. Simply opening the file explorer and add a network location will do the trick.</p>
-
-<h4 id="sftp-2">SFTP<a href="#sftp-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>It is essential to install an external SFTP client for unlucky Windows users. Something like WinSCP or FileZilla will work perfectly.</p>
-
-<h3 id="android">Android<a href="#android" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<p>A single open-source software <a href="https://mixplorer.com/" title="MiXplorer">MiXplorer</a> will rule them all!</p>
-
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>It is relatively easy to setup Samba or SFTP to share files at home. Samba requires a little bit more work on the server side, but it is more friendly to all sorts of clients. The transmission of Samba is not encrypted, so it is very suitable for in-house file sharing.</p>
-
-<p>When security is a critical concern, SFTP might meet your needs better.</p>
-
-<p>So, choose whichever works and have a try!</p>
+<h3 id="headline-14">
+Windows
+</h3>
+<h4 id="headline-15">
+Samba
+</h4>
+<p>
+Windows supports Samba natively. Simply opening the file explorer and add a network location will do the trick.
+</p>
+<h4 id="headline-16">
+SFTP
+</h4>
+<p>
+It is essential to install an external SFTP client for unlucky Windows users. Something like WinSCP or FileZilla will work perfectly.
+</p>
+<h3 id="headline-17">
+Android
+</h3>
+<p>
+A single open-source software <a href="https://mixplorer.com/">MiXplorer</a> will rule them all!
+</p>
+<h2 id="headline-18">
+Conclusion
+</h2>
+<p>
+It is relatively easy to setup Samba or SFTP to share files at home. Samba requires a little bit more work on the server side, but it is more friendly to all sorts of clients. The transmission of Samba is not encrypted, so it is very suitable for in-house file sharing.
+</p>
+<p>
+When security is a critical concern, SFTP might meet your needs better.
+</p>
+<p>
+So, choose whichever works and have a try!
+</p>
 
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="/tags/raspberry-pi">raspberry-pi</a></span>
+				</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1268 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-06-22</p>
 			</footer>

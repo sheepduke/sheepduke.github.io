@@ -7,31 +7,26 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
-
 <meta itemprop="name" content="JVM on AWS Cloud: Investigation and Thoughts">
-<meta itemprop="description" content="Amazon has been the largest cloud service vendor for quite a while.
-AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.
-If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.">
+<meta itemprop="description" content="Amazon has been the largest cloud service vendor for quite a while.  AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.  If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.">
 
 
 <meta itemprop="datePublished" content="2019-10-08T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-10-08T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="674">
+<meta itemprop="wordCount" content="642">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="jvm,aws," />
 <meta property="og:title" content="JVM on AWS Cloud: Investigation and Thoughts" />
-<meta property="og:description" content="Amazon has been the largest cloud service vendor for quite a while.
-AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.
-If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application." />
+<meta property="og:description" content="Amazon has been the largest cloud service vendor for quite a while.  AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.  If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/" /><meta property="article:published_time" content="2019-10-08T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-10-08T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta property="og:url" content="/posts/2019-10-08_jvm-on-aws-cloud-investigation-and-thoughts/" />
+<meta property="article:published_time" content="2019-10-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-10-08T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="JVM on AWS Cloud: Investigation and Thoughts"/>
-<meta name="twitter:description" content="Amazon has been the largest cloud service vendor for quite a while.
-AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.
-If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application."/>
+<meta name="twitter:description" content="Amazon has been the largest cloud service vendor for quite a while.  AWS Lambda is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.  If you do not care about vendor lock-in, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -41,7 +36,7 @@ If you do not care about vendor lock-in, AWS suite may cover most of trivial bus
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>JVM on AWS Cloud: Investigation and Thoughts</title>
-	<link rel="stylesheet" href="/css/style.min.4b21ce88e94e6ff8eb47d816b952379f79e2302f1dcf462cadc11096afb7a536.css" integrity="sha256-SyHOiOlOb/jrR9gWuVI3n3niMC8dz0YsrcEQlq+3pTY=">
+	<link rel="stylesheet" href="/css/style.min.bbdfdbe22b04b310c3c2a48b7765d865ceff19c9989b1c578cb0c10b12c1cda8.css" integrity="sha256-u9/b4isEsxDDwqSLd2XYZc7/GcmYmxxXjLDBCxLBzag=">
 	
 </head>
 
@@ -80,82 +75,115 @@ If you do not care about vendor lock-in, AWS suite may cover most of trivial bus
 				<h1>JVM on AWS Cloud: Investigation and Thoughts</h1>
 			</header>
 			<div class="content">
-				<p>Amazon has been the largest cloud service vendor for quite a while.</p>
-
-<p><a href="https://aws.amazon.com/lambda/" title="AWS Lambda">AWS Lambda</a> is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.</p>
-
-<p>If you do not care about <a href="https://en.wikipedia.org/wiki/Vendor_lock-in" title="vendor lock-in">vendor lock-in</a>, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.</p>
-
-<p>One more thing to take care of is pricing. Many AWS services charge by usage. It may seem to be very cheap at first, but when your business grows, the pricing may not be delightful.</p>
-
-<p>In addition, you have to be very careful not to leak your credential information. I have witnessed an incident that an employee leaked the code containing AWS access key to GitHub (which is illegal in the first place). Later on the access key was detected by a cracker who abused it to create a hundred of Amazon EC2 instances. Several hours later, the company received report from Amazon and shut down the instances.</p>
-
-<p>Of course the same security rule applies if you are managing physical servers by yourself. However, with a physical machine you may power it off in the worst case, but you can do nothing for AWS instances.</p>
-
-<p>Anyway, AWS is a bless and a curse. Evaluate your requirements and use it wisely.</p>
-
-<h2 id="aws-lambda-internals-cold-start-and-warm-up">AWS Lambda Internals: Cold Start and Warm Up<a href="#aws-lambda-internals-cold-start-and-warm-up" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>AWS lambda is actually a container running upon a Linux image customized by Amazon<sup class="footnote-ref" id="fnref:amazon-lambda-runtimes"><a href="#fn:amazon-lambda-runtimes">1</a></sup>, there is no magic in it.</p>
-
-<p>When a Lambda functions is triggered for the first time, the corresponding container is initialized and started. This process is called <em>cold start</em>. It may take up to several seconds to finish according to the programming language that Lambda function was developed in.</p>
-
-<p>Afterwards, the container will be kept running for some time, so that the cold start will be avoided for the following requests. During this time, the upcoming requests will be handled immediately. If the Lambda function is not triggered for some time, the container will be inactive.</p>
-
-<p>Unfortunately, there is no way to control this process, since it is managed by AWS.</p>
-
-<h2 id="jvm-and-aws-lambda-unavoidable-high-latency">JVM and AWS Lambda: Unavoidable High Latency<a href="#jvm-and-aws-lambda-unavoidable-high-latency" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>Java has much larger memory footprint and longer start time compared with other light-weight languages like Node.js. These two problems become much more obvious if cold start is taken into consideration.</p>
-
-<p>A JVM container might take several seconds to start, according to the memory allocated to the Lambda function. Generally speaking, for a given Java Lambda function, bigger memory leads to faster initialization process<sup class="footnote-ref" id="fnref:JVM-benchmark"><a href="#fn:JVM-benchmark">2</a></sup>.</p>
-
-<p>(Amazon: Want more speed? Shut up and bring your money!)</p>
-
-<p>In order to solve the cold start problem, there is a technique called <em>warm up</em>. The key point is to create a CloudWatch rule that triggers the target Lambda function periodically to keep the container alive. Please note that this is not really reliable because AWS is a black box.</p>
-
-<p>So if your application is written in Java, you have to bear with the really long cold start time that may cause high latency, which might not be satisfying if your application is user oriented.</p>
-
-<h2 id="languages-with-fast-starting-process">Languages with Fast Starting Process<a href="#languages-with-fast-starting-process" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>In the end of 2018, AWS announced the C++ Lambda runtime<sup class="footnote-ref" id="fnref:introduce-cpp-lambda-runtime"><a href="#fn:introduce-cpp-lambda-runtime">3</a></sup> that declares single digit millisecond<sup class="footnote-ref" id="fnref:aws-lambda-cpp-github"><a href="#fn:aws-lambda-cpp-github">4</a></sup>. But it is relatively hard to write highly reliable C++ code. Also the development speed of C++ is relatively low compared with other popular high level languages.</p>
-
-<p>Node.js has the shortest start time among all supported languages except C++. If your application is not heavily computation oriented, it might be a good idea to consider Node.js. Otherwise, "heavy-weighed" languages like Java or C# has better raw performance.</p>
-
-<p><sup class="footnote-ref" id="fnref:amazon-lambda-runtimes"><a href="#fn:amazon-lambda-runtimes">5</a></sup> https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html</p>
-
-<p><sup class="footnote-ref" id="fnref:JVM-benchmark"><a href="#fn:JVM-benchmark">6</a></sup> https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76</p>
-
-<p><sup class="footnote-ref" id="fnref:introduce-cpp-lambda-runtime"><a href="#fn:introduce-cpp-lambda-runtime">7</a></sup> https://aws.amazon.com/blogs/compute/introducing-the-c-lambda-runtime/</p>
-
-<p><sup class="footnote-ref" id="fnref:aws-lambda-cpp-github"><a href="#fn:aws-lambda-cpp-github">8</a></sup> https://github.com/awslabs/aws-lambda-cpp#design-goals</p>
+				
+<p>
+Amazon has been the largest cloud service vendor for quite a while. 
+</p>
+<p>
+<a href="https://aws.amazon.com/lambda/">AWS Lambda</a> is a service that lets you focus on business requirements instead of server details. It together with other AWS components, make it easy to deploy and maintain your business logic.
+</p>
+<p>
+If you do not care about <a href="https://en.wikipedia.org/wiki/Vendor_lock-in">vendor lock-in</a>, AWS suite may cover most of trivial business requirements. Although you may run into cases where more customization is required, this can be (partly) solved by adding abstraction layer into the architecture of your application.
+</p>
+<p>
+One more thing to take care of is pricing. Many AWS services charge by usage. It may seem to be very cheap at first, but when your business grows, the pricing may not be delightful.
+</p>
+<p>
+In addition, you have to be very careful not to leak your credential information. I have witnessed an incident that an employee leaked the code containing AWS access key to GitHub (which is illegal in the first place). Later on the access key was detected by a cracker who abused it to create a hundred of Amazon EC2 instances. Several hours later, the company received report from Amazon and shut down the instances. 
+</p>
+<p>
+Of course the same security rule applies if you are managing physical servers by yourself. However, with a physical machine you may power it off in the worst case, but you can do nothing for AWS instances.
+</p>
+<p>
+Anyway, AWS is a bless and a curse. Evaluate your requirements and use it wisely.
+</p>
+<h2 id="headline-1">
+AWS Lambda Internals: Cold Start and Warm Up
+</h2>
+<p>
+AWS lambda is actually a container running upon a Linux image customized by Amazon<sup class="footnote-reference"><a id="footnote-reference-1" href="#footnote-1">1</a></sup>, there is no magic in it. 
+</p>
+<p>
+When a Lambda functions is triggered for the first time, the corresponding container is initialized and started. This process is called <em>cold start</em>. It may take up to several seconds to finish according to the programming language that Lambda function was developed in.
+</p>
+<p>
+Afterwards, the container will be kept running for some time, so that the cold start will be avoided for the following requests. During this time, the upcoming requests will be handled immediately. If the Lambda function is not triggered for some time, the container will be inactive.
+</p>
+<p>
+Unfortunately, there is no way to control this process, since it is managed by AWS.
+</p>
+<h2 id="headline-2">
+JVM and AWS Lambda: Unavoidable High Latency
+</h2>
+<p>
+Java has much larger memory footprint and longer start time compared with other light-weight languages like Node.js. These two problems become much more obvious if cold start is taken into consideration.
+</p>
+<p>
+A JVM container might take several seconds to start, according to the memory allocated to the Lambda function. Generally speaking, for a given Java Lambda function, bigger memory leads to faster initialization process<sup class="footnote-reference"><a id="footnote-reference-2" href="#footnote-2">2</a></sup>.
+</p>
+<p>
+(Amazon: Want more speed? Shut up and bring your money!)
+</p>
+<p>
+In order to solve the cold start problem, there is a technique called <em>warm up</em>. The key point is to create a CloudWatch rule that triggers the target Lambda function periodically to keep the container alive. Please note that this is not really reliable because AWS is a black box.
+</p>
+<p>
+So if your application is written in Java, you have to bear with the really long cold start time that may cause high latency, which might not be satisfying if your application is user oriented.
+</p>
+<h2 id="headline-3">
+Languages with Fast Starting Process
+</h2>
+<p>
+In the end of 2018, AWS announced the C++ Lambda runtime<sup class="footnote-reference"><a id="footnote-reference-3" href="#footnote-3">3</a></sup> that declares single digit millisecond<sup class="footnote-reference"><a id="footnote-reference-4" href="#footnote-4">4</a></sup>. But it is relatively hard to write highly reliable C++ code. Also the development speed of C++ is relatively low compared with other popular high level languages.
+</p>
+<p>
+Node.js has the shortest start time among all supported languages except C++. If your application is not heavily computation oriented, it might be a good idea to consider Node.js. Otherwise, &#34;heavy-weighed&#34; languages like Java or C# has better raw performance.
+</p>
 <div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:amazon-lambda-runtimes">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:amazon-lambda-runtimes"><sup>[return]</sup></a></li>
-
-<li id="fn:JVM-benchmark">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:JVM-benchmark"><sup>[return]</sup></a></li>
-
-<li id="fn:introduce-cpp-lambda-runtime">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:introduce-cpp-lambda-runtime"><sup>[return]</sup></a></li>
-
-<li id="fn:aws-lambda-cpp-github">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-lambda-cpp-github"><sup>[return]</sup></a></li>
-
-<li id="fn:amazon-lambda-runtimes">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:amazon-lambda-runtimes"><sup>[return]</sup></a></li>
-
-<li id="fn:JVM-benchmark">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:JVM-benchmark"><sup>[return]</sup></a></li>
-
-<li id="fn:introduce-cpp-lambda-runtime">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:introduce-cpp-lambda-runtime"><sup>[return]</sup></a></li>
-
-<li id="fn:aws-lambda-cpp-github">DEFINITION NOT FOUND <a class="footnote-return" href="#fnref:aws-lambda-cpp-github"><sup>[return]</sup></a></li>
-</ol>
+<hr class="footnotes-separatator">
+<div class="footnote-definitions">
+<div class="footnote-definition">
+<sup id="footnote-1"><a href="#footnote-reference-1">1</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html">https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html</a>
+</p>
+</div>
+</div>
+<div class="footnote-definition">
+<sup id="footnote-2"><a href="#footnote-reference-2">2</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76">https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76</a>
+</p>
+</div>
+</div>
+<div class="footnote-definition">
+<sup id="footnote-3"><a href="#footnote-reference-3">3</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://aws.amazon.com/blogs/compute/introducing-the-c-lambda-runtime/">https://aws.amazon.com/blogs/compute/introducing-the-c-lambda-runtime/</a>
+</p>
+</div>
+</div>
+<div class="footnote-definition">
+<sup id="footnote-4"><a href="#footnote-reference-4">4</a></sup>
+<div class="footnote-body">
+<p>
+<a href="https://github.com/awslabs/aws-lambda-cpp#design-goals">https://github.com/awslabs/aws-lambda-cpp#design-goals</a>
+</p>
+</div>
+</div>
+</div>
 </div>
 
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>674 Words</p>
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="/tags/jvm">jvm</a></span><span class="tag"><a href="/tags/aws">aws</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>642 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-10-08</p>
 			</footer>
 		</article>

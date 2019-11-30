@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>web-tool on Danny&#39;s Blog</title>
+    <link>/tags/web-tool/</link>
+    <description>Recent content in web-tool on Danny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en_US</language>
+    <copyright>All rights preserved.</copyright>
+    <lastBuildDate>Sat, 11 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/web-tool/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Use Hugo to Setup Personal Blog</title>
+      <link>/posts/2019-05-11_use-hugo-to-setup-personal-blog/</link>
+      <pubDate>Sat, 11 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-05-11_use-hugo-to-setup-personal-blog/</guid>
+      <description>Welcome to my blog!  This is the first post. This blog is constructed using Hugo. Praise the creators of it!  In this blog I am going to introduce the procedure of building this blog. Introduction   Hugo is a framework written in Go to generate static blog site from various formats of content. It has various shining points:    It can be easily configured in a TOML configuration file.</description>
+    </item>
+    
+  </channel>
+</rss>

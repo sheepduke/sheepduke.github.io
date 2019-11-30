@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>raspberry-pi on Danny&#39;s Blog</title>
+    <link>/tags/raspberry-pi/</link>
+    <description>Recent content in raspberry-pi on Danny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en_US</language>
+    <copyright>All rights preserved.</copyright>
+    <lastBuildDate>Sat, 22 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/raspberry-pi/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup Home Net Disk Using Raspberry Pi</title>
+      <link>/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/</link>
+      <pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-06-22_setup-home-net-disk-using-raspberry-pi/</guid>
+      <description>Background   Recently I bought a projector at home. I would like to play some video files from the PC. Even though the projector has a HDMI port, it is still troublesome to manually plug the HDMI cable.  Since the projector is actually an Android device, I realized that this is actually a general problem: how to setup a file sharing system that all the devices with different OS (Linux, Windows, Android, iOS) at home can access.</description>
+    </item>
+    
+  </channel>
+</rss>

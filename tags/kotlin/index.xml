@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kotlin on Danny&#39;s Blog</title>
+    <link>/tags/kotlin/</link>
+    <description>Recent content in kotlin on Danny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en_US</language>
+    <copyright>All rights preserved.</copyright>
+    <lastBuildDate>Thu, 10 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kotlin API Server on AWS Lambda</title>
+      <link>/posts/2019-10-10_kotlin-api-server-on-aws-lambda/</link>
+      <pubDate>Thu, 10 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2019-10-10_kotlin-api-server-on-aws-lambda/</guid>
+      <description>This post demonstrates how to develop an API server written in Kotlin and deploy it to AWS Lambda.  The code is located on GitHub. Tech Stack Choices  Kotlin   Kotlin is developed by JetBrains. It can be treated as a &amp;#34;better Java&amp;#34;. It provides many nice features that let you write more compact code without performance penalty. Also it can be embedded into an existing Java program.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -7,34 +7,26 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
-
 <meta itemprop="name" content="JVM Memory Management and Garbage Collection">
-<meta itemprop="description" content="Memory basics Memory model In JVM memory can be divided into two categories: stack memory and heap memory.
-Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.
-Heap memory are managed by /Garbage Collector (GC)/1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.
-Heap memory model is much more complicated, and most tuning happens here.">
+<meta itemprop="description" content="Memory basics  Memory model   In JVM memory can be divided into two categories: stack memory and heap memory.  Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.  Heap memory are managed by Garbage Collector (GC)1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.">
 
 
 <meta itemprop="datePublished" content="2019-06-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-06-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2467">
+<meta itemprop="wordCount" content="2505">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="jvm," />
 <meta property="og:title" content="JVM Memory Management and Garbage Collection" />
-<meta property="og:description" content="Memory basics Memory model In JVM memory can be divided into two categories: stack memory and heap memory.
-Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.
-Heap memory are managed by /Garbage Collector (GC)/1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.
-Heap memory model is much more complicated, and most tuning happens here." />
+<meta property="og:description" content="Memory basics  Memory model   In JVM memory can be divided into two categories: stack memory and heap memory.  Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.  Heap memory are managed by Garbage Collector (GC)1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/2019-06-17_jvm-memory/" /><meta property="article:published_time" content="2019-06-17T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-06-17T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta property="og:url" content="/posts/2019-06-17_jvm-memory/" />
+<meta property="article:published_time" content="2019-06-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="JVM Memory Management and Garbage Collection"/>
-<meta name="twitter:description" content="Memory basics Memory model In JVM memory can be divided into two categories: stack memory and heap memory.
-Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.
-Heap memory are managed by /Garbage Collector (GC)/1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.
-Heap memory model is much more complicated, and most tuning happens here."/>
+<meta name="twitter:description" content="Memory basics  Memory model   In JVM memory can be divided into two categories: stack memory and heap memory.  Each thread has its own stack memory that can only be accessed by itself. Stack memory stores some local references, functional call stack etc.  Heap memory are managed by Garbage Collector (GC)1 dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -44,7 +36,7 @@ Heap memory model is much more complicated, and most tuning happens here."/>
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>JVM Memory Management and Garbage Collection</title>
-	<link rel="stylesheet" href="/css/style.min.4b21ce88e94e6ff8eb47d816b952379f79e2302f1dcf462cadc11096afb7a536.css" integrity="sha256-SyHOiOlOb/jrR9gWuVI3n3niMC8dz0YsrcEQlq+3pTY=">
+	<link rel="stylesheet" href="/css/style.min.bbdfdbe22b04b310c3c2a48b7765d865ceff19c9989b1c578cb0c10b12c1cda8.css" integrity="sha256-u9/b4isEsxDDwqSLd2XYZc7/GcmYmxxXjLDBCxLBzag=">
 	
 </head>
 
@@ -83,380 +75,654 @@ Heap memory model is much more complicated, and most tuning happens here."/>
 				<h1>JVM Memory Management and Garbage Collection</h1>
 			</header>
 			<div class="content">
-				<h1 id="memory-basics">Memory basics<a href="#memory-basics" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<h2 id="memory-model">Memory model<a href="#memory-model" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>In JVM memory can be divided into two categories: <em>stack</em> memory and <em>heap</em> memory.</p>
-
-<p>Each thread has its own stack memory that can <strong>only</strong> be accessed by itself. Stack memory stores some local references, functional call stack etc.</p>
-
-<p>Heap memory are managed by /Garbage Collector (GC)/<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.</p>
-
-<p>Heap memory model is much more complicated, and most tuning happens here.</p>
-
-<h2 id="garbage-collection">Garbage Collection<a href="#garbage-collection" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>Garbage collector is responsible for 3 things:</p>
-
+				
+<h1 id="headline-1">
+Memory basics
+</h1>
+<h2 id="headline-2">
+Memory model
+</h2>
+<p>
+In JVM memory can be divided into two categories: <em>stack</em> memory and <em>heap</em> memory.
+</p>
+<p>
+Each thread has its own stack memory that can <strong>only</strong> be accessed by itself. Stack memory stores some local references, functional call stack etc.
+</p>
+<p>
+Heap memory are managed by <em>Garbage Collector (GC)</em><sup class="footnote-reference"><a id="footnote-reference-1" href="#footnote-1">1</a></sup> dynamically. Most objects created during run-time, meta information such as classes and methods definitions are stored in heap memory.
+</p>
+<p>
+Heap memory model is much more complicated, and most tuning happens here.
+</p>
+<h2 id="headline-3">
+Garbage Collection
+</h2>
+<p>
+Garbage collector is responsible for 3 things:
+</p>
 <ol>
-<li>Allocate memory dynamically.</li>
+<li>
+<p>
+Allocate memory dynamically.
+</p>
+</li>
+<li>
+<p>
+Ensure valid objects remain in memory (i.e. valid object reference does not fail).
+</p>
+</li>
+<li>
+<p>
+Release unused memory when the memory area cannot be accessed anywhere in the program.
+</p>
+</li>
 </ol>
-
+<h1 id="headline-4">
+GC basics
+</h1>
+<h2 id="headline-5">
+A simple GC
+</h2>
+<p>
+Now consider how a simple GC is implemented. A very naive GC can be described below:
+</p>
 <ol>
-<li>Ensure valid objects remain in memory (i.e. valid object reference does not fail).</li>
+<li>
+<p>
+Looking through the heap memory and <em>mark</em> all objects as <em>alive</em> or <em>dead</em>. An object is considered <em>dead</em> if there is no pointer that points to it in the running program, aka unreferenced.
+</p>
+</li>
+<li>
+<p>
+Delete all dead objects.
+</p>
+</li>
 </ol>
-
-<ol>
-<li>Release unused memory when the memory area cannot be accessed anywhere in the program.</li>
-</ol>
-
-<h1 id="gc-basics">GC basics<a href="#gc-basics" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<h2 id="a-simple-gc">A simple GC<a href="#a-simple-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>Now consider how a simple GC is implemented. A very naive GC can be described below:</p>
-
-<ol>
-<li>Looking through the heap memory and <em>mark</em> all objects as <em>alive</em> or <em>dead</em>. An object is considered <em>dead</em> if there is no pointer that points to it in the running program, aka unreferenced.</li>
-</ol>
-
-<ol>
-<li>Delete all dead objects.</li>
-</ol>
-
-<h2 id="problems">Problems<a href="#problems" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<ol>
+<h2 id="headline-6">
+Problems
+</h2>
+<p>
 There are some problems with the simple solution given above, some obvious ones are:
-<li>Every time the GC is needed, the whole heap memory must be went through, which costs much time. In a <em>stop-the-world</em> (<em>STW</em>) fashion, this will stuck the whole application and brings very bad user experience (or timeout etc).</li>
-</ol>
-
+</p>
 <ol>
-<li>After some time, this methods leaves many "holes" in the memory which makes it harder and less efficient for future memory allocation.</li>
+<li>
+<p>
+Every time the GC is needed, the whole heap memory must be went through, which costs much time. In a <em>stop-the-world</em> (<em>STW</em>) fashion, this will stuck the whole application and brings very bad user experience (or timeout etc).
+</p>
+</li>
+<li>
+<p>
+After some time, this methods leaves many &#34;holes&#34; in the memory which makes it harder and less efficient for future memory allocation.
+</p>
+</li>
 </ol>
-
-<h2 id="evaluation-metrics">Evaluation metrics<a href="#evaluation-metrics" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>How do we evaluate if a GC is <em>good</em>? There are some performance metrics:</p>
-
+<h2 id="headline-7">
+Evaluation metrics
+</h2>
+<p>
+How do we evaluate if a GC is <em>good</em>? There are some performance metrics:
+</p>
 <ul>
-<li><strong>Throughput</strong>, the percentage of total time not spent in garbage collection, considered over long periods of time.</li>
+<li>
+<p>
+<strong>Throughput</strong>, the percentage of total time not spent in garbage collection, considered over long periods of time.
+</p>
+</li>
+<li>
+<p>
+<strong>Garbage collection overhead</strong>, the inverse of throughput, that is, the percentage of total time spent in garbage collection.
+</p>
+</li>
+<li>
+<p>
+<strong>Pause time</strong>, the length of time during which application execution is stopped while garbage collection is occurring.
+</p>
+</li>
+<li>
+<p>
+<strong>Frequency of collection</strong>, how often collection occurs, relative to application execution.
+</p>
+</li>
+<li>
+<p>
+<strong>Footprint</strong>, a measure of size, such as heap size.
+</p>
+</li>
+<li>
+<p>
+<strong>Promptness</strong>, the time between when an object becomes garbage and when the memory got released.
+</p>
+</li>
 </ul>
-
-<ul>
-<li><strong>Garbage collection overhead</strong>, the inverse of throughput, that is, the percentage of total time spent in garbage collection.</li>
-</ul>
-
-<ul>
-<li><strong>Pause time</strong>, the length of time during which application execution is stopped while garbage collection is occurring.</li>
-</ul>
-
-<ul>
-<li><strong>Frequency of collection</strong>, how often collection occurs, relative to application execution.</li>
-</ul>
-
-<ul>
-<li><strong>Footprint</strong>, a measure of size, such as heap size.</li>
-</ul>
-
-<ul>
-<li><strong>Promptness</strong>, the time between when an object becomes garbage and when the memory got released.</li>
-</ul>
-
-<p>These metrics do not work alone: they affect each other. For example, a bigger heap size potentially leads to lower frequency to perform GC, but it raises the footprint and makes each GC take more time.</p>
-
-<p>Also, importance of each metrics is different for different kinds of application. For example, an interactive application might require low pause time to get a better user experience, whereas an embedded device requires smaller footprint.</p>
-
-<p>So it is usually trade-offs among these factors while choosing or tuning GC.</p>
-
-<h1 id="generational-collection">Generational collection<a href="#generational-collection" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<p>In order to optimize overall GC performance, JVM uses <em>generational collection</em> to manage heap memory.</p>
-
-<h2 id="prologue">Prologue<a href="#prologue" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>The following picture shows a typical distribution of lifetimes of objects.</p>
-
-<p><img src="/jvm-memory/object-lifetime.png" alt="Typical lifetime of objects"/></p>
-
-<p>As shown in the figure above, a huge amount of objects are dead shortly after they are created. Even though not every application fits in this graph, but a large number process this general shape, i.e. live fast, die young.</p>
-
-<h2 id="heap-memory-model">Heap Memory model<a href="#heap-memory-model" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>When generational collection is used, memory is divided into several small parts called <em>generations</em>, which means memory areas that holds objects of different ages, as shown below.</p>
-
-<p><img src="/jvm-memory/heap-arch.png" alt="Heap memory architecture" /></p>
-
-<p>Heap memory is organized into three generations: young generation, old generation and permanent generation. Most objects are initially allocated in young generation. When some of them survives after some number of GC, they are moved to old generation. Permanent generation is used to store meta data of classes, methods or other information used by JVM internally.</p>
-
-<h2 id="fast-memory-allocation">Fast memory allocation<a href="#fast-memory-allocation" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>A technique called <em>bump-the-pointer</em> is used to achieve fast memory allocation. It means the JVM keeps track of previously allocated object and allocates new object in the next continuous memory.</p>
-
-<p>When multi-thread is considered, allocation must be thread safe. One way to guarantee that is to add a global lock every time allocation is performed. However locking and unlocking are very slow and are purely waste of time. Thus a technique named <em>Thread-Local Allocation Buffers</em> (<em>TLABs</em>) is used to avoid performance bottleneck introduced by global lock. Using TLABs each generation are divided into smaller pieces and assigned to each thread as its local buffer.</p>
-
-<p>The combination of TLABs and linear allocations enables each allocation to be more efficient.</p>
-
-<h1 id="legacy-gc-algorithms">Legacy GC algorithms<a href="#legacy-gc-algorithms" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<h2 id="serial-gc">Serial GC<a href="#serial-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>With <em>serial</em> collector, both young and old collections are done serially, in a STW fashion.</p>
-
-<h3 id="young-gc">Young GC<a href="#young-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<p><img src="/jvm-memory/serial-gc-young.png" alt="Young GC" /></p>
-
-<p>Using this GC, between S0 and S1, there is always one space that is empty at any time. Suppose the S0 space is empty before GC starts. The live objects in Eden and S1 are copied to S0 space (the empty survivor space) if there is enough space. Otherwise, the object directly goes to old generation despite how many GC it really survived.</p>
-
-<p>After this move, Eden and S1 becomes empty. For the next young GC, S0 and S1 swap their role and S1 becomes the empty space to hold survived objects.</p>
-
-<h3 id="old-gc">Old GC<a href="#old-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<ol>
+<p>
+These metrics do not work alone: they affect each other. For example, a bigger heap size potentially leads to lower frequency to perform GC, but it raises the footprint and makes each GC take more time.
+</p>
+<p>
+Also, importance of each metrics is different for different kinds of application. For example, an interactive application might require low pause time to get a better user experience, whereas an embedded device requires smaller footprint.
+</p>
+<p>
+So it is usually trade-offs among these factors while choosing or tuning GC.
+</p>
+<h1 id="headline-8">
+Generational collection
+</h1>
+<p>
+In order to optimize overall GC performance, JVM uses <em>generational collection</em> to manage heap memory.
+</p>
+<h2 id="headline-9">
+Prologue
+</h2>
+<p>
+The following picture shows a typical distribution of lifetimes of objects.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/object-lifetime.png&#34; alt=&#34;Typical lifetime of objects&#34;/&gt;
+</p>
+<p>
+As shown in the figure above, a huge amount of objects are dead shortly after they are created. Even though not every application fits in this graph, but a large number process this general shape, i.e. live fast, die young.
+</p>
+<h2 id="headline-10">
+Heap Memory model
+</h2>
+<p>
+When generational collection is used, memory is divided into several small parts called <em>generations</em>, which means memory areas that holds objects of different ages, as shown below.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/heap-arch.png&#34; alt=&#34;Heap memory architecture&#34; /&gt;
+</p>
+<p>
+Heap memory is organized into three generations: young generation, old generation and permanent generation. Most objects are initially allocated in young generation. When some of them survives after some number of GC, they are moved to old generation. Permanent generation is used to store meta data of classes, methods or other information used by JVM internally.
+</p>
+<h2 id="headline-11">
+Fast memory allocation
+</h2>
+<p>
+A technique called <em>bump-the-pointer</em> is used to achieve fast memory allocation. It means the JVM keeps track of previously allocated object and allocates new object in the next continuous memory.
+</p>
+<p>
+When multi-thread is considered, allocation must be thread safe. One way to guarantee that is to add a global lock every time allocation is performed. However locking and unlocking are very slow and are purely waste of time. Thus a technique named <em>Thread-Local Allocation Buffers</em> (<em>TLABs</em>) is used to avoid performance bottleneck introduced by global lock. Using TLABs each generation are divided into smaller pieces and assigned to each thread as its local buffer.
+</p>
+<p>
+The combination of TLABs and linear allocations enables each allocation to be more efficient.
+</p>
+<h1 id="headline-12">
+Legacy GC algorithms
+</h1>
+<h2 id="headline-13">
+Serial GC
+</h2>
+<p>
+With <em>serial</em> collector, both young and old collections are done serially, in a STW fashion.
+</p>
+<h3 id="headline-14">
+Young GC
+</h3>
+<p>
+&lt;img src=&#34;/jvm-memory/serial-gc-young.png&#34; alt=&#34;Young GC&#34; /&gt;
+</p>
+<p>
+Using this GC, between S0 and S1, there is always one space that is empty at any time. Suppose the S0 space is empty before GC starts. The live objects in Eden and S1 are copied to S0 space (the empty survivor space) if there is enough space. Otherwise, the object directly goes to old generation despite how many GC it really survived.
+</p>
+<p>
+After this move, Eden and S1 becomes empty. For the next young GC, S0 and S1 swap their role and S1 becomes the empty space to hold survived objects.
+</p>
+<h3 id="headline-15">
+Old GC
+</h3>
+<p>
 The old and permanent generations are collected via <em>mark-sweep-compact</em> algorithm, which consists of three steps:
-<li>In <em>mark</em> step, the collector identifies which objects are still alive and mark them.</li>
-</ol>
-
+</p>
 <ol>
-<li>In <em>sweep</em> phase, the collector looks for garbage memory and identifies them.</li>
+<li>
+<p>
+In <em>mark</em> step, the collector identifies which objects are still alive and mark them.
+</p>
+</li>
+<li>
+<p>
+In <em>sweep</em> phase, the collector looks for garbage memory and identifies them.
+</p>
+</li>
+<li>
+<p>
+In <em>compaction</em> phase, the collector moves all live objects to the start of old generation (or perm generation) so that a continuous memory chunk is generated that can be used for fast allocation.
+</p>
+</li>
 </ol>
-
-<ol>
-<li>In <em>compaction</em> phase, the collector moves all live objects to the start of old generation (or perm generation) so that a continuous memory chunk is generated that can be used for fast allocation.</li>
-</ol>
-
-<h3 id="evaluation">Evaluation<a href="#evaluation" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<p>Serial collector are suitable for single-process machine with small footprint that does not require very low pause time.</p>
-
-<h2 id="parallel-gc">Parallel GC<a href="#parallel-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p><em>Parallel</em> collector is very similar to serial GC. It uses multiple threads to performs GC in parallel to speed it up and reduce pause time. It is suitable for multi-core machines.</p>
-
-<h2 id="concurrent-mark-sweep-cms-gc">Concurrent Mark-Sweep (CMS) GC<a href="#concurrent-mark-sweep-cms-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>It is also called <em>low-latency</em> collector. Compared with GC introduced above, it provides fast response time.</p>
-
-<h3 id="young-gc-1">Young GC<a href="#young-gc-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<p>Very similar to the parallel GC.</p>
-
-<p><img src="/jvm-memory/cms-young-1.png"></p>
-
-<p><img src="/jvm-memory/cms-young-2.png">2</p>
-
-<h3 id="old-gc-1">Old GC<a href="#old-gc-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<p>Most GC of old generation is done concurrently with the execution of the application.</p>
-
-<ol>
+<h3 id="headline-16">
+Evaluation
+</h3>
+<p>
+Serial collector are suitable for single-process machine with small footprint that does not require very low pause time.
+</p>
+<h2 id="headline-17">
+Parallel GC
+</h2>
+<p>
+<em>Parallel</em> collector is very similar to serial GC. It uses multiple threads to performs GC in parallel to speed it up and reduce pause time. It is suitable for multi-core machines.
+</p>
+<h2 id="headline-18">
+Concurrent Mark-Sweep (CMS) GC
+</h2>
+<p>
+It is also called <em>low-latency</em> collector. Compared with GC introduced above, it provides fast response time.
+</p>
+<h3 id="headline-19">
+Young GC
+</h3>
+<p>
+Very similar to the parallel GC.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-young-1.png&#34;&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-young-2.png&#34;&gt;2
+</p>
+<h3 id="headline-20">
+Old GC
+</h3>
+<p>
+Most GC of old generation is done concurrently with the execution of the application.
+</p>
+<p>
 The process of CMS old GC can be described as below:
-<li>It starts with a short pause stage called <em>initial mark</em>. During this stage an initial set of live objects directly reachable from <em>root</em> region is created. The <em>root</em> region may be application thread stacks and registers, or young generation objects.</li>
-</ol>
-
+</p>
 <ol>
-<li>During <em>concurrent marking phase</em>, the collector marks all live objects that are transitively reachable from the initial set. All objects assigned during this phase are marked as alive. Because CMS runs concurrently with the application, the object references might be updated while it is performing GC. Thus the result is not accurate.</li>
+<li>
+<p>
+It starts with a short pause stage called <em>initial mark</em>. During this stage an initial set of live objects directly reachable from <em>root</em> region is created. The <em>root</em> region may be application thread stacks and registers, or young generation objects.
+</p>
+</li>
+<li>
+<p>
+During <em>concurrent marking phase</em>, the collector marks all live objects that are transitively reachable from the initial set. All objects assigned during this phase are marked as alive. Because CMS runs concurrently with the application, the object references might be updated while it is performing GC. Thus the result is not accurate.
+</p>
+</li>
+<li>
+<p>
+The last phase <em>remark</em> pauses the application again. During this period the collector revisits any objects that were modified during the second phase and update object marks. Multiple threads are used to speed it up. After this step, it is guaranteed that <strong>all</strong> objects are correctly marked. The garbage will be collected while application is running without STW.
+</p>
+</li>
 </ol>
-
-<ol>
-<li>The last phase <em>remark</em> pauses the application again. During this period the collector revisits any objects that were modified during the second phase and update object marks. Multiple threads are used to speed it up. After this step, it is guaranteed that <strong>all</strong> objects are correctly marked. The garbage will be collected while application is running without STW.</li>
-</ol>
-
-<p>The overall status before and after old GC is show in following figures.</p>
-
-<p><img src="/jvm-memory/cms-old-1.png" /></p>
-
-<p><img src="/jvm-memory/cms-old-2.png" /></p>
-
-<h3 id="evaluation-1">Evaluation<a href="#evaluation-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<ul>
+<p>
+The overall status before and after old GC is show in following figures.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-old-1.png&#34; /&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/cms-old-2.png&#34; /&gt;
+</p>
+<h3 id="headline-21">
+Evaluation
+</h3>
+<p>
 CMS sacrificed a lot to achieve low latency:
-<li>CMS does not do memory compacting, so it cannot simply use a pointer when allocating memory. Instead, a linked list is used to store available memory pieces. Every time an object is moved to old generation, the list has to be traversed until a suitable memory hole is found, which is expensive. This also raises another problem that the footprint is much larger because of the usage of linked list.</li>
-</ul>
-
+</p>
 <ul>
-<li>CMS collector tries to start a collection as early as possible to keep memory available. If the GC has to be triggered when the old generation is full, an old STW full GC is performed.</li>
+<li>
+<p>
+CMS does not do memory compacting, so it cannot simply use a pointer when allocating memory. Instead, a linked list is used to store available memory pieces. Every time an object is moved to old generation, the list has to be traversed until a suitable memory hole is found, which is expensive. This also raises another problem that the footprint is much larger because of the usage of linked list.
+</p>
+</li>
+<li>
+<p>
+CMS collector tries to start a collection as early as possible to keep memory available. If the GC has to be triggered when the old generation is full, an old STW full GC is performed.
+</p>
+</li>
 </ul>
-
-<h1 id="gargage-first-g1-gc">Gargage First (G1) GC<a href="#gargage-first-g1-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<p>G1 was newly added in Oracle JDK 7 update 4 and later version. It takes a very different way compared with those legacy GC, from memory model to collection algorithm.</p>
-
-<h2 id="memory-model-1">Memory model<a href="#memory-model-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>Unlike other garbage collectors, with G1 the heap memory is partitioned into a set of equal-sized heap regions, as shown in the figure below. Certain region sets are assigned the same roles (Eden, survivor, old) but their sizes are not fixed.</p>
-
-<p><img src="/jvm-memory/g1-heap-arch.png" alt="G1 heap memory structure" /></p>
-
-<p>The heap is split into around 2000 regions, with minimum size of 1Mb and maximum size of 32 Mb. Sizes of these regions can be adjusted dynamically by G1 when in need.</p>
-
-<p>G1 has larger footprint mainly because two information are recorded:</p>
-
+<h1 id="headline-22">
+Gargage First (G1) GC
+</h1>
+<p>
+G1 was newly added in Oracle JDK 7 update 4 and later version. It takes a very different way compared with those legacy GC, from memory model to collection algorithm.
+</p>
+<h2 id="headline-23">
+Memory model
+</h2>
+<p>
+Unlike other garbage collectors, with G1 the heap memory is partitioned into a set of equal-sized heap regions, as shown in the figure below. Certain region sets are assigned the same roles (Eden, survivor, old) but their sizes are not fixed.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-heap-arch.png&#34; alt=&#34;G1 heap memory structure&#34; /&gt;
+</p>
+<p>
+The heap is split into around 2000 regions, with minimum size of 1Mb and maximum size of 32 Mb. Sizes of these regions can be adjusted dynamically by G1 when in need.
+</p>
+<p>
+G1 has larger footprint mainly because two information are recorded:
+</p>
 <ol>
-<li><em>Remembered Sets</em> or <em>RSets</em> track object references into a given region. There is one RSet per region in the heap. The overall footprint impact of RSets is less than 5%.</li>
+<li>
+<p>
+<em>Remembered Sets</em> or <em>RSets</em> track object references into a given region. There is one RSet per region in the heap. The overall footprint impact of RSets is less than 5%.
+</p>
+</li>
+<li>
+<p>
+<em>Collection Sets</em> or <em>CSets</em> are sets of regions that will be collected in an GC. All live data in a CSet is evacuated during a GC. CSets have a less than 1% impact on the size of the footprint.
+</p>
+</li>
 </ol>
-
-<ol>
-<li><em>Collection Sets</em> or <em>CSets</em> are sets of regions that will be collected in an GC. All live data in a CSet is evacuated during a GC. CSets have a less than 1% impact on the size of the footprint.</li>
-</ol>
-
-<h2 id="gc-algorithm">GC algorithm<a href="#gc-algorithm" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<h3 id="young-gc-2">Young GC<a href="#young-gc-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<p>Live objects are evacuated to one or more survivor regions, or even old generation regions. This process is a STW pause. Eden size and survivor size is calculated for the next young GC.</p>
-
-<p><img src="/jvm-memory/g1-young-1.png"></p>
-
-<p><img src="/jvm-memory/g1-young-2.png"></p>
-
-<h3 id="old-gc-2">Old GC<a href="#old-gc-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-
-<p>GC for old generation can be described below:</p>
-
-<h4 id="initial-mark-stw">Initial mark (STW)<a href="#initial-mark-stw" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>Similar to CMS algorithm, G1 starts with a concurrent global marking phase. This phase is done just after a young GC, marking all alive objects. In the log it is noted as <code>GC pause (young)(inital-mark)</code>.</p>
-
-<p><img src="/jvm-memory/g1-old-1.png" /></p>
-
-<h4 id="concurrent-marking">Concurrent marking<a href="#concurrent-marking" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>If empty regions are found, they are marked for deletion. Also some information that decides aliveness is calculated during this phase.</p>
-
-<p><img src="/jvm-memory/g1-old-2.png" /></p>
-
-<h4 id="remark-stw">Remark (STW)<a href="#remark-stw" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>All empty regions are removed and aliveness of all regions is calculated.</p>
-
-<p><img src="/jvm-memory/g1-old-3.png" /></p>
-
-<h4 id="cleanup-stw">Cleanup (STW)<a href="#cleanup-stw" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-
-<p>G1 selects the regions with most garbage, i.e. regions that can be reclaimed fastest. These regions are collected at the same time of young GC. This is noted as <code>GC pause (mixed)</code> in the log.</p>
-
-<p><img src="/jvm-memory/g1-old-4.png" /></p>
-
-<p><img src="/jvm-memory/g1-old-5.png" /></p>
-
-<p>G1 uses a prediction model to arrange its GC process. It collects information for every GC and estimate how many regions it can process within given pause time. However G1 is not a real-time collector. The pause time limit is not strictly satisfied.</p>
-
-<p>If in some rare cases, full GC is triggered, G1 falls back to legacy STW mode. Full GC can be avoided by tuning.</p>
-
-<h1 id="monitor-gc">Monitor GC<a href="#monitor-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
+<h2 id="headline-24">
+GC algorithm
+</h2>
+<h3 id="headline-25">
+Young GC
+</h3>
+<p>
+Live objects are evacuated to one or more survivor regions, or even old generation regions. This process is a STW pause. Eden size and survivor size is calculated for the next young GC.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-young-1.png&#34;&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-young-2.png&#34;&gt;
+</p>
+<h3 id="headline-26">
+Old GC
+</h3>
+<p>
+GC for old generation can be described below:
+</p>
+<h4 id="headline-27">
+Initial mark (STW)
+</h4>
+<p>
+Similar to CMS algorithm, G1 starts with a concurrent global marking phase. This phase is done just after a young GC, marking all alive objects. In the log it is noted as <code>GC pause (young)(inital-mark)</code>.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-1.png&#34; /&gt;
+</p>
+<h4 id="headline-28">
+Concurrent marking
+</h4>
+<p>
+If empty regions are found, they are marked for deletion. Also some information that decides aliveness is calculated during this phase.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-2.png&#34; /&gt;
+</p>
+<h4 id="headline-29">
+Remark (STW)
+</h4>
+<p>
+All empty regions are removed and aliveness of all regions is calculated.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-3.png&#34; /&gt;
+</p>
+<h4 id="headline-30">
+Cleanup (STW)
+</h4>
+<p>
+G1 selects the regions with most garbage, i.e. regions that can be reclaimed fastest. These regions are collected at the same time of young GC. This is noted as <code>GC pause (mixed)</code> in the log.
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-4.png&#34; /&gt;
+</p>
+<p>
+&lt;img src=&#34;/jvm-memory/g1-old-5.png&#34; /&gt;
+</p>
+<p>
+G1 uses a prediction model to arrange its GC process. It collects information for every GC and estimate how many regions it can process within given pause time. However G1 is not a real-time collector. The pause time limit is not strictly satisfied.
+</p>
+<p>
+If in some rare cases, full GC is triggered, G1 falls back to legacy STW mode. Full GC can be avoided by tuning.
+</p>
+<h1 id="headline-31">
+Monitor GC
+</h1>
 <ul>
-<li><code>-XX:+PrintGCDetails</code> Enable GC logging.</li>
-<li><code>-XX:+PrintGCDateStamps</code> Log timestamp.</li>
+<li>
+<p>
+<code>-XX:+PrintGCDetails</code> Enable GC logging.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+PrintGCDateStamps</code> Log timestamp.
+</p>
+</li>
 </ul>
-
-<h1 id="tuning">Tuning<a href="#tuning" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<h2 id="choosing-suitable-gc">Choosing suitable GC<a href="#choosing-suitable-gc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
+<h1 id="headline-32">
+Tuning
+</h1>
+<h2 id="headline-33">
+Choosing suitable GC
+</h2>
 <ul>
-<li><code>-XX:+UseSerialGC</code> Use serial GC.</li>
-<li><code>-XX:+UseParallelGC</code> Use parallel GC.</li>
-<li><code>-XX:+UseConcMarkSweepGC</code> Use CMS GC.</li>
-<li><code>-XX:+UseG1GC</code> Use G1 GC.</li>
+<li>
+<p>
+<code>-XX:+UseSerialGC</code> Use serial GC.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+UseParallelGC</code> Use parallel GC.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+UseConcMarkSweepGC</code> Use CMS GC.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:+UseG1GC</code> Use G1 GC.
+</p>
+</li>
 </ul>
-
-<h2 id="heap-size-settings">Heap size settings<a href="#heap-size-settings" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
+<h2 id="headline-34">
+Heap size settings
+</h2>
 <ul>
-<li><code>-Xms&lt;n&gt;</code> Set the initial heap size when JVM starts.</li>
-<li><code>-Xmx&lt;n&gt;</code> Set the maximum heap size (might be related to <code>OutOfMemery</code> error).</li>
-<li><code>-Xmn&lt;n&gt;</code> Set the size of young generation, rest of the space goes for old generation.</li>
-<li><code>-XX:PermGen<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup></code> Set the initial size of the Permanent Generation Memory.</li>
-<li><code>-XX:MaxPermGen<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">3</a></sup></code> Set the maximum size of Perm Gen.</li>
-<li><code>-XX:SurvivorRatio</code> For providing ratio of Eden space, for example if young generation size is 10m and VM switch is –XX:SurvivorRatio=2 then 5m will be reserved for Eden space and 2.5m each for both the Survivor spaces. The default value is 8.</li>
-<li><code>-XX:NewRatio</code> For providing ratio of old/new generation sizes. The default value is 2.</li>
+<li>
+<p>
+<code>-Xms&lt;n&gt;</code> Set the initial heap size when JVM starts.
+</p>
+</li>
+<li>
+<p>
+<code>-Xmx&lt;n&gt;</code> Set the maximum heap size (might be related to <code>OutOfMemery</code> error).
+</p>
+</li>
+<li>
+<p>
+<code>-Xmn&lt;n&gt;</code> Set the size of young generation, rest of the space goes for old generation.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:PermGen[fn:2]</code> Set the initial size of the Permanent Generation Memory.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:MaxPermGen[fn:2]</code> Set the maximum size of Perm Gen.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:SurvivorRatio</code> For providing ratio of Eden space, for example if young generation size is 10m and VM switch is –XX:SurvivorRatio=2 then 5m will be reserved for Eden space and 2.5m each for both the Survivor spaces. The default value is 8.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:NewRatio</code> For providing ratio of old/new generation sizes. The default value is 2.
+</p>
+</li>
 </ul>
-
-<h2 id="behavior-based-collector-tuning">Behavior-based collector tuning<a href="#behavior-based-collector-tuning" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
+<h2 id="headline-35">
+Behavior-based collector tuning
+</h2>
 <ul>
-<li><code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.</li>
-<li><code>-XX:GCTimeRatio=n</code> Set the value of <code>GC time/application time</code> as <code>1/(1 + n)</code>. The default value is 99, i.e. 1% time spent on GC.</li>
+<li>
+<p>
+<code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:GCTimeRatio=n</code> Set the value of <code>GC time/application time</code> as <code>1/(1 + n)</code>. The default value is 99, i.e. 1% time spent on GC.
+</p>
+</li>
 </ul>
-
-<h2 id="g1-switches">G1 switches<a href="#g1-switches" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
+<h2 id="headline-36">
+G1 switches
+</h2>
 <ul>
-<li><code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.</li>
-<li><code>-XX:InitiatingHeapOccupancyPercent=n</code> Percentage of the (entire) heap occupancy to start a concurrent GC cycle. It is used by GCs that trigger a concurrent GC cycle based on the occupancy of the entire heap, not just one of the generations (e.g., G1). A value of 0 denotes 'do constant GC cycles'. The default value is 45.</li>
-<li><code>-XX:NewRatio=n</code> Ratio of new/old generation sizes. The default value is 2.</li>
-<li><code>-XX:SurvivorRatio=n</code> Ratio of eden/survivor space size. The default value is 8.</li>
-<li><code>-XX:MaxTenuringThreshold=n</code> Maximum value for tenuring threshold. The default value is 15.</li>
-<li><code>-XX:ParallelGCThreads=n</code> Sets the number of threads used during parallel phases of the garbage collectors. The default value varies with the platform on which the JVM is running.</li>
-<li><code>-XX:ConcGCThreads=n</code> Number of threads concurrent garbage collectors will use. The default value varies with the platform on which the JVM is running.</li>
-<li><code>-XX:G1ReservePercent=n</code> Sets the amount of heap that is reserved as a false ceiling to reduce the possibility of promotion failure. The default value is 10.</li>
-<li><code>-XX:G1HeapRegionSize=n</code> With G1 the Java heap is subdivided into uniformly sized regions. This sets the size of the individual sub-divisions. The default value of this parameter is determined ergonomically based upon heap size. The minimum value is 1Mb and the maximum value is 32Mb.</li>
+<li>
+<p>
+<code>-XX:MaxGCPauseMillis=n</code> Sets a target for the maximum GC pause time. This is a soft goal, and the JVM will make its best effort to achieve it.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:InitiatingHeapOccupancyPercent=n</code> Percentage of the (entire) heap occupancy to start a concurrent GC cycle. It is used by GCs that trigger a concurrent GC cycle based on the occupancy of the entire heap, not just one of the generations (e.g., G1). A value of 0 denotes &#39;do constant GC cycles&#39;. The default value is 45.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:NewRatio=n</code> Ratio of new/old generation sizes. The default value is 2.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:SurvivorRatio=n</code> Ratio of eden/survivor space size. The default value is 8.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:MaxTenuringThreshold=n</code> Maximum value for tenuring threshold. The default value is 15.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:ParallelGCThreads=n</code> Sets the number of threads used during parallel phases of the garbage collectors. The default value varies with the platform on which the JVM is running.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:ConcGCThreads=n</code> Number of threads concurrent garbage collectors will use. The default value varies with the platform on which the JVM is running.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:G1ReservePercent=n</code> Sets the amount of heap that is reserved as a false ceiling to reduce the possibility of promotion failure. The default value is 10.
+</p>
+</li>
+<li>
+<p>
+<code>-XX:G1HeapRegionSize=n</code> With G1 the Java heap is subdivided into uniformly sized regions. This sets the size of the individual sub-divisions. The default value of this parameter is determined ergonomically based upon heap size. The minimum value is 1Mb and the maximum value is 32Mb.
+</p>
+</li>
 </ul>
-
-<p>There are some best practices here while using G1:</p>
-
+<p>
+There are some best practices here while using G1:
+</p>
 <ul>
-<li><strong>Do not set young generation size</strong>. Young generation size should be maintained by G1 dynamically. If you do so, G1 will no long respect pause time target, or be able to expand and contract the young generation space as needed.</li>
+<li>
+<p>
+<strong>Do not set young generation size</strong>. Young generation size should be maintained by G1 dynamically. If you do so, G1 will no long respect pause time target, or be able to expand and contract the young generation space as needed.
+</p>
+</li>
+<li>
+<p>
+<strong>Better not setting average response time</strong>. Instead, set <code>-XX:MaxGCPauseMillis=&lt;N&gt;</code> option and set value of <code>N</code> to meet 90% of the time or more. This means that 90% of clients making a request will not experience a response time higher than the goal.
+</p>
+</li>
 </ul>
-
+<h1 id="headline-37">
+Java 8 related points
+</h1>
+<h2 id="headline-38">
+Changes of memory model
+</h2>
+<p>
+Since Java 8, the old <em>Permanent Generation</em> is totally removed from memory model. The main reason is that it is difficult to manage and tune. Thus there will be no error message like <code>OutOfMemoryError: PermGen space</code>.
+</p>
+<p>
+Java 8 added a new memory area called <em>Metaspace</em> to play a similar role as old PermGen. It stores meta information of classes, methods etc. 
+</p>
+<p>
+One important difference is that  Metaspace does not use JVM memory anymore. Instead, it uses raw memory (from OS) and automatically increases its size (up to what the underlying OS provides), while PermGen always has a fixed maximum size.
+</p>
+<p>
+Note that it is still possible to give a limit for <em>Metaspace</em> by passing corresponding start-up option.
+</p>
+<h1 id="headline-39">
+Q&amp;A
+</h1>
+<h2 id="headline-40">
+Is <em>PermGen</em> really part of heap memory?
+</h2>
+<p>
+According to <a href="https://stackoverflow.com/questions/41358895/permgen-is-part-of-heap-or-not">this question</a>, no. <a href="#heap-memory-model">This picture</a> is somehow incorrect.
+</p>
+<h2 id="headline-41">
+How does CMS <em>remark</em> phase really work?
+</h2>
+<p>
+According to <a href="https://blogs.oracle.com/jonthecollector/the-unspoken-phases-of-cms">this blog</a>, CMS records all object reference <em>changes</em> during <em>concurrent mark</em> phase. After entering <em>remark</em> phase, GC complement the reference information according to the changes it makes.
+</p>
+<h1 id="headline-42">
+References
+</h1>
 <ul>
-<li><strong>Better not setting average response time</strong>. Instead, set <code>-XX:MaxGCPauseMillis=&lt;N&gt;</code> option and set value of <code>N</code> to meet 90% of the time or more. This means that 90% of clients making a request will not experience a response time higher than the goal.</li>
-</ul>
-
-<h1 id="java-8-related-points">Java 8 related points<a href="#java-8-related-points" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<h2 id="changes-of-memory-model">Changes of memory model<a href="#changes-of-memory-model" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>Since Java 8, the old <em>Permanent Generation</em> is totally removed from memory model. The main reason is that it is difficult to manage and tune. Thus there will be no error message like <code>OutOfMemoryError: PermGen space</code>.</p>
-
-<p>Java 8 added a new memory area called <em>Metaspace</em> to play a similar role as old PermGen. It stores meta information of classes, methods etc.</p>
-
-<p>One important difference is that  Metaspace does not use JVM memory anymore. Instead, it uses raw memory (from OS) and automatically increases its size (up to what the underlying OS provides), while PermGen always has a fixed maximum size.</p>
-
-<p>Note that it is still possible to give a limit for <em>Metaspace</em> by passing corresponding start-up option.</p>
-
-<h1 id="q-a">Q&A<a href="#q-a" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<h2 id="is-permgen-really-part-of-heap-memory">Is <em>PermGen</em> really part of heap memory?<a href="#is-permgen-really-part-of-heap-memory" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>According to <a href="https://stackoverflow.com/questions/41358895/permgen-is-part-of-heap-or-not" title="this question">this question</a>, no. <a href="#heap-memory-model" title="This picture">This picture</a> is somehow incorrect.</p>
-
-<h2 id="how-does-cms-remark-phase-really-work">How does CMS <em>remark</em> phase really work?<a href="#how-does-cms-remark-phase-really-work" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-
-<p>According to <a href="https://blogs.oracle.com/jonthecollector/the-unspoken-phases-of-cms" title="this blog">this blog</a>, CMS records all object reference <em>changes</em> during <em>concurrent mark</em> phase. After entering <em>remark</em> phase, GC complement the reference information according to the changes it makes.</p>
-
-<h1 id="references">References<a href="#references" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
-
-<ul>
-<li><a href="http://tutorials.jenkov.com/java-concurrency/java-memory-model.html" title="A detailed explanation about JVM memory model (unofficial)">A detailed explanation about JVM memory model (unofficial)</a></li>
-<li><a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" title="Old but classic PDF that describes JVM memory management">Old but classic PDF that describes JVM memory management</a></li>
-<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning" title="Comprehensive JVM GC tuning">Comprehensive JVM GC tuning</a></li>
-<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/G1GettingStarted/index.html" title="Detailed explanation of G1 garbage collector">Detailed explanation of G1 garbage collector</a></li>
-<li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html" title="JVM command line options">JVM command line options</a></li>
-<li><a href="https://docs.oracle.com/javase/specs" title="Entry point of Java and JVM specifications">Entry point of Java and JVM specifications</a></li>
+<li>
+<p>
+<a href="http://tutorials.jenkov.com/java-concurrency/java-memory-model.html">A detailed explanation about JVM memory model (unofficial)</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf">Old but classic PDF that describes JVM memory management</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning">Comprehensive JVM GC tuning</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/G1GettingStarted/index.html">Detailed explanation of G1 garbage collector</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">JVM command line options</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/javase/specs">Entry point of Java and JVM specifications</a>
+</p>
+</li>
 </ul>
 <div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:1">Term /GC/ might refer to /Garbage Collector/ or /Garbage Collection/, according to the context. <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-
-<li id="fn:2">Does not work with Java 8. <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-
-<li id="fn:2">Does not work with Java 8. <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-</ol>
+<hr class="footnotes-separatator">
+<div class="footnote-definitions">
+<div class="footnote-definition">
+<sup id="footnote-1"><a href="#footnote-reference-1">1</a></sup>
+<div class="footnote-body">
+<p>
+Term <em>GC</em> might refer to <em>Garbage Collector</em> or <em>Garbage Collection</em>, according to the context.
+</p>
+</div>
+</div>
+</div>
 </div>
 
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2467 Words</p>
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="/tags/jvm">jvm</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2505 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-06-17</p>
 			</footer>
 		</article>
