@@ -1816,7 +1816,7 @@ First download ECL from its <a href="https://gitlab.com/embeddable-common-lisp/e
 Then compile it using the following commands.
 </p>
 <div class="src src-sh">
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~/ecl $ ./configure --with-prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/software/ --build<span style="color:#ff79c6">=</span>aarch64-linux-android --enable-gmp<span style="color:#ff79c6">=</span>included
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~/ecl $ ./configure --prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/software/ --build<span style="color:#ff79c6">=</span>aarch64-linux-android --enable-gmp<span style="color:#ff79c6">=</span>included
 ~/ecl $ make <span style="color:#ff79c6">&amp;&amp;</span> make install</code></pre></div>
 </div>
 <p>
@@ -1960,11 +1960,46 @@ See <a href="https://gohugo.io/content-management/taxonomies/#default-taxonomies
 <h2 id="headline-5">
 Deployment
 </h2>
+<h3 id="headline-6">
+Deploying to Your Own Server
+</h3>
 <p>
 I am using Nginx to serve generated static files, so I can simply use <code>rsync</code>
 to deploy blog posts described <a href="https://gohugo.io/hosting-and-deployment/deployment-with-rsync/">here</a>.
 </p>
-<h2 id="headline-6">
+<h3 id="headline-7">
+Deploying to GitHub Pages
+</h3>
+<p>
+GitHub provides free web page for each project, which might be a good idea if
+you want to save budget.
+</p>
+<p>
+First you have to create a public repository of format
+<code>&lt;username&gt;.github.io</code>. Replace the <code>&lt;username&gt;</code> with your GitHub
+username. The repository should contain all the files under <code>public/</code>
+directory (not itself).
+</p>
+<p>
+If you are using Git to manage the source code of your blog, it is highly
+recommended to add this repository as a submodule of the original repository:
+</p>
+<div class="src src-sh">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">git submodule add git@github.com:/&lt;username&gt;/&lt;username&gt;.github.io public</code></pre></div>
+</div>
+<p>
+Afterwards, every time you want to modify the content, simply run the
+following command:
+</p>
+<div class="src src-sh">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">hugo
+<span style="color:#8be9fd;font-style:italic">cd</span> public/ <span style="color:#ff79c6">&amp;&amp;</span> git add . 
+git commit -m <span style="color:#f1fa8c">&#34;add new content&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> git push</code></pre></div>
+</div>
+<p>
+You will see the updated blog after refresh.
+</p>
+<h2 id="headline-8">
 Summary
 </h2>
 <p>
